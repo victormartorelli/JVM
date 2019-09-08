@@ -3,8 +3,7 @@
 
 typedef struct cp_info cp_info;
 
-#include <stdint.h>
-#include "javaclass.h"
+#include "javaClass.h"
 
 struct cp_info {
 

@@ -1,1 +1,4 @@
 *.out
+*.swp
+build/
+class-exhibitor

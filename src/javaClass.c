@@ -1,4 +1,8 @@
 #include "javaClass.h"
+#include "fileParser.h"
+#include "validity.h"
+#include "constantPool.h"
+#include "utf8.h"
 
 int openClassFile(JavaClass* jc, const char* path) {
     if (!jc)    return 1;
@@ -69,7 +73,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         for (u16 = 0; u16 < jc->constantPoolCount - 1; u16++) {
             if (!readConstantPoolEntry(jc, jc->constantPool + u16)) {
                 jc->constantPoolCount = u16 + 1;
-                return;
+                return 1;
             }
 
             if (jc->constantPool[u16].tag == CONSTANT_Double ||
@@ -217,4 +221,157 @@ int openClassFile(JavaClass* jc, const char* path) {
         jc->file = NULL;
     }
     return 0;
+}
+
+void decodeAccessFlags(uint16_t flags, char* buffer, int32_t buffer_len, enum AccessFlagsType acctype) {
+    uint32_t bytes = 0;
+    char* buffer_ptr = buffer;
+    const char* comma = ", ";
+    const char* empty = "";
+
+    #define DECODE_FLAG(flag, name) if (flags & flag) { \
+        bytes = snprintf(buffer, buffer_len, "%s%s", bytes ? comma : empty, name); \
+        buffer += bytes; \
+        buffer_len -= bytes; }
+
+    if (acctype == ACCT_CLASS)
+        DECODE_FLAG(ACC_SUPER, "super")
+
+    if (acctype == ACCT_CLASS || acctype == ACCT_METHOD || acctype == ACCT_INNERCLASS)
+        DECODE_FLAG(ACC_ABSTRACT, "abstract")
+
+    if (acctype == ACCT_METHOD) {
+        DECODE_FLAG(ACC_SYNCHRONIZED, "synchronized")
+        DECODE_FLAG(ACC_NATIVE, "native")
+        DECODE_FLAG(ACC_STRICT, "strict")
+    }
+
+    if (acctype == ACCT_FIELD) {
+        DECODE_FLAG(ACC_TRANSIENT, "transient")
+        DECODE_FLAG(ACC_VOLATILE, "volatile")
+    }
+
+    DECODE_FLAG(ACC_PUBLIC, "public")
+
+    if (acctype == ACCT_FIELD || acctype == ACCT_METHOD || acctype == ACCT_INNERCLASS) {
+        DECODE_FLAG(ACC_PRIVATE, "private")
+        DECODE_FLAG(ACC_PROTECTED, "protected")
+    }
+
+    if (acctype == ACCT_FIELD || acctype == ACCT_METHOD || acctype == ACCT_INNERCLASS)
+        DECODE_FLAG(ACC_STATIC, "static")
+
+    DECODE_FLAG(ACC_FINAL, "final")
+
+    if (acctype == ACCT_CLASS || acctype == ACCT_INNERCLASS)
+        DECODE_FLAG(ACC_INTERFACE, "interface")
+
+    if (buffer == buffer_ptr)
+        snprintf(buffer, buffer_len, "no flags");
+
+    #undef DECODE_FLAG
+}
+
+void printClassFileInfo(JavaClass* jc) {
+    char buffer[256];
+    cp_info* cp;
+    uint16_t u16;
+
+    if (jc->classNameMismatch)
+        printf("---- Warning ----\n\nClass name and file path don't match.\nReading will proceed anyway.\n\n");
+
+    printf("---- General Information ----\n\n");
+
+    printf("Version:\t\t%u.%u (Major.minor)", jc->majorVersion, jc->minorVersion);
+
+    if (jc->majorVersion >= 45 && jc->majorVersion <= 52)
+        printf(" [jdk version 1.%d]", jc->majorVersion - 44);
+
+    printf("\nConstant pool count:\t%u\n", jc->constantPoolCount);
+
+    decodeAccessFlags(jc->accessFlags, buffer, sizeof(buffer), ACCT_CLASS);
+    printf("Access flags:\t\t0x%.4X [%s]\n", jc->accessFlags, buffer);
+
+    cp = jc->constantPool + jc->thisClass - 1;
+    cp = jc->constantPool + cp->Class.name_index - 1;
+    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+    printf("This class:\t\tcp index #%u <%s>\n", jc->thisClass, buffer);
+
+    cp = jc->constantPool + jc->superClass - 1;
+    cp = jc->constantPool + cp->Class.name_index - 1;
+    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+    printf("Super class:\t\tcp index #%u <%s>\n", jc->superClass, buffer);
+
+    printf("Interfaces count:\t%u\n", jc->interfaceCount);
+    printf("Fields count:\t\t%u\n", jc->fieldCount);
+    printf("Methods count:\t\t%u\n", jc->methodCount);
+    printf("Attributes count:\t%u\n", jc->attributeCount);
+
+    printConstantPool(jc);
+
+    if (jc->interfaceCount > 0) {
+        printf("\n---- Interfaces implemented by the class ----\n\n");
+
+        for (u16 = 0; u16 < jc->interfaceCount; u16++) {
+            cp = jc->constantPool + *(jc->interfaces + u16) - 1;
+            cp = jc->constantPool + cp->Class.name_index - 1;
+            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+            printf("\tInterface #%u: #%u <%s>\n", u16 + 1, *(jc->interfaces + u16), buffer);
+        }
+    }
+
+    printAllFields(jc);
+    printMethods(jc);
+    printAllAttributes(jc);
+}
+
+void closeClassFile(JavaClass* jc) {
+    if (!jc)
+        return;
+
+    uint16_t i;
+
+    if (jc->file) {
+        fclose(jc->file);
+        jc->file = NULL;
+    }
+
+    if (jc->interfaces) {
+        free(jc->interfaces);
+        jc->interfaces = NULL;
+        jc->interfaceCount = 0;
+    }
+
+    if (jc->constantPool) {
+        for (i = 0; i < jc->constantPoolCount - 1; i++) {
+            if (jc->constantPool[i].tag == CONSTANT_Utf8 && jc->constantPool[i].Utf8.bytes)
+                free(jc->constantPool[i].Utf8.bytes);
+        }
+
+        free(jc->constantPool);
+        jc->constantPool = NULL;
+        jc->constantPoolCount = 0;
+    }
+
+    if (jc->methods) {
+        for (i = 0; i < jc->methodCount; i++)
+            freeMethodAttributes(jc->methods + i);
+        free(jc->methods);
+        jc->methodCount = 0;
+    }
+
+    if (jc->fields) {
+        for (i = 0; i < jc->fieldCount; i++)
+            freeFieldAttributes(jc->fields + i);
+        free(jc->fields);
+        jc->fieldCount = 0;
+    }
+
+    if (jc->attributes) {
+        for (i = 0; i < jc->attributeCount; i++)
+            freeAttributeInfo(jc->attributes + i);
+
+        free(jc->attributes);
+        jc->attributeCount = 0;
+    }
 }
