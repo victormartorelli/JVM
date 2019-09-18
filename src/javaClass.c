@@ -282,7 +282,7 @@ void printClassFileInfo(JavaClass* jc) {
 
     printf("---- General Information ----\n\n");
 
-    printf("Version:\t\t%u.%u (Major.minor)", jc->majorVersion, jc->minorVersion);
+    printf("Version:\t\t%u.%u (Major.Minor)", jc->majorVersion, jc->minorVersion);
 
     if (jc->majorVersion >= 45 && jc->majorVersion <= 52)
         printf(" [jdk version 1.%d]", jc->majorVersion - 44);

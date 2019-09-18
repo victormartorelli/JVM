@@ -6,7 +6,7 @@
 
 #define DECLARE_ATTR_FUNCS(attr) \
     uint8_t readAttribute##attr(JavaClass* jc, attribute_info* entry); \
-    void printAttribute##attr(JavaClass* jc, attribute_info* entry, int identationLevel); \
+    void printAttribute##attr(JavaClass* jc, attribute_info* entry, int numberOfTabs); \
     void freeAttribute##attr(attribute_info* entry);
 
 DECLARE_ATTR_FUNCS(SourceFile)
@@ -73,9 +73,8 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
     return result;
 }
 
-void ident(int level) {
-    while (level-- > 0)
-        printf("\t");
+void tabs(int number) {
+    while (number-- < 0)  printf("    ");
 }
 
 uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
@@ -110,13 +109,13 @@ uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeConstantValue(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeConstantValue(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     char buffer[48];
 
     att_ConstantValue_info* info = (att_ConstantValue_info*)entry->info;
     cp_info* cp = jc->constantPool + info->constantvalue_index - 1;
 
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("constantvalue_index: #%u <", info->constantvalue_index);
 
     switch (cp->tag) {
@@ -177,14 +176,14 @@ uint8_t readAttributeSourceFile(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeSourceFile(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeSourceFile(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     char buffer[48];
     att_SourceFile_info* info = (att_SourceFile_info*)entry->info;
     cp_info* cp = jc->constantPool + info->sourcefile_index - 1;
 
     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
 
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("sourcefile_index: #%u <%s>", info->sourcefile_index, buffer);
 }
 
@@ -238,28 +237,28 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeInnerClasses(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeInnerClasses(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     att_InnerClasses_info* info = (att_InnerClasses_info*)entry->info;
     cp_info* cp;
     char buffer[48];
     uint16_t index;
     InnerClassInfo* innerclass = info->inner_classes;
 
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("number_of_classes: %u", info->number_of_classes);
 
     for (index = 0; index < info->number_of_classes; index++, innerclass++) {
         printf("\n\n");
-        ident(identationLevel);
+        tabs(numberOfTabs);
         printf("Inner Class #%u:\n\n", index + 1);
 
         cp = jc->constantPool + innerclass->inner_class_index - 1;
         cp = jc->constantPool + cp->Class.name_index - 1;
         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
-        ident(identationLevel + 1);
+        tabs(numberOfTabs + 1);
         printf("inner_class_info_index:   #%u <%s>\n", innerclass->inner_class_index, buffer);
 
-        ident(identationLevel + 1);
+        tabs(numberOfTabs + 1);
         printf("outer_class_info_index:   #%u ", innerclass->outer_class_index);
 
         if (innerclass->outer_class_index == 0) {
@@ -272,7 +271,7 @@ void printAttributeInnerClasses(JavaClass* jc, attribute_info* entry, int identa
             printf("<%s>\n", buffer);
         }
 
-        ident(identationLevel + 1);
+        tabs(numberOfTabs + 1);
         printf("inner_name_index:         #%u ", innerclass->inner_class_name_index);
 
         if (innerclass->inner_class_name_index == 0) {
@@ -285,7 +284,7 @@ void printAttributeInnerClasses(JavaClass* jc, attribute_info* entry, int identa
         }
 
         decodeAccessFlags(innerclass->inner_class_access_flags, buffer, sizeof(buffer), ACCT_INNERCLASS);
-        ident(identationLevel + 1);
+        tabs(numberOfTabs + 1);
         printf("inner_class_access_flags: 0x%.4X [%s]", innerclass->inner_class_access_flags, buffer);
     }
 }
@@ -337,20 +336,20 @@ uint8_t readAttributeLineNumberTable(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeLineNumberTable(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeLineNumberTable(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     att_LineNumberTable_info* info = (att_LineNumberTable_info*)entry->info;
     LineNumberTableEntry* lnte = info->line_number_table;
     uint16_t index;
 
     printf("\n");
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("line_number_table_length: %u\n\n", info->line_number_table_length);
-    ident(identationLevel);
-    printf("Table:\tIndex\tline_number\tstart_pc");
+    tabs(numberOfTabs);
+    printf("Table:\tindex\tline_number\tstart_pc");
 
     for (index = 0; index < info->line_number_table_length; index++, lnte++) {
         printf("\n");
-        ident(identationLevel);
+        tabs(numberOfTabs);
         printf("\t%u\t%u\t\t%u", index + 1, lnte->line_number, lnte->start_pc);
     }
 }
@@ -452,19 +451,19 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     att_Code_info* info = (att_Code_info*)entry->info;
     uint32_t code_offset;
 
     printf("\n");
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("max_stack: %u, max_locals: %u, code_length: %u\n", info->max_stack, info->max_locals, info->code_length);
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("exception_table_length: %u, attribute_count: %u\n\n", info->exception_table_length, info->attributes_count);
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("Code:\tOffset\tMnemonic\tParameters");
 
-    identationLevel++;
+    numberOfTabs++;
 
     char buffer[48];
     uint8_t opcode;
@@ -475,7 +474,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
         opcode = *(info->code + code_offset);
 
         printf("\n");
-        ident(identationLevel);
+        tabs(numberOfTabs);
         printf("%u\t%s", code_offset, getOpcodeMnemonic(opcode));
 
         #define OPCODE_INTERVAL(begin, end) (opcode >= opcode_##begin && opcode <= opcode_##end)
@@ -554,13 +553,13 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                 u32 = NEXTBYTE;
                 if (u32 != 0) {
                     printf("\n");
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("%u\t- expected a zero byte in this offset due to invokedynamic, found 0x%.2X instead -", code_offset, u32);
                 }
                 u32 = NEXTBYTE;
                 if (u32 != 0) {
                     printf("\n");
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("%u\t- expected a zero byte in this offset due to invokedynamic, found 0x%.2X instead -", code_offset, u32);
                 }
 
@@ -594,7 +593,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
 
                 if (u32 != 0) {
                     printf("\n");
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("%u\t- expected a zero byte in this offset due to invokeinterface, found 0x%.2X instead -", code_offset, u32);
                 }
 
@@ -689,7 +688,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                     else if (cpi->tag == CONSTANT_String) {
                         cpi = jc->constantPool + cpi->String.string_index - 1;
                         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                        printf(" (string: %s)", buffer);
+                        printf(" (string: \"%s\")", buffer);
                     }
                     else if (cpi->tag == CONSTANT_Integer) {
                         printf(" (integer: %d)", (int32_t)cpi->Integer.value);
@@ -758,7 +757,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                 highValue = (highValue << 8) | NEXTBYTE;
                 if (lowValue > highValue) {
                     printf("\tinvalid operands - lowValue (%d) is greater than highValue (%d)\n", lowValue, highValue);
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("- can't continue -");
                     code_offset = info->code_length;
                     break;
@@ -771,7 +770,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
 
                 for (u32 = 0; u32 < (uint32_t)(highValue - lowValue + 1); u32++) {
                     printf("\n");
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("%u\t", code_offset);
 
                     offset = NEXTBYTE;
@@ -783,7 +782,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                 }
 
                 printf("\n");
-                ident(identationLevel);
+                tabs(numberOfTabs);
                 printf("-\t  default: pc + %d = address %d", defaultValue, defaultValue + base_address);
 
                 break;
@@ -803,7 +802,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                 npairs = (npairs << 8) | NEXTBYTE;
                 if (npairs < 0) {
                     printf("\tinvalid operand - npairs (%d) should be greater than or equal to 0\n", npairs);
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("- can't continue -");
                     code_offset = info->code_length;
                     break;
@@ -816,7 +815,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
 
                 while (npairs-- > 0) {
                     printf("\n");
-                    ident(identationLevel);
+                    tabs(numberOfTabs);
                     printf("%u\t", code_offset);
 
                     match = NEXTBYTE;
@@ -833,7 +832,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
                 }
 
                 printf("\n");
-                ident(identationLevel);
+                tabs(numberOfTabs);
                 printf("-\t  default: pc + %d = address %d", defaultValue, defaultValue + base_address);
 
                 break;
@@ -842,7 +841,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
 
             default:
                 printf("\n");
-                ident(identationLevel);
+                tabs(numberOfTabs);
                 printf("- last instruction was not recognized, can't continue -");
                 code_offset = info->code_length;
                 break;
@@ -850,20 +849,20 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
     }
 
     printf("\n");
-    identationLevel--;
+    numberOfTabs--;
 
     if (info->exception_table_length > 0) {
         printf("\n");
-        ident(identationLevel);
+        tabs(numberOfTabs);
         printf("Exception Table:\n");
-        ident(identationLevel);
+        tabs(numberOfTabs);
         printf("Index\tstart_pc\tend_pc\thandler_pc\tcatch_type");
 
         ExceptionTableEntry* except = info->exception_table;
 
         for (u32 = 0; u32 < info->exception_table_length; u32++) {
             printf("\n");
-            ident(identationLevel);
+            tabs(numberOfTabs);
             printf("%u\t%u\t\t%u\t%u\t\t%u", u32 + 1, except->start_pc, except->end_pc, except->handler_pc, except->catch_type);
 
             if (except->catch_type > 0) {
@@ -886,9 +885,9 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int identationLeve
             UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
 
             printf("\n");
-            ident(identationLevel);
+            tabs(numberOfTabs);
             printf("Code Attribute #%u - %s:\n", u32 + 1, buffer);
-            printAttribute(jc, atti, identationLevel + 1);
+            printAttribute(jc, atti, numberOfTabs + 1);
         }
     }
 }
@@ -960,7 +959,7 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
     return 1;
 }
 
-void printAttributeExceptions(JavaClass* jc, attribute_info* entry, int identationLevel) {
+void printAttributeExceptions(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
     att_Exceptions_info* info = (att_Exceptions_info*)entry->info;
     uint16_t* exception_index = info->exception_index_table;
     uint16_t index;
@@ -968,7 +967,7 @@ void printAttributeExceptions(JavaClass* jc, attribute_info* entry, int identati
     cp_info* cpi;
 
     printf("\n");
-    ident(identationLevel);
+    tabs(numberOfTabs);
     printf("number_of_exceptions: %u", info->number_of_exceptions);
 
     for (index = 0; index < info->number_of_exceptions; index++, exception_index++) {
@@ -977,7 +976,7 @@ void printAttributeExceptions(JavaClass* jc, attribute_info* entry, int identati
         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
 
         printf("\n\n");
-        ident(identationLevel + 1);
+        tabs(numberOfTabs + 1);
         printf("Exception #%u: #%u <%s>\n", index + 1, *exception_index, buffer);
     }
 }
@@ -1009,8 +1008,8 @@ void freeAttributeInfo(attribute_info* entry) {
     #undef ATTR_CASE
 }
 
-void printAttribute(JavaClass* jc, attribute_info* entry, int identationLevel) {
-    #define ATTR_CASE(attr) case ATTR_##attr: printAttribute##attr(jc, entry, identationLevel); break;
+void printAttribute(JavaClass* jc, attribute_info* entry, int numberOfTabs) {
+    #define ATTR_CASE(attr) case ATTR_##attr: printAttribute##attr(jc, entry, numberOfTabs); break;
     switch (entry->attributeType) {
         ATTR_CASE(Code)
         ATTR_CASE(ConstantValue)
@@ -1019,7 +1018,7 @@ void printAttribute(JavaClass* jc, attribute_info* entry, int identationLevel) {
         ATTR_CASE(LineNumberTable)
         ATTR_CASE(Exceptions)
         default:
-            ident(identationLevel);
+            tabs(numberOfTabs);
             printf("Attribute not implemented and ignored.");
             break;
     }
