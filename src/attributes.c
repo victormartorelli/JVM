@@ -461,7 +461,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
     tabs(numberOfTabs);
     printf("exception_table_length: %u, attribute_count: %u\n\n", info->exception_table_length, info->attributes_count);
     tabs(numberOfTabs);
-    printf("Code:\tOffset\tMnemonic\tParameters");
+    printf("Bytecode:\nOffset\tMnemonic\tParameters");
 
     numberOfTabs++;
 
@@ -529,7 +529,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     cpi = jc->constantPool + cpi->Fieldref.class_index - 1;
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                    printf("(%s %s.", opcode < opcode_invokevirtual ? "Field" : "Method", buffer);
+                    printf("<%s %s.", opcode < opcode_invokevirtual ? "Field" : "Method", buffer);
                     cpi = jc->constantPool + u32 - 1;
                     cpi = jc->constantPool + cpi->Fieldref.name_and_type_index - 1;
                     u32 = cpi->NameAndType.descriptor_index;
@@ -538,7 +538,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     printf("%s, descriptor: ", buffer);
                     cpi = jc->constantPool + u32 - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                    printf("%s)", buffer);
+                    printf("%s>", buffer);
                 }
                 else {
                     printf("(%s, invalid - not a %s)", decodeTag(cpi->tag), opcode < opcode_invokevirtual ? "Field" : "Method");
@@ -622,7 +622,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
             case opcode_ifnonnull:
                 u32 = (uint16_t)NEXTBYTE << 8;
                 u32 |= NEXTBYTE;
-                printf("\tpc + %d = address %d", (int16_t)u32, (int16_t)u32 + code_offset - 2);
+                printf("\t%d (+%d)", (int16_t)u32 + code_offset - 2, (int16_t)u32);
                 break;
 
             case opcode_goto_w:
@@ -854,7 +854,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
     if (info->exception_table_length > 0) {
         printf("\n");
         tabs(numberOfTabs);
-        printf("Exception Table:\n");
+        printf("Exception table:\n");
         tabs(numberOfTabs);
         printf("Index\tstart_pc\tend_pc\thandler_pc\tcatch_type");
 
