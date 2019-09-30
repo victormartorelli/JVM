@@ -74,7 +74,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
 }
 
 void tabs(int number) {
-    while (number-- < 0)  printf("    ");
+    while (number-- < 0)  printf("\t");
 }
 
 uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
