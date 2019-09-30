@@ -73,7 +73,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
     return result;
 }
 
-void tabs(int number) {
+static inline void tabs(int number) {
     while (number-- < 0)  printf("\t");
 }
 
