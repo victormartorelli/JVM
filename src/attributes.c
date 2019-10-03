@@ -346,7 +346,7 @@ void printAttributeLineNumberTable(JavaClass* jc, attribute_info* entry, int num
     printf("line_number_table_length: %u\n\n", info->line_number_table_length);
     tabs(numberOfTabs);
     printf("Table:\tindex\tline_number\tstart_pc");
-
+    
     for (index = 0; index < info->line_number_table_length; index++, lnte++) {
         printf("\n");
         tabs(numberOfTabs);
