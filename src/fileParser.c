@@ -2,6 +2,7 @@
 #include "utf8.h"
 #include "validity.h"
 #include <math.h>
+#include <ctype.h>
 
 static const union {
     uint16_t value;
