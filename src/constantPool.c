@@ -40,6 +40,7 @@ char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
         jc->status = INVALID_CONSTANT_POOL_INDEX;
         return 0;
     }
+    
     return 1;
 }
 
@@ -48,6 +49,7 @@ char readConstantPool_Integer(JavaClass* jc, cp_info* entry) {
         jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
         return 0;
     }
+    
     return 1;
 }
 
@@ -61,6 +63,7 @@ char readConstantPool_Long(JavaClass* jc, cp_info* entry) {
         jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
         return 0;
     }
+    
     return 1;
 }
 
@@ -102,6 +105,7 @@ char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
     else {
         entry->Utf8.bytes = NULL;
     }
+    
     return 1;
 }
 
