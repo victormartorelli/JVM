@@ -1054,6 +1054,5 @@ attribute_info* getAttributeByType(attribute_info* attributes, uint16_t attribut
 
         attributes++;
     }
-
     return NULL;
 }
