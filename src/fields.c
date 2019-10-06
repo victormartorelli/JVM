@@ -39,7 +39,6 @@ char readField(JavaClass* jc, field_info* entry) {
         }
 
         uint16_t i;
-
         jc->attributeEntriesRead = 0;
 
         for (i = 0; i < entry->attributes_count; i++) {
