@@ -1,5 +1,6 @@
 #include "opcodes.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 const char* decodeOpcodeNewarrayType(uint8_t type) {
     const char* typeName[] = {"boolean", "char", "float", "double",
