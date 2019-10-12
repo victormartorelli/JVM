@@ -1,5 +1,4 @@
 package examples;
-
 import java.util.*;
 
 public class LongCode implements EventListener, RandomAccess {
