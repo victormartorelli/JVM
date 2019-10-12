@@ -14,6 +14,7 @@ public class LongCode implements EventListener, RandomAccess {
 		{3, 4}},
 		{{5, 6},
 		{7, 8}}
+		
 	};
 
 	public double[][] matrix2d = {
