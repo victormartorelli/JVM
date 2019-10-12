@@ -77,5 +77,4 @@ public class LongCode implements EventListener, RandomAccess {
             System.out.println(e);
 		}
 	}
-
 }
