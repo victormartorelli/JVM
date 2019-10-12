@@ -3,7 +3,7 @@ package examples;
 import java.util.*;
 
 public class LongCode implements EventListener, RandomAccess {
-	
+
 	private static final int[] array_member = {1, 2, 3};
 	@Deprecated
 	public float deprecated_member;
@@ -18,6 +18,7 @@ public class LongCode implements EventListener, RandomAccess {
 	};
 
 	public double[][] matrix2d = {
+		
 		{123.456, -654.321, 987654321.123456789},
 		{Double.MAX_VALUE, Double.MIN_VALUE, Double.MIN_NORMAL},
 		{Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY}
