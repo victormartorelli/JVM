@@ -25,6 +25,7 @@ public class LongCode implements EventListener, RandomAccess {
 	interface Test {
 		public int method1(int[] a);
 	}
+	
 	class NestedClass implements Test {
 		public int method1(int[] a) {
 			return a.length;
