@@ -1,4 +1,5 @@
 package examples;
+
 import java.util.*;
 public class LongCode implements EventListener, RandomAccess {
 	private static final int[] array_member = {1, 2, 3};
