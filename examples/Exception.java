@@ -8,5 +8,4 @@ public class Exception {
             System.out.print(e);
         }
 	}
-
 }
