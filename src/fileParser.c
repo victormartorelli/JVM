@@ -10,6 +10,7 @@ static const union {
 } byte_order = {1};
 
 uint8_t readu4(JavaClass* jc, uint32_t* out) {
+
     uint32_t u4 = 0;
 
     if (fread(&u4, sizeof(uint32_t), 1, jc->file) != 1)
@@ -61,7 +62,14 @@ int32_t readFieldDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkVal
     } while (utf8_char == '[');
 
     switch (utf8_char) {
-        case 'B': case 'C': case 'D': case 'F': case 'I': case 'J': case 'S': case 'Z': break;
+        case 'B':
+        case 'C':
+        case 'D':
+        case 'F':
+        case 'I':
+        case 'J':
+        case 'S':
+        case 'Z': break;
         case 'L': {
             uint8_t* identifierBegin = utf8_bytes;
             int32_t identifierLength = 0;
