@@ -75,7 +75,7 @@ void printAllFields(JavaClass* jc) {
     cp_info* cpi;
     attribute_info* atti;
 
-    printf("\n---- Fields ----");
+    printf("\n==== Fields ====");
 
     for (u16 = 0; u16 < jc->fieldCount; u16++) {
         fi = jc->fields + u16;

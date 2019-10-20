@@ -255,9 +255,9 @@ void printClassFileInfo(JavaClass* jc) {
     uint16_t u16;
 
     if (jc->classNameMismatch)
-        printf("---- Warning ----\n\nClass name and file path don't match.\nReading will proceed anyway.\n\n");
+        printf("==== Warning ====\n\nClass name and file path don't match.\nReading will proceed anyway.\n\n");
 
-    printf("---- General Information ----\n\n");
+    printf("==== General Information ====\n\n");
 
     printf("Version:\t\t%u.%u (Major.Minor)", jc->majorVersion, jc->minorVersion);
 
@@ -287,7 +287,7 @@ void printClassFileInfo(JavaClass* jc) {
     printConstantPool(jc);
 
     if (jc->interfaceCount > 0) {
-        printf("\n---- Interfaces implemented by the class ----\n\n");
+        printf("\n==== Interfaces implemented by the class ====\n\n");
 
         for (u16 = 0; u16 < jc->interfaceCount; u16++) {
             cp = jc->constantPool + *(jc->interfaces + u16) - 1;

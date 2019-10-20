@@ -76,7 +76,7 @@ void printMethods(JavaClass* jc) {
     attribute_info* atti;
 
     if (jc->methodCount > 0) {
-        printf("\n---- Methods ----\n");
+        printf("\n==== Methods ====\n");
         for (u16 = 0; u16 < jc->methodCount; u16++) {
             mi = jc->methods + u16;
 

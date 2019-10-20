@@ -1035,7 +1035,7 @@ void printAllAttributes(JavaClass* jc) {
     cp_info* cp;
     attribute_info* atti;
 
-    printf("\n---- Class Attributes ----");
+    printf("\n==== Class Attributes ====");
 
     for (u16 = 0; u16 < jc->attributeCount; u16++) {
         atti = jc->attributes + u16;

@@ -1,4 +1,4 @@
----- General Information ----
+==== General Information ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
 Constant pool count:	119
@@ -495,7 +495,7 @@ Attributes count:	0
 	Length of string: 21
 	String: (Ljava/lang/Object;)V
 
----- Interfaces implemented by the class ----
+==== Interfaces implemented by the class ====
 
 	Interface #1: #45 <java/util/EventListener>
 	Interface #2: #46 <java/util/RandomAccess>
