@@ -91,12 +91,6 @@ int openClassFile(JavaClass* jc, const char* path) {
         return 1;
     }
 
-    if (!checkClassIndexAndAccessFlags(jc))
-        return 1;
-
-    if (!checkClassNameFileNameMatch(jc, path))
-        jc->classNameMismatch = 1;
-
     if (!readu2(jc, &jc->interfaceCount)) {
         jc->status = UNEXPECTED_EOF;
         return 1;
@@ -104,11 +98,6 @@ int openClassFile(JavaClass* jc, const char* path) {
 
     if (jc->interfaceCount > 0) {
         jc->interfaces = (uint16_t*)malloc(sizeof(uint16_t) * jc->interfaceCount);
-
-        if (!jc->interfaces) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
-            return 1;
-        }
 
         for (u32 = 0; u32 < jc->interfaceCount; u32++) {
             if (!readu2(jc, &u16)) {
@@ -133,11 +122,6 @@ int openClassFile(JavaClass* jc, const char* path) {
 
     if (jc->fieldCount > 0) {
         jc->fields = (field_info*)malloc(sizeof(field_info) * jc->fieldCount);
-
-        if (!jc->fields) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
-            return 1;
-        }
 
         for (u32 = 0; u32 < jc->fieldCount; u32++) {
             field_info* field = jc->fields + u32;
@@ -171,11 +155,6 @@ int openClassFile(JavaClass* jc, const char* path) {
 
     if (jc->methodCount > 0) {
         jc->methods = (method_info*)malloc(sizeof(method_info) * jc->methodCount);
-
-        if (!jc->methods) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
-            return 1;
-        }
 
         for (u32 = 0; u32 < jc->methodCount; u32++) {
             if (!readMethod(jc, jc->methods + u32)) {
