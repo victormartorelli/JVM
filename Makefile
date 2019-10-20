@@ -11,3 +11,10 @@ examples:
 .PHONY: javalang
 javalang:
 	javac -encoding utf8 -target 1.8 -source 1.8 java/lang/*.java
+
+.PHONY: output
+output:
+	mkdir -p output
+	for i in `ls examples/*.class`; do\
+		./class-exhibitor $$i > output/$$(echo $$i | sed -e "s/[a-z]*\///g").out;\
+	done;

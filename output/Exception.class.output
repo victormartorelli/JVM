@@ -1,0 +1,240 @@
+---- General Information ----
+
+Version:		52.0 (Major.Minor) [jdk version 1.8]
+Constant pool count:	35
+Access flags:		0x0021 [super, public]
+This class:		cp index #7 <Exception>
+Super class:		cp index #8 <java/lang/Object>
+Interfaces count:	0
+Fields count:		0
+Methods count:		2
+Attributes count:	1
+
+==== Constant Pool ====
+
+[1]: CONSTANT_Methodref (tag = 10)
+	Class name: #8 <java/lang/Object>
+	Name and type: #18 <java/lang/Object : ()V>
+
+[2]: CONSTANT_Class (tag = 7)
+	Class name: #19 <java/lang/ArithmeticException>
+
+[3]: CONSTANT_String (tag = 8)
+	String: #20 / by zero
+
+[4]: CONSTANT_Methodref (tag = 10)
+	Class name: #2 <java/lang/ArithmeticException>
+	Name and type: #21 <java/lang/ArithmeticException : (Ljava/lang/String;)V>
+
+[5]: CONSTANT_Fieldref (tag = 9)
+	Class name: #22 <java/lang/System>
+	Name and type: #23 <java/lang/System : Ljava/io/PrintStream;>
+
+[6]: CONSTANT_Methodref (tag = 10)
+	Class name: #24 <java/io/PrintStream>
+	Name and type: #25 <java/io/PrintStream : (Ljava/lang/Object;)V>
+
+[7]: CONSTANT_Class (tag = 7)
+	Class name: #26 <Exception>
+
+[8]: CONSTANT_Class (tag = 7)
+	Class name: #27 <java/lang/Object>
+
+[9]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 6
+	Length of string: 6
+	String: <init>
+
+[10]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: ()V
+
+[11]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: Code
+
+[12]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 15
+	Length of string: 15
+	String: LineNumberTable
+
+[13]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: main
+
+[14]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 22
+	Length of string: 22
+	String: ([Ljava/lang/String;)V
+
+[15]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 13
+	Length of string: 13
+	String: StackMapTable
+
+[16]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 10
+	Length of string: 10
+	String: SourceFile
+
+[17]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 14
+	Length of string: 14
+	String: Exception.java
+
+[18]: CONSTANT_NameAndType (tag = 12)
+	Name: #9 <<init>>
+	Descriptor: #10 <()V>
+
+[19]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 29
+	Length of string: 29
+	String: java/lang/ArithmeticException
+
+[20]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 9
+	Length of string: 9
+	String: / by zero
+
+[21]: CONSTANT_NameAndType (tag = 12)
+	Name: #9 <<init>>
+	Descriptor: #28 <(Ljava/lang/String;)V>
+
+[22]: CONSTANT_Class (tag = 7)
+	Class name: #29 <java/lang/System>
+
+[23]: CONSTANT_NameAndType (tag = 12)
+	Name: #30 <out>
+	Descriptor: #31 <Ljava/io/PrintStream;>
+
+[24]: CONSTANT_Class (tag = 7)
+	Class name: #32 <java/io/PrintStream>
+
+[25]: CONSTANT_NameAndType (tag = 12)
+	Name: #33 <print>
+	Descriptor: #34 <(Ljava/lang/Object;)V>
+
+[26]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 9
+	Length of string: 9
+	String: Exception
+
+[27]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/Object
+
+[28]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: (Ljava/lang/String;)V
+
+[29]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/System
+
+[30]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: out
+
+[31]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: Ljava/io/PrintStream;
+
+[32]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 19
+	Length of string: 19
+	String: java/io/PrintStream
+
+[33]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 5
+	Length of string: 5
+	String: print
+
+[34]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: (Ljava/lang/Object;)V
+
+---- Methods ----
+
+Method #1:
+
+	name_index:        #9 <<init>>
+	descriptor_index:  #10 <()V>
+	access_flags:      0x0001 [public]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 1, max_locals: 1, code_length: 5
+exception_table_length: 0, attribute_count: 1
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	aload_0
+1	invokespecial	#1 <Method java/lang/Object.<init>, descriptor: ()V>
+4	return
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 1
+
+Table:	index	line_number	start_pc
+	1	1		0
+
+
+Method #2:
+
+	name_index:        #13 <main>
+	descriptor_index:  #14 <([Ljava/lang/String;)V>
+	access_flags:      0x0009 [public, static]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 3, max_locals: 4, code_length: 19
+exception_table_length: 1, attribute_count: 2
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	new		#2 (class: java/lang/ArithmeticException)
+3	dup
+4	ldc		#3 (string: "/ by zero")
+6	invokespecial	#4 <Method java/lang/ArithmeticException.<init>, descriptor: (Ljava/lang/String;)V>
+9	athrow
+10	astore_3
+11	getstatic	#5 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+14	aload_3
+15	invokevirtual	#6 <Method java/io/PrintStream.print, descriptor: (Ljava/lang/Object;)V>
+18	return
+
+Exception table:
+Index	start_pc	end_pc	handler_pc	catch_type
+1	0		10	10		2 <java/lang/ArithmeticException>
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 4
+
+Table:	index	line_number	start_pc
+	1	6		0
+	2	7		10
+	3	8		11
+	4	10		18
+
+Code Attribute #2 - StackMapTable:
+Attribute not implemented and ignored.
+
+
+---- Class Attributes ----
+
+	Attribute #1 - SourceFile:
+
+sourcefile_index: #17 <Exception.java>
