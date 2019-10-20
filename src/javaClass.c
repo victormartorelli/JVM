@@ -5,8 +5,6 @@
 #include "utf8.h"
 
 int openClassFile(JavaClass* jc, const char* path) {
-    if (!jc)    return 1;
-
     uint32_t u32;
     uint16_t u16;
 
