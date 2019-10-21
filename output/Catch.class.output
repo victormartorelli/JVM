@@ -1,4 +1,4 @@
----- General Information ----
+==== General Information ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
 Constant pool count:	21
@@ -102,7 +102,7 @@ Attributes count:	1
 	Length of string: 15
 	String: printStackTrace
 
----- Methods ----
+==== Methods ====
 
 Method #1:
 
@@ -176,7 +176,7 @@ Code Attribute #2 - StackMapTable:
 Attribute not implemented and ignored.
 
 
----- Class Attributes ----
+==== Class Attributes ====
 
 	Attribute #1 - SourceFile:
 

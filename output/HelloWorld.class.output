@@ -1,4 +1,4 @@
----- General Information ----
+==== General Information ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
 Constant pool count:	34
@@ -159,7 +159,7 @@ Attributes count:	1
 	Length of string: 21
 	String: (Ljava/lang/String;)V
 
----- Fields ----
+==== Fields ====
 
 	Field #1:
 
@@ -169,7 +169,7 @@ Attributes count:	1
 		attributes_count: 0
 
 
----- Methods ----
+==== Methods ====
 
 Method #1:
 
@@ -251,7 +251,7 @@ Table:	index	line_number	start_pc
 	1	3		0
 
 
----- Class Attributes ----
+==== Class Attributes ====
 
 	Attribute #1 - SourceFile:
 

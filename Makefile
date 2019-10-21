@@ -15,4 +15,6 @@ javalang:
 .PHONY: output
 output:
 	mkdir -p output
-	-./class-exhibitor examples/LongCode.class > output/LongCode.class.output 2>&1
+	for i in `ls examples/*.class`; do\
+		./class-exhibitor $$i > output/$$(echo $$i | sed -e 's/[a-z]*\///g').output 2>&1;\
+	done;
