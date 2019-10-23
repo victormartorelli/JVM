@@ -513,7 +513,7 @@ Attributes count:	2
 		name_index:       #51 <array_member>
 		descriptor_index: #52 <[I>
 		access_flags:     0x001A [private, static, final]
-		attributes_count: 0
+		attr_count: 0
 
 
 	Field #2:
@@ -521,7 +521,7 @@ Attributes count:	2
 		name_index:       #53 <deprecated_member>
 		descriptor_index: #54 <F>
 		access_flags:     0x0001 [public]
-		attributes_count: 2
+		attr_count: 2
 
 		Field Attribute #1 - Deprecated:
 Attribute not implemented and ignored.
@@ -535,7 +535,7 @@ Attribute not implemented and ignored.
 		name_index:       #58 <static_long_member>
 		descriptor_index: #59 <J>
 		access_flags:     0x0009 [public, static]
-		attributes_count: 0
+		attr_count: 0
 
 
 	Field #4:
@@ -543,7 +543,7 @@ Attribute not implemented and ignored.
 		name_index:       #60 <??????>
 		descriptor_index: #61 <Ljava/lang/String;>
 		access_flags:     0x0002 [private]
-		attributes_count: 0
+		attr_count: 0
 
 
 	Field #5:
@@ -551,7 +551,7 @@ Attribute not implemented and ignored.
 		name_index:       #62 <matrix3d>
 		descriptor_index: #63 <[[[I>
 		access_flags:     0x0002 [private]
-		attributes_count: 0
+		attr_count: 0
 
 
 	Field #6:
@@ -559,7 +559,7 @@ Attribute not implemented and ignored.
 		name_index:       #64 <matrix2d>
 		descriptor_index: #65 <[[D>
 		access_flags:     0x0001 [public]
-		attributes_count: 0
+		attr_count: 0
 
 
 ==== Methods ====

@@ -191,7 +191,7 @@ void printCPEntry(JavaClass* jc, cp_info* entry) {
 
     switch(entry->tag) {
         case CONST_Utf8:
-            u32 = UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), entry->Utf8.bytes, entry->Utf8.length);
+            u32 = UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), entry->Utf8.bytes, entry->Utf8.length);
             printf("\tLength of byte array: %u\n", entry->Utf8.length);
             printf("\tLength of string: %u\n", u32);
             printf("\tString: %s", buffer);
@@ -201,7 +201,7 @@ void printCPEntry(JavaClass* jc, cp_info* entry) {
 
         case CONST_String:
             cpi = jc->constantPool + entry->String.string_index - 1;
-            u32 = UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            u32 = UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tString: #%u %s",entry->String.string_index, buffer);
             if (u32 != cpi->Utf8.length)
                 printf("\n\tUTF-8: %.*s", (int)cpi->Utf8.length, cpi->Utf8.bytes);
@@ -212,7 +212,7 @@ void printCPEntry(JavaClass* jc, cp_info* entry) {
         case CONST_InterfaceMethodref:
             cpi = jc->constantPool + entry->Fieldref.class_index - 1;
             cpi = jc->constantPool + cpi->Class.name_index - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tClass name: #%u <%s>\n", entry->Fieldref.class_index, buffer);
             cpi = jc->constantPool + entry->Fieldref.name_and_type_index - 1;
             u32 = cpi->NameAndType.name_index;
@@ -221,22 +221,22 @@ void printCPEntry(JavaClass* jc, cp_info* entry) {
             cpi = jc->constantPool + entry->Fieldref.name_and_type_index - 1;
             u32 = cpi->NameAndType.descriptor_index;
             cpi = jc->constantPool + u32 - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf(" %s>", buffer);
             break;
 
         case CONST_Class:
             cpi = jc->constantPool + entry->Class.name_index - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tClass name: #%u <%s>", entry->Class.name_index, buffer);
             break;
 
         case CONST_NameAndType:
             cpi = jc->constantPool + entry->NameAndType.name_index - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tName: #%u <%s>\n", entry->NameAndType.name_index, buffer);
             cpi = jc->constantPool + entry->NameAndType.descriptor_index - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tDescriptor: #%u <%s>", entry->NameAndType.descriptor_index, buffer);
             break;
 

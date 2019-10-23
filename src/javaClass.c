@@ -261,12 +261,12 @@ void printClassFileInfo(JavaClass* jc) {
 
     cp = jc->constantPool + jc->thisClass - 1;
     cp = jc->constantPool + cp->Class.name_index - 1;
-    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+    UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
     printf("This class:\t\tcp index #%u <%s>\n", jc->thisClass, buffer);
 
     cp = jc->constantPool + jc->superClass - 1;
     cp = jc->constantPool + cp->Class.name_index - 1;
-    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+    UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
     printf("Super class:\t\tcp index #%u <%s>\n", jc->superClass, buffer);
 
     printf("Interfaces count:\t%u\n", jc->interfaceCount);
@@ -282,7 +282,7 @@ void printClassFileInfo(JavaClass* jc) {
         for (u16 = 0; u16 < jc->interfaceCount; u16++) {
             cp = jc->constantPool + *(jc->interfaces + u16) - 1;
             cp = jc->constantPool + cp->Class.name_index - 1;
-            UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
+            UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
             printf("\tInterface #%u: #%u <%s>\n", u16 + 1, *(jc->interfaces + u16), buffer);
         }
     }

@@ -1,10 +1,10 @@
-#include "validity.h"
-#include "constantPool.h"
-#include "utf8.h"
-#include "fileParser.h"
+#include <ctype.h>
 #include <locale.h>
 #include <wctype.h>
-#include <ctype.h>
+#include "constantPool.h"
+#include "fileParser.h"
+#include "utf8.h"
+#include "validity.h"
 
 char checkMethodAccessFlags(JavaClass* jc, uint16_t accessFlags) {
     if (accessFlags & ACC_INVALID_METHOD_FLAG_MASK) {
@@ -12,8 +12,7 @@ char checkMethodAccessFlags(JavaClass* jc, uint16_t accessFlags) {
         return 0;
     }
 
-    if ((accessFlags & ACC_ABSTRACT) &&
-        (accessFlags & (ACC_FINAL | ACC_NATIVE | ACC_PRIVATE | ACC_STATIC | ACC_STRICT | ACC_SYNCHRONIZED))) {
+    if ((accessFlags & ACC_ABSTRACT) && (accessFlags & (ACC_FINAL | ACC_NATIVE | ACC_PRIVATE | ACC_STATIC | ACC_STRICT | ACC_SYNCHRONIZED))) {
         jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
@@ -49,22 +48,24 @@ char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
 
     uint16_t interfaceRequiredBitMask = ACC_PUBLIC | ACC_STATIC | ACC_FINAL;
 
-    if ((jc->accessFlags & ACC_INTERFACE) &&
-        ((accessFlags & interfaceRequiredBitMask) != interfaceRequiredBitMask)) {
+    if ((jc->accessFlags & ACC_INTERFACE) && ((accessFlags & interfaceRequiredBitMask) != interfaceRequiredBitMask)) {
         jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
 
     uint8_t accessModifierCount = 0;
 
-    if (accessFlags & ACC_PUBLIC)
+    if (accessFlags & ACC_PUBLIC){
         accessModifierCount++;
+    }
 
-    if (accessFlags & ACC_PRIVATE)
+    if (accessFlags & ACC_PRIVATE){
         accessModifierCount++;
+    }
 
-    if (accessFlags & ACC_PROTECTED)
+    if (accessFlags & ACC_PROTECTED){
         accessModifierCount++;
+    }
 
     if (accessModifierCount > 1) {
         jc->status = INV_ACCESS_FLAGS;
@@ -74,28 +75,25 @@ char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
     return 1;
 }
 
-char checkClassIndexAndAccessFlags(JavaClass* jc) {
+char checkClassIdxAndAccessFlags(JavaClass* jc) {
     if (jc->accessFlags & ACC_INVALID_CLASS_FLAG_MASK) {
         jc->status = USE_OF_RSVD_CLASS_ACCESS_FLAGS;
         return 0;
     }
 
     if (jc->accessFlags & ACC_INTERFACE) {
-        if ((jc->accessFlags & ACC_ABSTRACT) == 0 ||
-            (jc->accessFlags & (ACC_FINAL | ACC_SUPER))) {
+        if ((jc->accessFlags & ACC_ABSTRACT) == 0 || (jc->accessFlags & (ACC_FINAL | ACC_SUPER))) {
             jc->status = INV_ACCESS_FLAGS;
             return 0;
         }
     }
 
-    if (!jc->thisClass || jc->thisClass >= jc->constantPoolCount ||
-        jc->constantPool[jc->thisClass - 1].tag != CONST_Class) {
+    if (!jc->thisClass || jc->thisClass >= jc->constantPoolCount || jc->constantPool[jc->thisClass - 1].tag != CONST_Class) {
         jc->status = INV_THIS_CLASS_IDX;
         return 0;
     }
 
-    if (jc->superClass >= jc->constantPoolCount ||
-        (jc->superClass && jc->constantPool[jc->superClass - 1].tag != CONST_Class)) {
+    if (jc->superClass >= jc->constantPoolCount || (jc->superClass && jc->constantPool[jc->superClass - 1].tag != CONST_Class)) {
         jc->status = INV_SUPER_CLASS_IDX;
         return 0;
     }
@@ -107,10 +105,12 @@ char checkClassNameFileNameMatch(JavaClass* jc, const char* classFilePath) {
     cp_info* cpi;
 
     for (i = 0; classFilePath[i] != '\0'; i++) {
-        if (classFilePath[i] == '/' || classFilePath[i] == '\\')
+        if (classFilePath[i] == '/' || classFilePath[i] == '\\'){
             begin = i + 1;
-        else if (classFilePath[i] == '.')
+        }
+        else if (classFilePath[i] == '.'){
             break;
+        }
     }
 
     end = i;
@@ -120,17 +120,18 @@ char checkClassNameFileNameMatch(JavaClass* jc, const char* classFilePath) {
 
     for (i = 0; i < cpi->Utf8.length; i++) {
         if (*(cpi->Utf8.bytes + i) == '/') {
-            if (begin == 0)
+            if (begin == 0){
                 break;
+            }
 
             while (--begin > 0 && (classFilePath[begin - 1] != '/' || classFilePath[begin - 1] != '\\'));
         }
     }
 
-    return cmp_UTF8_FilePath(cpi->Utf8.bytes, cpi->Utf8.length, (uint8_t*)classFilePath + begin, end - begin);
+    return compUTF8FilePath(cpi->Utf8.bytes, cpi->Utf8.length, (uint8_t*)classFilePath + begin, end - begin);
 }
 
-char isValidJavaIdentifier(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClassIdentifier) {
+char javaIDIsValid(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClassIdentifier) {
     uint32_t utf8_char;
     uint8_t used_bytes;
     uint8_t firstChar = 1;
@@ -140,16 +141,14 @@ char isValidJavaIdentifier(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClas
         return readFieldDesc(utf8_bytes, utf8_len, 1) == utf8_len;
 
     while (utf8_len > 0) {
-        used_bytes = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
+        used_bytes = nextUTF8Char(utf8_bytes, utf8_len, &utf8_char);
 
         if (used_bytes == 0) {
             isValid = 0;
             break;
         }
 
-        if (isalpha(utf8_char) || utf8_char == '_' || utf8_char == '$' ||
-            (isdigit(utf8_char) && !firstChar) || iswalpha(utf8_char) ||
-            (utf8_char == '/' && !firstChar && isClassIdentifier)) {
+        if (isalpha(utf8_char) || utf8_char == '_' || utf8_char == '$' || (isdigit(utf8_char) && !firstChar) || iswalpha(utf8_char) || (utf8_char == '/' && !firstChar && isClassIdentifier)) {
             firstChar = utf8_char == '/';
             utf8_len -= used_bytes;
             utf8_bytes += used_bytes;
@@ -162,17 +161,17 @@ char isValidJavaIdentifier(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClas
     return isValid;
 }
 
-char isValidUTF8Index(JavaClass* jc, uint16_t index) {
+char UTF8IdxIsValid(JavaClass* jc, uint16_t index) {
     return (jc->constantPool + index - 1)->tag == CONST_Utf8;
 }
 
 
-char isValidNameIndex(JavaClass* jc, uint16_t name_index, uint8_t isClassIdentifier) {
+char nameIdxIsValid(JavaClass* jc, uint16_t name_index, uint8_t isClassIdentifier) {
     cp_info* entry = jc->constantPool + name_index - 1;
-    return entry->tag == CONST_Utf8 && isValidJavaIdentifier(entry->Utf8.bytes, entry->Utf8.length, isClassIdentifier);
+    return entry->tag == CONST_Utf8 && javaIDIsValid(entry->Utf8.bytes, entry->Utf8.length, isClassIdentifier);
 }
 
-char isValidMethodNameIndex(JavaClass* jc, uint16_t name_index) {
+char methodnameIdxIsValid(JavaClass* jc, uint16_t name_index) {
     cp_info* entry = jc->constantPool + name_index - 1;
 
     if (entry->tag != CONST_Utf8)
@@ -182,10 +181,10 @@ char isValidMethodNameIndex(JavaClass* jc, uint16_t name_index) {
         cmp_UTF8_Ascii(entry->Utf8.bytes, entry->Utf8.length, (uint8_t*)"<clinit>", 8))
         return 1;
 
-    return isValidJavaIdentifier(entry->Utf8.bytes, entry->Utf8.length, 0);
+    return javaIDIsValid(entry->Utf8.bytes, entry->Utf8.length, 0);
 }
 
-char checkClassIndex(JavaClass* jc, uint16_t class_index) {
+char checkClassIdx(JavaClass* jc, uint16_t class_index) {
     cp_info* entry = jc->constantPool + class_index - 1;
 
     if (entry->tag != CONST_Class) {
@@ -198,7 +197,7 @@ char checkClassIndex(JavaClass* jc, uint16_t class_index) {
 char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
-    if (entry->tag != CONST_NameAndType || !isValidNameIndex(jc, entry->NameAndType.name_index, 0)) {
+    if (entry->tag != CONST_NameAndType || !nameIdxIsValid(jc, entry->NameAndType.name_index, 0)) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
@@ -221,7 +220,7 @@ char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
 char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
-    if (entry->tag != CONST_NameAndType || !isValidMethodNameIndex(jc, entry->NameAndType.name_index)) {
+    if (entry->tag != CONST_NameAndType || !methodnameIdxIsValid(jc, entry->NameAndType.name_index)) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
@@ -252,7 +251,7 @@ char checkCPValidity(JavaClass* jc) {
         switch(entry->tag) {
             case CONST_Class:
 
-                if (!isValidNameIndex(jc, entry->Class.name_index, 1)) {
+                if (!nameIdxIsValid(jc, entry->Class.name_index, 1)) {
                     jc->status = INV_NAME_IDX;
                     success = 0;
                 }
@@ -261,7 +260,7 @@ char checkCPValidity(JavaClass* jc) {
 
             case CONST_String:
 
-                if (!isValidUTF8Index(jc, entry->String.string_index)) {
+                if (!UTF8IdxIsValid(jc, entry->String.string_index)) {
                     jc->status = INV_STRING_IDX;
                     success = 0;
                 }
@@ -271,7 +270,7 @@ char checkCPValidity(JavaClass* jc) {
             case CONST_Methodref:
             case CONST_InterfaceMethodref:
 
-                if (!checkClassIndex(jc, entry->Methodref.class_index) ||
+                if (!checkClassIdx(jc, entry->Methodref.class_index) ||
                     !checkMethodNameAndTypeIndex(jc, entry->Methodref.name_and_type_index))
                     success = 0;
 
@@ -279,7 +278,7 @@ char checkCPValidity(JavaClass* jc) {
 
             case CONST_Fieldref:
 
-                if (!checkClassIndex(jc, entry->Fieldref.class_index) ||
+                if (!checkClassIdx(jc, entry->Fieldref.class_index) ||
                     !checkFieldNameAndTypeIndex(jc, entry->Fieldref.name_and_type_index))
                     success = 0;
 
@@ -287,8 +286,8 @@ char checkCPValidity(JavaClass* jc) {
 
             case CONST_NameAndType:
 
-                if (!isValidUTF8Index(jc, entry->NameAndType.name_index) ||
-                    !isValidUTF8Index(jc, entry->NameAndType.descriptor_index)) {
+                if (!UTF8IdxIsValid(jc, entry->NameAndType.name_index) ||
+                    !UTF8IdxIsValid(jc, entry->NameAndType.descriptor_index)) {
                     jc->status = INV_NAME_AND_TYPE_IDX;
                     success = 0;
                 }

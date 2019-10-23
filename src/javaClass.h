@@ -2,15 +2,15 @@
 #define JAVACLASS_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef struct JavaClass JavaClass;
 
+#include "constantPool.h"
 #include "attributes.h"
 #include "fields.h"
 #include "methods.h"
-#include "constantPool.h"
 
 enum AccessFlagsType {
     ACCT_CLASS,
@@ -131,4 +131,4 @@ int openClassFile(JavaClass*, const char*);
 void closeClassFile(JavaClass* jc);
 void decodeAccessFlags(uint16_t flags, char* buffer, int32_t buffer_len, enum AccessFlagsType acctype);
 void printClassFileInfo(JavaClass* jc);
-#endif // JAVACLASS_H
+#endif

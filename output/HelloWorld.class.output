@@ -166,7 +166,7 @@ Attributes count:	1
 		name_index:       #8 <str>
 		descriptor_index: #9 <Ljava/lang/String;>
 		access_flags:     0x000A [private, static]
-		attributes_count: 0
+		attr_count: 0
 
 
 ==== Methods ====
