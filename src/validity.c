@@ -137,7 +137,7 @@ char isValidJavaIdentifier(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClas
     char isValid = 1;
 
     if (*utf8_bytes == '[')
-        return readFieldDescriptor(utf8_bytes, utf8_len, 1) == utf8_len;
+        return readFieldDesc(utf8_bytes, utf8_len, 1) == utf8_len;
 
     while (utf8_len > 0) {
         used_bytes = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
@@ -210,7 +210,7 @@ char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
         return 0;
     }
 
-    if (entry->Utf8.length != readFieldDescriptor(entry->Utf8.bytes, entry->Utf8.length, 1)) {
+    if (entry->Utf8.length != readFieldDesc(entry->Utf8.bytes, entry->Utf8.length, 1)) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
@@ -233,7 +233,7 @@ char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
         return 0;
     }
 
-    if (entry->Utf8.length != readMethodDescriptor(entry->Utf8.bytes, entry->Utf8.length, 1)) {
+    if (entry->Utf8.length != readMethodDesc(entry->Utf8.bytes, entry->Utf8.length, 1)) {
         jc->status = INV_METHOD_DESC_IDX;
         return 0;
     }

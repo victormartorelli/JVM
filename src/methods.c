@@ -27,7 +27,7 @@ char readMethod(JavaClass* jc, method_info* entry) {
 
     if (entry->descriptor_index == 0 || entry->descriptor_index >= jc->constantPoolCount ||
         cpi->tag != CONST_Utf8 ||
-        cpi->Utf8.length != readMethodDescriptor(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
+        cpi->Utf8.length != readMethodDesc(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
@@ -107,7 +107,7 @@ void printMethods(JavaClass* jc) {
 }
 
 method_info* getMethodMatching(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
-                               int32_t descriptor_len, uint16_t flag_mask) {
+                               int32_t desc_len, uint16_t flag_mask) {
     method_info* method = jc->methods;
     cp_info* cpi;
     uint16_t index;
@@ -121,7 +121,7 @@ method_info* getMethodMatching(JavaClass* jc, const uint8_t* name, int32_t name_
             continue;
 
         cpi = jc->constantPool + method->descriptor_index - 1;
-        if (!cmp_UTF8_Ascii(cpi->Utf8.bytes, cpi->Utf8.length, descriptor, descriptor_len))
+        if (!cmp_UTF8_Ascii(cpi->Utf8.bytes, cpi->Utf8.length, descriptor, desc_len))
             continue;
 
         return method;

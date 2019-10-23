@@ -44,7 +44,7 @@ uint8_t readu2(JavaClass* jc, uint16_t* out) {
     return 1;
 }
 
-int32_t readFieldDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkValidClassIdentifier) {
+int32_t readFieldDesc(uint8_t* utf8_bytes, int32_t utf8_len, char checkValidClassIdentifier) {
     int32_t totalBytesRead = 0;
     uint32_t utf8_char;
     uint8_t used_bytes;
@@ -99,7 +99,7 @@ int32_t readFieldDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkVal
     return totalBytesRead;
 }
 
-int32_t readMethodDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkValidClassIdentifier) {
+int32_t readMethodDesc(uint8_t* utf8_bytes, int32_t utf8_len, char checkValidClassIdentifier) {
     int32_t bytesProcessed = 0;
     uint32_t utf8_char;
     uint8_t used_bytes;
@@ -113,12 +113,12 @@ int32_t readMethodDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkVa
     utf8_len -= used_bytes;
     bytesProcessed += used_bytes;
 
-    int32_t field_descriptor_length;
+    int32_t field_desc_length;
 
     do {
-        field_descriptor_length = readFieldDescriptor(utf8_bytes, utf8_len, checkValidClassIdentifier);
+        field_desc_length = readFieldDesc(utf8_bytes, utf8_len, checkValidClassIdentifier);
 
-        if (field_descriptor_length == 0) {
+        if (field_desc_length == 0) {
             used_bytes = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
 
             if (used_bytes == 0 || utf8_char != ')')
@@ -131,15 +131,15 @@ int32_t readMethodDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkVa
             break;
         }
 
-        utf8_bytes += field_descriptor_length;
-        utf8_len -= field_descriptor_length;
-        bytesProcessed += field_descriptor_length;
+        utf8_bytes += field_desc_length;
+        utf8_len -= field_desc_length;
+        bytesProcessed += field_desc_length;
 
     } while (1);
 
-    field_descriptor_length = readFieldDescriptor(utf8_bytes, utf8_len, 1);
+    field_desc_length = readFieldDesc(utf8_bytes, utf8_len, 1);
 
-    if (field_descriptor_length == 0) {
+    if (field_desc_length == 0) {
         used_bytes = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
 
         if (used_bytes == 0 || utf8_char != 'V')
@@ -149,8 +149,8 @@ int32_t readMethodDescriptor(uint8_t* utf8_bytes, int32_t utf8_len, char checkVa
         bytesProcessed += used_bytes;
     }
     else {
-        utf8_len -= field_descriptor_length;
-        bytesProcessed += field_descriptor_length;
+        utf8_len -= field_desc_length;
+        bytesProcessed += field_desc_length;
     }
     return utf8_len == 0 ? bytesProcessed : 0;
 }
