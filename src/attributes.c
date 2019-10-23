@@ -4,17 +4,17 @@
 #include "opcodes.h"
 #include <inttypes.h>
 
-#define DECLARE_ATTR_FUNCS(attr) \
+#define ATTR_FUNCS(attr) \
     uint8_t readAttribute##attr(JavaClass* jc, attribute_info* entry); \
     void printAttribute##attr(JavaClass* jc, attribute_info* entry, int numberOfTabs); \
     void freeAttribute##attr(attribute_info* entry);
 
-DECLARE_ATTR_FUNCS(SourceFile)
-DECLARE_ATTR_FUNCS(InnerClasses)
-DECLARE_ATTR_FUNCS(LineNumberTable)
-DECLARE_ATTR_FUNCS(ConstantValue)
-DECLARE_ATTR_FUNCS(Code)
-DECLARE_ATTR_FUNCS(Exceptions)
+ATTR_FUNCS(SourceFile)
+ATTR_FUNCS(InnerClasses)
+ATTR_FUNCS(LineNumberTable)
+ATTR_FUNCS(ConstantValue)
+ATTR_FUNCS(Code)
+ATTR_FUNCS(Exceptions)
 
 char readAttribute(JavaClass* jc, attribute_info* entry) {
     entry->info = NULL;
