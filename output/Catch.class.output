@@ -1,7 +1,7 @@
 ==== General Information ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
-Constant pool count:	21
+Constant pool count:	22
 Access flags:		0x0021 [super, public]
 This class:		cp index #4 <Catch>
 Super class:		cp index #5 <java/lang/Object>
@@ -14,20 +14,20 @@ Attributes count:	1
 
 [1]: CONSTANT_Methodref (tag = 10)
 	Class name: #5 <java/lang/Object>
-	Name and type: #15 <java/lang/Object : ()V>
+	Name and type: #16 <java/lang/Object : ()V>
 
 [2]: CONSTANT_Class (tag = 7)
-	Class name: #16 <java/lang/Exception>
+	Class name: #17 <java/lang/Exception>
 
 [3]: CONSTANT_Methodref (tag = 10)
 	Class name: #2 <java/lang/Exception>
-	Name and type: #17 <java/lang/Exception : ()V>
+	Name and type: #18 <java/lang/Exception : ()V>
 
 [4]: CONSTANT_Class (tag = 7)
-	Class name: #18 <Catch>
+	Class name: #19 <Catch>
 
 [5]: CONSTANT_Class (tag = 7)
-	Class name: #19 <java/lang/Object>
+	Class name: #20 <java/lang/Object>
 
 [6]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 6
@@ -64,40 +64,43 @@ Attributes count:	1
 	Length of string: 13
 	String: StackMapTable
 
-[13]: CONSTANT_Utf8 (tag = 1)
-	Length of byte array: 10
-	Length of string: 10
-	String: SourceFile
+[13]: CONSTANT_Class (tag = 7)
+	Class name: #17 <java/lang/Exception>
 
 [14]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
+	String: SourceFile
+
+[15]: CONSTANT_Utf8 (tag = 1)
+	Length of byte array: 10
+	Length of string: 10
 	String: Catch.java
 
-[15]: CONSTANT_NameAndType (tag = 12)
+[16]: CONSTANT_NameAndType (tag = 12)
 	Name: #6 <<init>>
 	Descriptor: #7 <()V>
 
-[16]: CONSTANT_Utf8 (tag = 1)
+[17]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 19
 	Length of string: 19
 	String: java/lang/Exception
 
-[17]: CONSTANT_NameAndType (tag = 12)
-	Name: #20 <printStackTrace>
+[18]: CONSTANT_NameAndType (tag = 12)
+	Name: #21 <printStackTrace>
 	Descriptor: #7 <()V>
 
-[18]: CONSTANT_Utf8 (tag = 1)
+[19]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 5
 	Length of string: 5
 	String: Catch
 
-[19]: CONSTANT_Utf8 (tag = 1)
+[20]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/Object
 
-[20]: CONSTANT_Utf8 (tag = 1)
+[21]: CONSTANT_Utf8 (tag = 1)
 	Length of byte array: 15
 	Length of string: 15
 	String: printStackTrace
@@ -165,12 +168,12 @@ Code Attribute #1 - LineNumberTable:
 line_number_table_length: 6
 
 Table:	index	line_number	start_pc
-	1	4		0
-	2	5		2
-	3	8		6
-	4	6		9
-	5	7		10
-	6	9		14
+	1	5		0
+	2	6		2
+	3	9		6
+	4	7		9
+	5	8		10
+	6	10		14
 
 Code Attribute #2 - StackMapTable:
 Attribute not implemented and ignored.
@@ -180,4 +183,4 @@ Attribute not implemented and ignored.
 
 	Attribute #1 - SourceFile:
 
-sourcefile_index: #14 <Catch.java>
+sourcefile_index: #15 <Catch.java>
