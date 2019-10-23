@@ -477,14 +477,14 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
         tabs(numberOfTabs);
         printf("%u\t%s", code_offset, getOpcodeMnemonic(opcode));
 
-        #define OPCODE_INTERVAL(begin, end) (opcode >= opcode_##begin && opcode <= opcode_##end)
-        if (OPCODE_INTERVAL(nop, dconst_1) || OPCODE_INTERVAL(iload_0, saload) ||
-            OPCODE_INTERVAL(istore_0, lxor) || OPCODE_INTERVAL(i2l, dcmpg) ||
-            OPCODE_INTERVAL(ireturn, return) || OPCODE_INTERVAL(arraylength, athrow) ||
-            OPCODE_INTERVAL(monitorenter, monitorexit)) {
+        #define OPCODE_RANGE(begin, end) (opcode >= opcode_##begin && opcode <= opcode_##end)
+        if (OPCODE_RANGE(nop, dconst_1) || OPCODE_RANGE(iload_0, saload) ||
+            OPCODE_RANGE(istore_0, lxor) || OPCODE_RANGE(i2l, dcmpg) ||
+            OPCODE_RANGE(ireturn, return) || OPCODE_RANGE(arraylength, athrow) ||
+            OPCODE_RANGE(monitorenter, monitorexit)) {
             continue;
         }
-        #undef OPCODE_INTERVAL
+        #undef OPCODE_RANGE
 
         #define NEXTBYTE (*(info->code + ++code_offset))
 
@@ -658,7 +658,6 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     printf(" (class: %s)", buffer);
                 }
                 else {
-                    printf(" (%s, invalid - not a class)", decodeTag(cpi->tag));
                 }
 
                 break;
