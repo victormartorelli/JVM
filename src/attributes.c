@@ -183,8 +183,9 @@ void printAttributeSourceFile(JavaClass* jc, attribute_info* entry, int numberOf
 
     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
 
+    printf("Specific info\n");
     tabs(numberOfTabs);
-    printf("sourcefile_index: #%u <%s>", info->sourcefile_index, buffer);
+    printf("Source file name index: #%u <%s>", info->sourcefile_index, buffer);
 }
 
 void freeAttributeSourceFile(attribute_info* entry) {
@@ -529,16 +530,16 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     cpi = jc->constantPool + cpi->Fieldref.class_index - 1;
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                    printf("<%s %s.", opcode < opcode_invokevirtual ? "Field" : "Method", buffer);
+                    printf("<%s.", buffer);
                     cpi = jc->constantPool + u32 - 1;
                     cpi = jc->constantPool + cpi->Fieldref.name_and_type_index - 1;
                     u32 = cpi->NameAndType.descriptor_index;
                     cpi = jc->constantPool + cpi->NameAndType.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                    printf("%s, descriptor: ", buffer);
+                    printf("%s", buffer);
                     cpi = jc->constantPool + u32 - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                    printf("%s>", buffer);
+                    printf(">");
                 }
                 else {
                     printf("(%s, invalid - not a %s)", decodeTag(cpi->tag), opcode < opcode_invokevirtual ? "Field" : "Method");
@@ -635,7 +636,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                 break;
 
             case opcode_iinc:
-                printf("\t\t%u,", NEXTBYTE);
+                printf("\t\t%u by", NEXTBYTE);
                 printf(" %d", (int8_t)NEXTBYTE);
                 break;
 
@@ -687,7 +688,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     else if (cpi->tag == CONSTANT_String) {
                         cpi = jc->constantPool + cpi->String.string_index - 1;
                         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-                        printf(" (string: \"%s\")", buffer);
+                        printf(" <%s>", buffer);
                     }
                     else if (cpi->tag == CONSTANT_Integer) {
                         printf(" (integer: %d)", (int32_t)cpi->Integer.value);
@@ -724,7 +725,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     case opcode_iinc:
                         u32 = NEXTBYTE;
                         u32 = (u32 << 8) | NEXTBYTE;
-                        printf(" iinc\t%u,", u32);
+                        printf(" iinc\t%u ", u32);
                         u32 = NEXTBYTE;
                         u32 = (u32 << 8) | NEXTBYTE;
                         printf(" %d", (int16_t)u32);
@@ -1041,7 +1042,7 @@ void printAllAttributes(JavaClass* jc) {
         cp = jc->constantPool + atti->name_index - 1;
         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
 
-        printf("\n\n\tAttribute #%u - %s:\n\n", u16 + 1, buffer);
+        printf("\n\nAttribute #%u - %s:\n", u16 + 1, buffer);
         printAttribute(jc, atti, 2);
     }
 }
