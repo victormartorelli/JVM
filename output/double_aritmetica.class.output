@@ -1,0 +1,238 @@
+==== Main Info ====
+
+Version:		46.0 (Major.Minor) [jdk version 1.2]
+Constant pool count:	31
+Access flags:		0x0021 [super, public]
+This class:		cp index #8 <double_aritmetica>
+Super class:		cp index #9 <java/lang/Object>
+Interfaces count:	0
+Fields count:		0
+Methods count:		2
+Attributes count:	1
+
+==== Constant Pool ====
+
+[1]: CONST_Methodref (tag = 10)
+	Class name: #9 <java/lang/Object>
+	Name and type: #18 <java/lang/Object : ()V>
+
+[2]: CONST_Double (tag = 6)
+	High bytes:   0x40588F5C
+	Low  bytes:   0x28F5C28F
+	Double: 9.824000e+01
+
+[4]: CONST_Double (tag = 6)
+	High bytes:   0x4060DBD7
+	Low  bytes:   0x0A3D70A4
+	Double: 1.348700e+02
+
+[6]: CONST_Fieldref (tag = 9)
+	Class name: #19 <java/lang/System>
+	Name and type: #20 <java/lang/System : Ljava/io/PrintStream;>
+
+[7]: CONST_Methodref (tag = 10)
+	Class name: #21 <java/io/PrintStream>
+	Name and type: #22 <java/io/PrintStream : (D)V>
+
+[8]: CONST_Class (tag = 7)
+	Class name: #23 <double_aritmetica>
+
+[9]: CONST_Class (tag = 7)
+	Class name: #24 <java/lang/Object>
+
+[10]: CONST_Utf8 (tag = 1)
+	Length of byte array: 6
+	Length of string: 6
+	String: <init>
+
+[11]: CONST_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: ()V
+
+[12]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: Code
+
+[13]: CONST_Utf8 (tag = 1)
+	Length of byte array: 15
+	Length of string: 15
+	String: LineNumberTable
+
+[14]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: main
+
+[15]: CONST_Utf8 (tag = 1)
+	Length of byte array: 22
+	Length of string: 22
+	String: ([Ljava/lang/String;)V
+
+[16]: CONST_Utf8 (tag = 1)
+	Length of byte array: 10
+	Length of string: 10
+	String: SourceFile
+
+[17]: CONST_Utf8 (tag = 1)
+	Length of byte array: 22
+	Length of string: 22
+	String: double_aritmetica.java
+
+[18]: CONST_NameAndType (tag = 12)
+	Name: #10 <<init>>
+	Descriptor: #11 <()V>
+
+[19]: CONST_Class (tag = 7)
+	Class name: #25 <java/lang/System>
+
+[20]: CONST_NameAndType (tag = 12)
+	Name: #26 <out>
+	Descriptor: #27 <Ljava/io/PrintStream;>
+
+[21]: CONST_Class (tag = 7)
+	Class name: #28 <java/io/PrintStream>
+
+[22]: CONST_NameAndType (tag = 12)
+	Name: #29 <println>
+	Descriptor: #30 <(D)V>
+
+[23]: CONST_Utf8 (tag = 1)
+	Length of byte array: 17
+	Length of string: 17
+	String: double_aritmetica
+
+[24]: CONST_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/Object
+
+[25]: CONST_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/System
+
+[26]: CONST_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: out
+
+[27]: CONST_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: Ljava/io/PrintStream;
+
+[28]: CONST_Utf8 (tag = 1)
+	Length of byte array: 19
+	Length of string: 19
+	String: java/io/PrintStream
+
+[29]: CONST_Utf8 (tag = 1)
+	Length of byte array: 7
+	Length of string: 7
+	String: println
+
+[30]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: (D)V
+
+==== Methods ====
+
+Method #1:
+
+	name_index:        #10 <<init>>
+	descriptor_index:  #11 <()V>
+	access_flags:      0x0001 [public]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 1, max_locals: 1, code_length: 5
+exception_table_length: 0, attribute_count: 1
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	aload_0
+1	invokespecial	#1 <Method java/lang/Object.<init>, descriptor: ()V>
+4	return
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 1
+
+Table:	index	line_number	start_pc
+	1	6		0
+
+
+Method #2:
+
+	name_index:        #14 <main>
+	descriptor_index:  #15 <([Ljava/lang/String;)V>
+	access_flags:      0x0009 [public, static]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 5, max_locals: 5, code_length: 62
+exception_table_length: 0, attribute_count: 1
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	ldc2_w		#2 (double: 9.824000e+01)
+3	dstore_1
+4	ldc2_w		#4 (double: 1.348700e+02)
+7	dstore_3
+8	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+11	dload_1
+12	dload_3
+13	dadd
+14	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+17	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+20	dload_1
+21	dload_3
+22	dsub
+23	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+26	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+29	dload_1
+30	dload_3
+31	dmul
+32	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+35	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+38	dload_1
+39	dload_3
+40	ddiv
+41	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+44	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+47	dload_1
+48	dneg
+49	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+52	getstatic	#6 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+55	dload_3
+56	dload_1
+57	drem
+58	invokevirtual	#7 <Method java/io/PrintStream.println, descriptor: (D)V>
+61	return
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 9
+
+Table:	index	line_number	start_pc
+	1	8		0
+	2	9		4
+	3	10		8
+	4	11		17
+	5	12		26
+	6	13		35
+	7	14		44
+	8	15		52
+	9	16		61
+
+
+==== Class Attributes ====
+
+	Attribute #1 - SourceFile:
+
+sourcefile_index: #17 <double_aritmetica.java>

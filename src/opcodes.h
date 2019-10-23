@@ -88,7 +88,7 @@ typedef enum Opcode_newarray_type {
     T_LONG
 } Opcode_newarray_type;
 
-const char* decodeOpcodeNewarrayType(uint8_t type);
+const char* decodeOpCodeNewArrayType(uint8_t type);
 const char* getOpcodeMnemonic(uint8_t opcode);
 
 #endif // OPCODES_H

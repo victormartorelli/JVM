@@ -9,7 +9,7 @@
 #define FOLLOW_MASK  0xC0
 #define FOLLOW_VALUE 0x80
 
-uint8_t nextUTF8Character(const uint8_t* utf8_bytes, int32_t utf8_len, uint32_t* outCharacter) {
+uint8_t nextUTF8Char(const uint8_t* utf8_bytes, int32_t utf8_len, uint32_t* outCharacter) {
     if (utf8_len <= 0)
         return 0;
 
@@ -48,7 +48,7 @@ char cmp_UTF8_Ascii(const uint8_t* utf8_bytes, int32_t utf8_len, const uint8_t* 
     uint8_t bytes_used;
 
     while (utf8_len > 0 && ascii_len > 0) {
-        bytes_used = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
+        bytes_used = nextUTF8Char(utf8_bytes, utf8_len, &utf8_char);
 
         if (bytes_used == 0 || utf8_char > 127 || (uint8_t)utf8_char != *ascii_bytes)
             return 0;
@@ -74,13 +74,13 @@ char cmp_UTF8(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint8_t* utf8
     return 1;
 }
 
-char cmp_UTF8_FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint8_t* utf8B_bytes, int32_t utf8B_len) {
+char compUTF8FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint8_t* utf8B_bytes, int32_t utf8B_len) {
     uint32_t utf8_charA, utf8_charB;
     uint8_t bytes_used;
 
     while (utf8A_len > 0 && utf8B_len > 0) {
 
-        bytes_used = nextUTF8Character(utf8A_bytes, utf8A_len, &utf8_charA);
+        bytes_used = nextUTF8Char(utf8A_bytes, utf8A_len, &utf8_charA);
 
         if (bytes_used == 0)
             return 0; // Invalid UTF-8 always return false in comparison
@@ -88,7 +88,7 @@ char cmp_UTF8_FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint
         utf8A_bytes += bytes_used;
         utf8A_len -= bytes_used;
 
-        bytes_used = nextUTF8Character(utf8B_bytes, utf8B_len, &utf8_charB);
+        bytes_used = nextUTF8Char(utf8B_bytes, utf8B_len, &utf8_charB);
 
         if (bytes_used == 0)
             return 0; // Invalid UTF-8 always return false in comparison
@@ -101,7 +101,7 @@ char cmp_UTF8_FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint
              (utf8_charA == '\\' && utf8_charB == '/')) {
             if (utf8_charA == '/' || utf8_charA == '\\') {
                 while (utf8A_len > 0) {
-                    bytes_used = nextUTF8Character(utf8A_bytes, utf8A_len, &utf8_charA);
+                    bytes_used = nextUTF8Char(utf8A_bytes, utf8A_len, &utf8_charA);
 
                     if (bytes_used == 0)
                         return 0;
@@ -116,7 +116,7 @@ char cmp_UTF8_FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint
 
             if (utf8_charB == '/' || utf8_charB == '\\') {
                 while (utf8B_len > 0) {
-                    bytes_used = nextUTF8Character(utf8B_bytes, utf8B_len, &utf8_charB);
+                    bytes_used = nextUTF8Char(utf8B_bytes, utf8B_len, &utf8_charB);
 
                     if (bytes_used == 0)
                         return 0;
@@ -135,13 +135,13 @@ char cmp_UTF8_FilePath(const uint8_t* utf8A_bytes, int32_t utf8A_len, const uint
     return utf8A_len == utf8B_len;
 }
 
-uint32_t UTF8_to_Ascii(uint8_t* out_buffer, int32_t buffer_len, const uint8_t* utf8_bytes, int32_t utf8_len) {
+uint32_t UTF8ToASCII(uint8_t* out_buffer, int32_t buffer_len, const uint8_t* utf8_bytes, int32_t utf8_len) {
     uint32_t charactersWritten = 0;
     uint32_t utf8_char;
     uint8_t bytes_used;
 
     while (buffer_len > 1 && utf8_len > 0) {
-        bytes_used = nextUTF8Character(utf8_bytes, utf8_len, &utf8_char);
+        bytes_used = nextUTF8Char(utf8_bytes, utf8_len, &utf8_char);
 
         if (bytes_used == 0)
             break;
@@ -164,7 +164,7 @@ uint32_t UTF8StringLength(const uint8_t* utf8_bytes, int32_t utf8_len) {
     uint8_t bytes_used;
 
     while (utf8_len > 0) {
-        bytes_used = nextUTF8Character(utf8_bytes, utf8_len, 0);
+        bytes_used = nextUTF8Char(utf8_bytes, utf8_len, 0);
 
         if (bytes_used == 0)
             break;

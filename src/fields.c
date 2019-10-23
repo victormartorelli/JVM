@@ -8,7 +8,7 @@ char readField(JavaClass* jc, field_info* entry) {
     jc->attributeEntriesRead = -1;
 
     if (!readu2(jc, &entry->access_flags) || !readu2(jc, &entry->name_index) ||
-        !readu2(jc, &entry->descriptor_index) || !readu2(jc, &entry->attributes_count)) {
+        !readu2(jc, &entry->descriptor_index) || !readu2(jc, &entry->attr_count)) {
         jc->status = UNXPTD_EOF;
         return 0;
     }
@@ -17,7 +17,7 @@ char readField(JavaClass* jc, field_info* entry) {
         return 0;
 
     if (entry->name_index == 0 || entry->name_index >= jc->constantPoolCount ||
-        !isValidNameIndex(jc, entry->name_index, 0)) {
+        !nameIdxIsValid(jc, entry->name_index, 0)) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
@@ -25,14 +25,14 @@ char readField(JavaClass* jc, field_info* entry) {
     cp_info* cpi = jc->constantPool + entry->descriptor_index - 1;
 
     if (entry->descriptor_index == 0 || entry->descriptor_index >= jc->constantPoolCount ||
-        cpi->tag != CONSTANT_Utf8 ||
-        cpi->Utf8.length != readFieldDescriptor(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
+        cpi->tag != CONST_Utf8 ||
+        cpi->Utf8.length != readFieldDesc(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
 
-    if (entry->attributes_count > 0) {
-        entry->attributes = (attribute_info*)malloc(sizeof(attribute_info) * entry->attributes_count);
+    if (entry->attr_count > 0) {
+        entry->attributes = (attribute_info*)malloc(sizeof(attribute_info) * entry->attr_count);
         if (!entry->attributes) {
             jc->status = MEM_ALLOC_FAILED;
             return 0;
@@ -41,9 +41,9 @@ char readField(JavaClass* jc, field_info* entry) {
         uint16_t i;
         jc->attributeEntriesRead = 0;
 
-        for (i = 0; i < entry->attributes_count; i++) {
+        for (i = 0; i < entry->attr_count; i++) {
             if (!readAttribute(jc, entry->attributes + i)) {
-                entry->attributes_count = i + 1;
+                entry->attr_count = i + 1;
                 return 0;
             }
             jc->attributeEntriesRead++;
@@ -52,15 +52,15 @@ char readField(JavaClass* jc, field_info* entry) {
     return 1;
 }
 
-void freeFieldAttributes(field_info* entry) {
+void freeFieldAttr(field_info* entry) {
     uint32_t i;
     if (entry->attributes != NULL) {
-        for (i = 0; i < entry->attributes_count; i++)
+        for (i = 0; i < entry->attr_count; i++)
             freeAttributeInfo(entry->attributes + i);
 
         free(entry->attributes);
 
-        entry->attributes_count = 0;
+        entry->attr_count = 0;
         entry->attributes = NULL;
     }
 }
@@ -83,23 +83,23 @@ void printAllFields(JavaClass* jc) {
         printf("\n\n\tField #%u:\n\n", u16 + 1);
 
         cpi = jc->constantPool + fi->name_index - 1;
-        UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+        UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
         printf("\t\tname_index:       #%u <%s>\n", fi->name_index, buffer);
 
         cpi = jc->constantPool + fi->descriptor_index - 1;
-        UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+        UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
         printf("\t\tdescriptor_index: #%u <%s>\n", fi->descriptor_index, buffer);
 
         decodeAccessFlags(fi->access_flags, buffer, sizeof(buffer), ACCT_FIELD);
         printf("\t\taccess_flags:     0x%.4X [%s]\n", fi->access_flags, buffer);
 
-        printf("\t\tattributes_count: %u\n", fi->attributes_count);
+        printf("\t\tattr_count: %u\n", fi->attr_count);
 
-        if (fi->attributes_count > 0) {
-            for (att_index = 0; att_index < fi->attributes_count; att_index++) {
+        if (fi->attr_count > 0) {
+            for (att_index = 0; att_index < fi->attr_count; att_index++) {
                 atti = fi->attributes + att_index;
                 cpi = jc->constantPool + atti->name_index - 1;
-                UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+                UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
 
                 printf("\n\t\tField Attribute #%u - %s:\n", att_index + 1, buffer);
                 printAttribute(jc, atti, 3);
@@ -110,8 +110,8 @@ void printAllFields(JavaClass* jc) {
     printf("\n");
 }
 
-field_info* getFieldMatching(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
-                             int32_t descriptor_len, uint16_t flag_mask) {
+field_info* getFieldMatch(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
+                             int32_t desc_len, uint16_t flag_mask) {
     field_info* field = jc->fields;
     cp_info* cpi;
     uint16_t index;
@@ -125,7 +125,7 @@ field_info* getFieldMatching(JavaClass* jc, const uint8_t* name, int32_t name_le
             continue;
 
         cpi = jc->constantPool + field->descriptor_index - 1;
-        if (!cmp_UTF8_Ascii(cpi->Utf8.bytes, cpi->Utf8.length, descriptor, descriptor_len))
+        if (!cmp_UTF8_Ascii(cpi->Utf8.bytes, cpi->Utf8.length, descriptor, desc_len))
             continue;
 
         return field;

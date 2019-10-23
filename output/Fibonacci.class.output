@@ -1,0 +1,249 @@
+==== Main Info ====
+
+Version:		46.0 (Major.Minor) [jdk version 1.2]
+Constant pool count:	33
+Access flags:		0x0020 [super]
+This class:		cp index #6 <Fibonacci>
+Super class:		cp index #7 <java/lang/Object>
+Interfaces count:	0
+Fields count:		0
+Methods count:		2
+Attributes count:	1
+
+==== Constant Pool ====
+
+[1]: CONST_Methodref (tag = 10)
+	Class name: #7 <java/lang/Object>
+	Name and type: #16 <java/lang/Object : ()V>
+
+[2]: CONST_Fieldref (tag = 9)
+	Class name: #17 <java/lang/System>
+	Name and type: #18 <java/lang/System : Ljava/io/PrintStream;>
+
+[3]: CONST_String (tag = 8)
+	String: #19 Serie De Fibonacci: 
+
+[4]: CONST_Methodref (tag = 10)
+	Class name: #20 <java/io/PrintStream>
+	Name and type: #21 <java/io/PrintStream : (Ljava/lang/String;)V>
+
+[5]: CONST_Methodref (tag = 10)
+	Class name: #20 <java/io/PrintStream>
+	Name and type: #22 <java/io/PrintStream : (J)V>
+
+[6]: CONST_Class (tag = 7)
+	Class name: #23 <Fibonacci>
+
+[7]: CONST_Class (tag = 7)
+	Class name: #24 <java/lang/Object>
+
+[8]: CONST_Utf8 (tag = 1)
+	Length of byte array: 6
+	Length of string: 6
+	String: <init>
+
+[9]: CONST_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: ()V
+
+[10]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: Code
+
+[11]: CONST_Utf8 (tag = 1)
+	Length of byte array: 15
+	Length of string: 15
+	String: LineNumberTable
+
+[12]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: main
+
+[13]: CONST_Utf8 (tag = 1)
+	Length of byte array: 22
+	Length of string: 22
+	String: ([Ljava/lang/String;)V
+
+[14]: CONST_Utf8 (tag = 1)
+	Length of byte array: 10
+	Length of string: 10
+	String: SourceFile
+
+[15]: CONST_Utf8 (tag = 1)
+	Length of byte array: 14
+	Length of string: 14
+	String: Fibonacci.java
+
+[16]: CONST_NameAndType (tag = 12)
+	Name: #8 <<init>>
+	Descriptor: #9 <()V>
+
+[17]: CONST_Class (tag = 7)
+	Class name: #25 <java/lang/System>
+
+[18]: CONST_NameAndType (tag = 12)
+	Name: #26 <out>
+	Descriptor: #27 <Ljava/io/PrintStream;>
+
+[19]: CONST_Utf8 (tag = 1)
+	Length of byte array: 20
+	Length of string: 20
+	String: Serie De Fibonacci: 
+
+[20]: CONST_Class (tag = 7)
+	Class name: #28 <java/io/PrintStream>
+
+[21]: CONST_NameAndType (tag = 12)
+	Name: #29 <println>
+	Descriptor: #30 <(Ljava/lang/String;)V>
+
+[22]: CONST_NameAndType (tag = 12)
+	Name: #31 <print>
+	Descriptor: #32 <(J)V>
+
+[23]: CONST_Utf8 (tag = 1)
+	Length of byte array: 9
+	Length of string: 9
+	String: Fibonacci
+
+[24]: CONST_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/Object
+
+[25]: CONST_Utf8 (tag = 1)
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/System
+
+[26]: CONST_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: out
+
+[27]: CONST_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: Ljava/io/PrintStream;
+
+[28]: CONST_Utf8 (tag = 1)
+	Length of byte array: 19
+	Length of string: 19
+	String: java/io/PrintStream
+
+[29]: CONST_Utf8 (tag = 1)
+	Length of byte array: 7
+	Length of string: 7
+	String: println
+
+[30]: CONST_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: (Ljava/lang/String;)V
+
+[31]: CONST_Utf8 (tag = 1)
+	Length of byte array: 5
+	Length of string: 5
+	String: print
+
+[32]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: (J)V
+
+==== Methods ====
+
+Method #1:
+
+	name_index:        #8 <<init>>
+	descriptor_index:  #9 <()V>
+	access_flags:      0x0000 [no flags]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 1, max_locals: 1, code_length: 5
+exception_table_length: 0, attribute_count: 1
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	aload_0
+1	invokespecial	#1 <Method java/lang/Object.<init>, descriptor: ()V>
+4	return
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 1
+
+Table:	index	line_number	start_pc
+	1	1		0
+
+
+Method #2:
+
+	name_index:        #12 <main>
+	descriptor_index:  #13 <([Ljava/lang/String;)V>
+	access_flags:      0x0009 [public, static]
+	attribute_count:   1
+
+	Method Attribute #1 - Code:
+
+max_stack: 4, max_locals: 9, code_length: 54
+exception_table_length: 0, attribute_count: 1
+
+Bytecode:
+Offset	Mnemonic	Parameters
+0	bipush		12
+2	istore_1
+3	getstatic	#2 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+6	ldc		#3 (string: "Serie De Fibonacci: ")
+8	invokevirtual	#4 <Method java/io/PrintStream.println, descriptor: (Ljava/lang/String;)V>
+11	lconst_0
+12	lstore		4
+14	lconst_1
+15	lstore		6
+17	iconst_1
+18	istore		8
+20	iload		8
+22	iload_1
+23	if_icmpgt	53 (+30)
+26	getstatic	#2 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+29	lload		6
+31	invokevirtual	#5 <Method java/io/PrintStream.print, descriptor: (J)V>
+34	lload		4
+36	lstore_2
+37	lload		6
+39	lstore		4
+41	lload_2
+42	lload		4
+44	ladd
+45	lstore		6
+47	iinc		8, 1
+50	goto		20 (+-30)
+53	return
+
+Code Attribute #1 - LineNumberTable:
+
+line_number_table_length: 10
+
+Table:	index	line_number	start_pc
+	1	5		0
+	2	7		3
+	3	9		11
+	4	11		17
+	5	13		26
+	6	15		34
+	7	17		37
+	8	19		41
+	9	11		47
+	10	23		53
+
+
+==== Class Attributes ====
+
+	Attribute #1 - SourceFile:
+
+sourcefile_index: #15 <Fibonacci.java>

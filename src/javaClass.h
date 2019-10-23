@@ -2,15 +2,15 @@
 #define JAVACLASS_H
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <stdint.h>
+#include <stdlib.h>
 
 typedef struct JavaClass JavaClass;
 
+#include "constantPool.h"
 #include "attributes.h"
 #include "fields.h"
 #include "methods.h"
-#include "constantPool.h"
 
 enum AccessFlagsType {
     ACCT_CLASS,
@@ -82,10 +82,10 @@ struct JavaClass {
     method_info* methods;
     uint16_t attributeCount;
     attribute_info* attributes;
-    // Class Data Info
+    
     uint16_t staticFieldCount;
     uint16_t instanceFieldCount;
-    // Debug info
+
     uint32_t totalBytesRead;
     uint8_t lastTagRead;
     int32_t constantPoolEntriesRead;
@@ -97,22 +97,22 @@ struct JavaClass {
 };
 
 enum AccessFlags {
-    ACC_PUBLIC          = 0x0001, // Class, Field, Method, InnerClass
-    ACC_PRIVATE         = 0x0002, // Field, Method, InnerClass
-    ACC_PROTECTED       = 0x0004, // Field, Method, InnerClass
-    ACC_STATIC          = 0x0008, // Field, Method, InnerClass
-    ACC_FINAL           = 0x0010, // Class, Field, Method, InnerClass
-    ACC_SUPER           = 0x0020, // Class
-    ACC_SYNCHRONIZED    = 0x0020, // Method
-    ACC_BRIDGE          = 0x0040, // Method
-    ACC_VOLATILE        = 0x0040, // Field
-    ACC_TRANSIENT       = 0x0080, // Field
-    ACC_VARARGS         = 0x0080, // Method
-    ACC_NATIVE          = 0x0100, // Method
-    ACC_INTERFACE       = 0x0200, // Class, InnerClass
-    ACC_ABSTRACT        = 0x0400, // Class, Method, InnerClass
-    ACC_STRICT          = 0x0800, // Method
-    ACC_SYNTHETIC       = 0x1000, // Method
+    ACC_PUBLIC          = 0x1,
+    ACC_PRIVATE         = 0x2,
+    ACC_PROTECTED       = 0x4,
+    ACC_STATIC          = 0x8,
+    ACC_FINAL           = 0x10,
+    ACC_SUPER           = 0x20,
+    ACC_SYNCHRONIZED    = 0x20,
+    ACC_BRIDGE          = 0x40,
+    ACC_VOLATILE        = 0x40,
+    ACC_TRANSIENT       = 0x80,
+    ACC_VARARGS         = 0x80,
+    ACC_NATIVE          = 0x100,
+    ACC_INTERFACE       = 0x200,
+    ACC_ABSTRACT        = 0x400,
+    ACC_STRICT          = 0x800,
+    ACC_SYNTHETIC       = 0x1000,
 
     ACC_INVALID_CLASS_FLAG_MASK = ~(ACC_PUBLIC | ACC_FINAL | ACC_SUPER | ACC_INTERFACE | ACC_ABSTRACT),
 
@@ -131,4 +131,4 @@ int openClassFile(JavaClass*, const char*);
 void closeClassFile(JavaClass* jc);
 void decodeAccessFlags(uint16_t flags, char* buffer, int32_t buffer_len, enum AccessFlagsType acctype);
 void printClassFileInfo(JavaClass* jc);
-#endif // JAVACLASS_H
+#endif

@@ -1,8 +1,8 @@
-#include "opcodes.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include "opcodes.h"
 
-const char* decodeOpcodeNewarrayType(uint8_t type) {
+const char* decodeOpCodeNewArrayType(uint8_t type) {
     const char* typeName[] = {"boolean", "char", "float", "double",
                               "byte", "short", "int", "long"};
     if (type >= 4 && type <= 11) return typeName[type - 4];

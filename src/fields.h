@@ -9,21 +9,17 @@ struct field_info {
     uint16_t access_flags;
     uint16_t name_index;
     uint16_t descriptor_index;
-    uint16_t attributes_count;
+    uint16_t attr_count;
     attribute_info* attributes;
 
-    // Offset is used to identify in which byte offset
-    // this field is stored (in the static data area of
-    // a class or in the instance attribute area for class
-    // instances).
     uint16_t offset;
 };
 
 char readField(JavaClass* jc, field_info* entry);
-void freeFieldAttributes(field_info* entry);
+void freeFieldAttr(field_info* entry);
 void printAllFields(JavaClass* jc);
 
-field_info* getFieldMatching(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
-                             int32_t descriptor_len, uint16_t flag_mask);
+field_info* getFieldMatch(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
+                             int32_t desc_len, uint16_t flag_mask);
 
-#endif // FIELDS_H
+#endif

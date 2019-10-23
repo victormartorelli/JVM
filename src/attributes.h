@@ -13,7 +13,7 @@ struct attribute_info {
 };
 
 enum AttributeType {
-    ATTR_Unknown = 0,
+    unknown_ATTRIBUTE = 0,
     ATTR_ConstantValue,
     ATTR_SourceFile,
     ATTR_InnerClasses,
@@ -67,7 +67,7 @@ typedef struct {
     uint8_t* code;
     uint16_t exception_table_length;
     ExceptionTableEntry* exception_table;
-    uint16_t attributes_count;
+    uint16_t attr_count;
     attribute_info* attributes;
 } att_Code_info;
 
