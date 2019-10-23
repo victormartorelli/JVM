@@ -8,13 +8,13 @@
 
 char checkMethodAccessFlags(JavaClass* jc, uint16_t accessFlags) {
     if (accessFlags & ACC_INVALID_METHOD_FLAG_MASK) {
-        jc->status = USE_OF_RESERVED_METHOD_ACCESS_FLAGS;
+        jc->status = USE_OF_RSVD_METHOD_ACCESS_FLAGS;
         return 0;
     }
 
     if ((accessFlags & ACC_ABSTRACT) &&
         (accessFlags & (ACC_FINAL | ACC_NATIVE | ACC_PRIVATE | ACC_STATIC | ACC_STRICT | ACC_SYNCHRONIZED))) {
-        jc->status = INVALID_ACCESS_FLAGS;
+        jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
 
@@ -30,7 +30,7 @@ char checkMethodAccessFlags(JavaClass* jc, uint16_t accessFlags) {
         accessModifierCount++;
 
     if (accessModifierCount > 1) {
-        jc->status = INVALID_ACCESS_FLAGS;
+        jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
     return 1;
@@ -38,12 +38,12 @@ char checkMethodAccessFlags(JavaClass* jc, uint16_t accessFlags) {
 
 char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
     if (accessFlags & ACC_INVALID_FIELD_FLAG_MASK) {
-        jc->status = USE_OF_RESERVED_FIELD_ACCESS_FLAGS;
+        jc->status = USE_OF_RSVD_FIELD_ACCESS_FLAGS;
         return 0;
     }
 
     if ((accessFlags & ACC_ABSTRACT) && (accessFlags & ACC_FINAL)) {
-        jc->status = INVALID_ACCESS_FLAGS;
+        jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
 
@@ -51,7 +51,7 @@ char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
 
     if ((jc->accessFlags & ACC_INTERFACE) &&
         ((accessFlags & interfaceRequiredBitMask) != interfaceRequiredBitMask)) {
-        jc->status = INVALID_ACCESS_FLAGS;
+        jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
 
@@ -67,7 +67,7 @@ char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
         accessModifierCount++;
 
     if (accessModifierCount > 1) {
-        jc->status = INVALID_ACCESS_FLAGS;
+        jc->status = INV_ACCESS_FLAGS;
         return 0;
     }
 
@@ -76,27 +76,27 @@ char checkFieldAccessFlags(JavaClass* jc, uint16_t accessFlags) {
 
 char checkClassIndexAndAccessFlags(JavaClass* jc) {
     if (jc->accessFlags & ACC_INVALID_CLASS_FLAG_MASK) {
-        jc->status = USE_OF_RESERVED_CLASS_ACCESS_FLAGS;
+        jc->status = USE_OF_RSVD_CLASS_ACCESS_FLAGS;
         return 0;
     }
 
     if (jc->accessFlags & ACC_INTERFACE) {
         if ((jc->accessFlags & ACC_ABSTRACT) == 0 ||
             (jc->accessFlags & (ACC_FINAL | ACC_SUPER))) {
-            jc->status = INVALID_ACCESS_FLAGS;
+            jc->status = INV_ACCESS_FLAGS;
             return 0;
         }
     }
 
     if (!jc->thisClass || jc->thisClass >= jc->constantPoolCount ||
         jc->constantPool[jc->thisClass - 1].tag != CONSTANT_Class) {
-        jc->status = INVALID_THIS_CLASS_INDEX;
+        jc->status = INV_THIS_CLASS_IDX;
         return 0;
     }
 
     if (jc->superClass >= jc->constantPoolCount ||
         (jc->superClass && jc->constantPool[jc->superClass - 1].tag != CONSTANT_Class)) {
-        jc->status = INVALID_SUPER_CLASS_INDEX;
+        jc->status = INV_SUPER_CLASS_IDX;
         return 0;
     }
     return 1;
@@ -189,7 +189,7 @@ char checkClassIndex(JavaClass* jc, uint16_t class_index) {
     cp_info* entry = jc->constantPool + class_index - 1;
 
     if (entry->tag != CONSTANT_Class) {
-        jc->status = INVALID_CLASS_INDEX;
+        jc->status = INV_CLASS_IDX;
         return 0;
     }
     return 1;
@@ -199,19 +199,19 @@ char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
     if (entry->tag != CONSTANT_NameAndType || !isValidNameIndex(jc, entry->NameAndType.name_index, 0)) {
-        jc->status = INVALID_NAME_INDEX;
+        jc->status = INV_NAME_IDX;
         return 0;
     }
 
     entry = jc->constantPool + entry->NameAndType.descriptor_index - 1;
 
     if (entry->tag != CONSTANT_Utf8 || entry->Utf8.length == 0) {
-        jc->status = INVALID_FIELD_DESCRIPTOR_INDEX;
+        jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
 
     if (entry->Utf8.length != readFieldDescriptor(entry->Utf8.bytes, entry->Utf8.length, 1)) {
-        jc->status = INVALID_FIELD_DESCRIPTOR_INDEX;
+        jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
 
@@ -222,19 +222,19 @@ char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
     if (entry->tag != CONSTANT_NameAndType || !isValidMethodNameIndex(jc, entry->NameAndType.name_index)) {
-        jc->status = INVALID_NAME_INDEX;
+        jc->status = INV_NAME_IDX;
         return 0;
     }
 
     entry = jc->constantPool + entry->NameAndType.descriptor_index - 1;
 
     if (entry->tag != CONSTANT_Utf8 || entry->Utf8.length == 0) {
-        jc->status = INVALID_METHOD_DESCRIPTOR_INDEX;
+        jc->status = INV_METHOD_DESC_IDX;
         return 0;
     }
 
     if (entry->Utf8.length != readMethodDescriptor(entry->Utf8.bytes, entry->Utf8.length, 1)) {
-        jc->status = INVALID_METHOD_DESCRIPTOR_INDEX;
+        jc->status = INV_METHOD_DESC_IDX;
         return 0;
     }
     return 1;
@@ -253,7 +253,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
             case CONSTANT_Class:
 
                 if (!isValidNameIndex(jc, entry->Class.name_index, 1)) {
-                    jc->status = INVALID_NAME_INDEX;
+                    jc->status = INV_NAME_IDX;
                     success = 0;
                 }
 
@@ -262,7 +262,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
             case CONSTANT_String:
 
                 if (!isValidUTF8Index(jc, entry->String.string_index)) {
-                    jc->status = INVALID_STRING_INDEX;
+                    jc->status = INV_STRING_IDX;
                     success = 0;
                 }
 
@@ -289,7 +289,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 if (!isValidUTF8Index(jc, entry->NameAndType.name_index) ||
                     !isValidUTF8Index(jc, entry->NameAndType.descriptor_index)) {
-                    jc->status = INVALID_NAME_AND_TYPE_INDEX;
+                    jc->status = INV_NAME_AND_TYPE_IDX;
                     success = 0;
                 }
 

@@ -15,7 +15,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     jc->fields = NULL;
     jc->methods = NULL;
     jc->attributes = NULL;
-    jc->status = CLASS_STATUS_OK;
+    jc->status = CLASS_STA_OK;
     jc->classNameMismatch = 0;
 
     jc->thisClass = jc->superClass = jc->accessFlags = 0;
@@ -35,28 +35,28 @@ int openClassFile(JavaClass* jc, const char* path) {
     jc->validityEntriesChecked = 0;
 
     if (!jc->file) {
-        jc->status = CLASS_STATUS_FILE_COULDNT_BE_OPENED;
+        jc->status = CLASS_STA_FILE_CN_BE_OPENED;
         return 1;
     }
 
     if (!readu4(jc, &u32) || u32 != 0xCAFEBABE) {
-        jc->status = CLASS_STATUS_INVALID_SIGNATURE;
+        jc->status = CLASS_STA_INV_SIGN;
         return 1;
     }
 
     if (!readu2(jc, &jc->minorVersion) || !readu2(jc, &jc->majorVersion) ||
         !readu2(jc, &jc->constantPoolCount)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
     if (jc->majorVersion < 45 || jc->majorVersion > 52) {
-        jc->status = CLASS_STATUS_UNSUPPORTED_VERSION;
+        jc->status = CLASS_STA_UNSPTD_VER;
         return 1;
     }
 
     if (jc->constantPoolCount == 0) {
-        jc->status = INVALID_CONSTANT_POOL_COUNT;
+        jc->status = INV_CP_COUNT;
         return 1;
     }
 
@@ -64,7 +64,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         jc->constantPool = (cp_info*)malloc(sizeof(cp_info) * (jc->constantPoolCount - 1));
 
         if (!jc->constantPool) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 1;
         }
 
@@ -87,12 +87,12 @@ int openClassFile(JavaClass* jc, const char* path) {
 
     if (!readu2(jc, &jc->accessFlags) || !readu2(jc, &jc->thisClass) ||
         !readu2(jc, &jc->superClass)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
     if (!readu2(jc, &jc->interfaceCount)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
@@ -101,12 +101,12 @@ int openClassFile(JavaClass* jc, const char* path) {
 
         for (u32 = 0; u32 < jc->interfaceCount; u32++) {
             if (!readu2(jc, &u16)) {
-                jc->status = UNEXPECTED_EOF_READING_INTERFACES;
+                jc->status = UNXPTD_EOF_READING_INTERFACES;
                 return 1;
             }
 
             if (u16 == 0 || jc->constantPool[u16 - 1].tag != CONSTANT_Class) {
-                jc->status = INVALID_INTERFACE_INDEX;
+                jc->status = INV_INTERFACE_IDX;
                 return 1;
             }
 
@@ -116,7 +116,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     }
 
     if (!readu2(jc, &jc->fieldCount)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
@@ -149,7 +149,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     }
 
     if (!readu2(jc, &jc->methodCount)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
@@ -167,7 +167,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     }
 
     if (!readu2(jc, &jc->attributeCount)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 1;
     }
 
@@ -176,7 +176,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         jc->attributes = (attribute_info*)malloc(sizeof(attribute_info) * jc->attributeCount);
 
         if (!jc->attributes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 1;
         }
 
@@ -191,7 +191,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     }
 
     if (fgetc(jc->file) != EOF) {
-        jc->status = FILE_CONTAINS_UNEXPECTED_DATA;
+        jc->status = FILE_CONTAINS_UNXPTD_DATA;
     }
     else {
         fclose(jc->file);
@@ -257,7 +257,7 @@ void printClassFileInfo(JavaClass* jc) {
     if (jc->classNameMismatch)
         printf("==== Warning ====\n\nClass name and file path don't match.\nReading will proceed anyway.\n\n");
 
-    printf("==== General Information ====\n\n");
+    printf("==== Main Info ====\n\n");
 
     printf("Version:\t\t%u.%u (Major.Minor)", jc->majorVersion, jc->minorVersion);
 
