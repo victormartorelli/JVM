@@ -15,7 +15,7 @@ int openClassFile(JavaClass* jc, const char* path) {
     jc->fields = NULL;
     jc->methods = NULL;
     jc->attributes = NULL;
-    jc->status = CLASS_STATUS_OK;
+    jc->status = CLASS_STA_OK;
     jc->classNameMismatch = 0;
 
     jc->thisClass = jc->superClass = jc->accessFlags = 0;
@@ -35,12 +35,12 @@ int openClassFile(JavaClass* jc, const char* path) {
     jc->validityEntriesChecked = 0;
 
     if (!jc->file) {
-        jc->status = CLASS_STATUS_FILE_COULDNT_BE_OPENED;
+        jc->status = CLASS_STA_FILE_COULDNT_BE_OPENED;
         return 1;
     }
 
     if (!readu4(jc, &u32) || u32 != 0xCAFEBABE) {
-        jc->status = CLASS_STATUS_INVALID_SIGNATURE;
+        jc->status = CLASS_STA_INV_SIGN;
         return 1;
     }
 
@@ -51,12 +51,12 @@ int openClassFile(JavaClass* jc, const char* path) {
     }
 
     if (jc->majorVersion < 45 || jc->majorVersion > 52) {
-        jc->status = CLASS_STATUS_UNSUPPORTED_VERSION;
+        jc->status = CLASS_STA_UNSPTD_VERSION;
         return 1;
     }
 
     if (jc->constantPoolCount == 0) {
-        jc->status = INVALID_CONSTANT_POOL_COUNT;
+        jc->status = INVALID_CP_COUNT;
         return 1;
     }
 
@@ -64,7 +64,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         jc->constantPool = (cp_info*)malloc(sizeof(cp_info) * (jc->constantPoolCount - 1));
 
         if (!jc->constantPool) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 1;
         }
 
@@ -176,7 +176,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         jc->attributes = (attribute_info*)malloc(sizeof(attribute_info) * jc->attributeCount);
 
         if (!jc->attributes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 1;
         }
 

@@ -35,7 +35,7 @@ char readMethod(JavaClass* jc, method_info* entry) {
     if (entry->attributes_count > 0) {
         entry->attributes = (attribute_info*)malloc(sizeof(attribute_info) * entry->attributes_count);
         if (!entry->attributes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 0;
         }
 

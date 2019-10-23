@@ -77,7 +77,7 @@ char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
         entry->Utf8.bytes = (uint8_t*)malloc(entry->Utf8.length);
 
         if (!entry->Utf8.bytes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 0;
         }
 
