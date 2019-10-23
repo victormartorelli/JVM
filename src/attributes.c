@@ -622,7 +622,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
             case opcode_ifnonnull:
                 u32 = (uint16_t)NEXTBYTE << 8;
                 u32 |= NEXTBYTE;
-                printf("\t%d (+%d)", (int16_t)u32 + code_offset - 2, (int16_t)u32);
+                printf("\t%d (%d)", (int16_t)u32 + code_offset - 2, (int16_t)u32);
                 break;
 
             case opcode_goto_w:

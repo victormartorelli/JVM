@@ -277,7 +277,7 @@ void printConstantPool(JavaClass* jc) {
 
         for (u16 = 0; u16 < jc->constantPoolCount - 1; u16++) {
             cp = jc->constantPool + u16;
-            printf("\n[%u]: CONSTANT_%s (tag = %u)\n", u16 + 1, decodeTag(cp->tag), cp->tag);
+            printf("\n[%u]: CONSTANT_%s\n", u16 + 1, decodeTag(cp->tag));
             printConstantPoolEntry(jc, cp);
 
             if (cp->tag == CONSTANT_Double || cp->tag == CONSTANT_Long)
