@@ -257,7 +257,7 @@ void printClassFileInfo(JavaClass* jc) {
     if (jc->classNameMismatch)
         printf("==== Warning ====\n\nClass name and file path don't match.\nReading will proceed anyway.\n\n");
 
-    printf("==== General Information ====\n\n");
+    printf("==== Main Info ====\n\n");
 
     printf("Version:\t\t%u.%u (Major.Minor)", jc->majorVersion, jc->minorVersion);
 
