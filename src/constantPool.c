@@ -9,7 +9,6 @@ char readCPClass(JavaClass* jc, cp_info* entry) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
-
     if (entry->Class.name_index == 0 ||
         entry->Class.name_index >= jc->constantPoolCount) {
         jc->status = INV_CP_INDEX;
@@ -277,7 +276,7 @@ void printCP(JavaClass* jc) {
 
         for (u16 = 0; u16 < jc->constantPoolCount - 1; u16++) {
             cp = jc->constantPool + u16;
-            printf("\n[%u]: CONST_%s (tag = %u)\n", u16 + 1, decodeTag(cp->tag), cp->tag);
+            printf("\n[%u]: CONSTANT_%s\n", u16 + 1, decodeTag(cp->tag));
             printCPEntry(jc, cp);
 
             if (cp->tag == CONST_Double || cp->tag == CONST_Long)
