@@ -194,7 +194,7 @@ char checkClassIdx(JavaClass* jc, uint16_t class_index) {
     return 1;
 }
 
-char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
+char checkFieldNameAndTypeIdx(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
     if (entry->tag != CONST_NameAndType || !nameIdxIsValid(jc, entry->NameAndType.name_index, 0)) {
@@ -217,7 +217,7 @@ char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     return 1;
 }
 
-char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
+char checkMethodNameAndTypeIdx(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
     if (entry->tag != CONST_NameAndType || !methodnameIdxIsValid(jc, entry->NameAndType.name_index)) {
@@ -271,7 +271,7 @@ char checkCPValidity(JavaClass* jc) {
             case CONST_InterfaceMethodref:
 
                 if (!checkClassIdx(jc, entry->Methodref.class_index) ||
-                    !checkMethodNameAndTypeIndex(jc, entry->Methodref.name_and_type_index))
+                    !checkMethodNameAndTypeIdx(jc, entry->Methodref.name_and_type_index))
                     success = 0;
 
                 break;
@@ -279,7 +279,7 @@ char checkCPValidity(JavaClass* jc) {
             case CONST_Fieldref:
 
                 if (!checkClassIdx(jc, entry->Fieldref.class_index) ||
-                    !checkFieldNameAndTypeIndex(jc, entry->Fieldref.name_and_type_index))
+                    !checkFieldNameAndTypeIdx(jc, entry->Fieldref.name_and_type_index))
                     success = 0;
 
                 break;
