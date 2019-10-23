@@ -9,7 +9,6 @@ char readConstantPool_Class(JavaClass* jc, cp_info* entry) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
-
     if (entry->Class.name_index == 0 ||
         entry->Class.name_index >= jc->constantPoolCount) {
         jc->status = INV_CP_INDEX;
