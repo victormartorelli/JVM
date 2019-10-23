@@ -82,7 +82,7 @@ uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -158,7 +158,7 @@ uint8_t readAttributeSourceFile(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -197,7 +197,7 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -211,7 +211,7 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
     info->inner_classes = (InnerClassInfo*)malloc(info->number_of_classes * sizeof(InnerClassInfo));
 
     if (!info->inner_classes) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -305,7 +305,7 @@ uint8_t readAttributeLineNumberTable(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -319,7 +319,7 @@ uint8_t readAttributeLineNumberTable(JavaClass* jc, attribute_info* entry) {
     info->line_number_table = (LineNumberTableEntry*)malloc(info->line_number_table_length * sizeof(LineNumberTableEntry));
 
     if (!info->line_number_table) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -371,7 +371,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     uint32_t u32;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -393,7 +393,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     info->code = (uint8_t*)malloc(info->code_length);
 
     if (!info->code) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -412,7 +412,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     info->exception_table = (ExceptionTableEntry*)malloc(info->exception_table_length * sizeof(ExceptionTableEntry));
 
     if (!info->exception_table) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -438,7 +438,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     info->attributes = (attribute_info*)malloc(info->attributes_count * sizeof(attribute_info));
 
     if (!info->attributes) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -921,7 +921,7 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
@@ -935,7 +935,7 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
     info->exception_index_table = (uint16_t*)malloc(info->number_of_exceptions * sizeof(uint16_t));
 
     if (!info->exception_index_table) {
-        jc->status = MEM_ALLOC_FAILED;
+        jc->status = MEMORY_ALLOCATION_FAILED;
         return 0;
     }
 
