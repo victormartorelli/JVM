@@ -1,4 +1,4 @@
-==== General Information ====
+==== Main Info ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
 Constant pool count:	34
@@ -12,149 +12,149 @@ Attributes count:	1
 
 ==== Constant Pool ====
 
-[1]: CONSTANT_Methodref (tag = 10)
+[1]: CONST_Methodref (tag = 10)
 	Class name: #7 <java/lang/Object>
 	Name and type: #19 <java/lang/Object : ()V>
 
-[2]: CONSTANT_Fieldref (tag = 9)
+[2]: CONST_Fieldref (tag = 9)
 	Class name: #20 <java/lang/System>
 	Name and type: #21 <java/lang/System : Ljava/io/PrintStream;>
 
-[3]: CONSTANT_Fieldref (tag = 9)
+[3]: CONST_Fieldref (tag = 9)
 	Class name: #6 <HelloWorld>
 	Name and type: #22 <HelloWorld : Ljava/lang/String;>
 
-[4]: CONSTANT_Methodref (tag = 10)
+[4]: CONST_Methodref (tag = 10)
 	Class name: #23 <java/io/PrintStream>
 	Name and type: #24 <java/io/PrintStream : (Ljava/lang/String;)V>
 
-[5]: CONSTANT_String (tag = 8)
+[5]: CONST_String (tag = 8)
 	String: #25 Hello World!
 
-[6]: CONSTANT_Class (tag = 7)
+[6]: CONST_Class (tag = 7)
 	Class name: #26 <HelloWorld>
 
-[7]: CONSTANT_Class (tag = 7)
+[7]: CONST_Class (tag = 7)
 	Class name: #27 <java/lang/Object>
 
-[8]: CONSTANT_Utf8 (tag = 1)
+[8]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: str
 
-[9]: CONSTANT_Utf8 (tag = 1)
+[9]: CONST_Utf8 (tag = 1)
 	Length of byte array: 18
 	Length of string: 18
 	String: Ljava/lang/String;
 
-[10]: CONSTANT_Utf8 (tag = 1)
+[10]: CONST_Utf8 (tag = 1)
 	Length of byte array: 6
 	Length of string: 6
 	String: <init>
 
-[11]: CONSTANT_Utf8 (tag = 1)
+[11]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: ()V
 
-[12]: CONSTANT_Utf8 (tag = 1)
+[12]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: Code
 
-[13]: CONSTANT_Utf8 (tag = 1)
+[13]: CONST_Utf8 (tag = 1)
 	Length of byte array: 15
 	Length of string: 15
 	String: LineNumberTable
 
-[14]: CONSTANT_Utf8 (tag = 1)
+[14]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: main
 
-[15]: CONSTANT_Utf8 (tag = 1)
+[15]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: ([Ljava/lang/String;)V
 
-[16]: CONSTANT_Utf8 (tag = 1)
+[16]: CONST_Utf8 (tag = 1)
 	Length of byte array: 8
 	Length of string: 8
 	String: <clinit>
 
-[17]: CONSTANT_Utf8 (tag = 1)
+[17]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: SourceFile
 
-[18]: CONSTANT_Utf8 (tag = 1)
+[18]: CONST_Utf8 (tag = 1)
 	Length of byte array: 15
 	Length of string: 15
 	String: HelloWorld.java
 
-[19]: CONSTANT_NameAndType (tag = 12)
+[19]: CONST_NameAndType (tag = 12)
 	Name: #10 <<init>>
 	Descriptor: #11 <()V>
 
-[20]: CONSTANT_Class (tag = 7)
+[20]: CONST_Class (tag = 7)
 	Class name: #28 <java/lang/System>
 
-[21]: CONSTANT_NameAndType (tag = 12)
+[21]: CONST_NameAndType (tag = 12)
 	Name: #29 <out>
 	Descriptor: #30 <Ljava/io/PrintStream;>
 
-[22]: CONSTANT_NameAndType (tag = 12)
+[22]: CONST_NameAndType (tag = 12)
 	Name: #8 <str>
 	Descriptor: #9 <Ljava/lang/String;>
 
-[23]: CONSTANT_Class (tag = 7)
+[23]: CONST_Class (tag = 7)
 	Class name: #31 <java/io/PrintStream>
 
-[24]: CONSTANT_NameAndType (tag = 12)
+[24]: CONST_NameAndType (tag = 12)
 	Name: #32 <println>
 	Descriptor: #33 <(Ljava/lang/String;)V>
 
-[25]: CONSTANT_Utf8 (tag = 1)
+[25]: CONST_Utf8 (tag = 1)
 	Length of byte array: 12
 	Length of string: 12
 	String: Hello World!
 
-[26]: CONSTANT_Utf8 (tag = 1)
+[26]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: HelloWorld
 
-[27]: CONSTANT_Utf8 (tag = 1)
+[27]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/Object
 
-[28]: CONSTANT_Utf8 (tag = 1)
+[28]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/System
 
-[29]: CONSTANT_Utf8 (tag = 1)
+[29]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: out
 
-[30]: CONSTANT_Utf8 (tag = 1)
+[30]: CONST_Utf8 (tag = 1)
 	Length of byte array: 21
 	Length of string: 21
 	String: Ljava/io/PrintStream;
 
-[31]: CONSTANT_Utf8 (tag = 1)
+[31]: CONST_Utf8 (tag = 1)
 	Length of byte array: 19
 	Length of string: 19
 	String: java/io/PrintStream
 
-[32]: CONSTANT_Utf8 (tag = 1)
+[32]: CONST_Utf8 (tag = 1)
 	Length of byte array: 7
 	Length of string: 7
 	String: println
 
-[33]: CONSTANT_Utf8 (tag = 1)
+[33]: CONST_Utf8 (tag = 1)
 	Length of byte array: 21
 	Length of string: 21
 	String: (Ljava/lang/String;)V

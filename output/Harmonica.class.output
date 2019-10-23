@@ -1,9 +1,9 @@
 ==== Main Info ====
 
-Version:		52.0 (Major.Minor) [jdk version 1.8]
-Constant pool count:	22
-Access flags:		0x0021 [super, public]
-This class:		cp index #4 <Catch>
+Version:		46.0 (Major.Minor) [jdk version 1.2]
+Constant pool count:	27
+Access flags:		0x0020 [super]
+This class:		cp index #4 <Harmonica>
 Super class:		cp index #5 <java/lang/Object>
 Interfaces count:	0
 Fields count:		0
@@ -14,17 +14,18 @@ Attributes count:	1
 
 [1]: CONST_Methodref (tag = 10)
 	Class name: #5 <java/lang/Object>
-	Name and type: #16 <java/lang/Object : ()V>
+	Name and type: #14 <java/lang/Object : ()V>
 
-[2]: CONST_Class (tag = 7)
-	Class name: #17 <java/lang/Exception>
+[2]: CONST_Fieldref (tag = 9)
+	Class name: #15 <java/lang/System>
+	Name and type: #16 <java/lang/System : Ljava/io/PrintStream;>
 
 [3]: CONST_Methodref (tag = 10)
-	Class name: #2 <java/lang/Exception>
-	Name and type: #18 <java/lang/Exception : ()V>
+	Class name: #17 <java/io/PrintStream>
+	Name and type: #18 <java/io/PrintStream : (F)V>
 
 [4]: CONST_Class (tag = 7)
-	Class name: #19 <Catch>
+	Class name: #19 <Harmonica>
 
 [5]: CONST_Class (tag = 7)
 	Class name: #20 <java/lang/Object>
@@ -60,40 +61,37 @@ Attributes count:	1
 	String: ([Ljava/lang/String;)V
 
 [12]: CONST_Utf8 (tag = 1)
-	Length of byte array: 13
-	Length of string: 13
-	String: StackMapTable
-
-[13]: CONST_Class (tag = 7)
-	Class name: #17 <java/lang/Exception>
-
-[14]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: SourceFile
 
-[15]: CONST_Utf8 (tag = 1)
-	Length of byte array: 10
-	Length of string: 10
-	String: Catch.java
+[13]: CONST_Utf8 (tag = 1)
+	Length of byte array: 14
+	Length of string: 14
+	String: Harmonica.java
 
-[16]: CONST_NameAndType (tag = 12)
+[14]: CONST_NameAndType (tag = 12)
 	Name: #6 <<init>>
 	Descriptor: #7 <()V>
 
-[17]: CONST_Utf8 (tag = 1)
-	Length of byte array: 19
-	Length of string: 19
-	String: java/lang/Exception
+[15]: CONST_Class (tag = 7)
+	Class name: #21 <java/lang/System>
+
+[16]: CONST_NameAndType (tag = 12)
+	Name: #22 <out>
+	Descriptor: #23 <Ljava/io/PrintStream;>
+
+[17]: CONST_Class (tag = 7)
+	Class name: #24 <java/io/PrintStream>
 
 [18]: CONST_NameAndType (tag = 12)
-	Name: #21 <printStackTrace>
-	Descriptor: #7 <()V>
+	Name: #25 <println>
+	Descriptor: #26 <(F)V>
 
 [19]: CONST_Utf8 (tag = 1)
-	Length of byte array: 5
-	Length of string: 5
-	String: Catch
+	Length of byte array: 9
+	Length of string: 9
+	String: Harmonica
 
 [20]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
@@ -101,9 +99,34 @@ Attributes count:	1
 	String: java/lang/Object
 
 [21]: CONST_Utf8 (tag = 1)
-	Length of byte array: 15
-	Length of string: 15
-	String: printStackTrace
+	Length of byte array: 16
+	Length of string: 16
+	String: java/lang/System
+
+[22]: CONST_Utf8 (tag = 1)
+	Length of byte array: 3
+	Length of string: 3
+	String: out
+
+[23]: CONST_Utf8 (tag = 1)
+	Length of byte array: 21
+	Length of string: 21
+	String: Ljava/io/PrintStream;
+
+[24]: CONST_Utf8 (tag = 1)
+	Length of byte array: 19
+	Length of string: 19
+	String: java/io/PrintStream
+
+[25]: CONST_Utf8 (tag = 1)
+	Length of byte array: 7
+	Length of string: 7
+	String: println
+
+[26]: CONST_Utf8 (tag = 1)
+	Length of byte array: 4
+	Length of string: 4
+	String: (F)V
 
 ==== Methods ====
 
@@ -111,7 +134,7 @@ Method #1:
 
 	name_index:        #6 <<init>>
 	descriptor_index:  #7 <()V>
-	access_flags:      0x0001 [public]
+	access_flags:      0x0000 [no flags]
 	attribute_count:   1
 
 	Method Attribute #1 - Code:
@@ -142,45 +165,47 @@ Method #2:
 
 	Method Attribute #1 - Code:
 
-max_stack: 2, max_locals: 3, code_length: 15
-exception_table_length: 1, attribute_count: 2
+max_stack: 3, max_locals: 3, code_length: 30
+exception_table_length: 0, attribute_count: 1
 
 Bytecode:
 Offset	Mnemonic	Parameters
-0	iconst_0
-1	istore_1
-2	iconst_3
-3	iload_1
-4	idiv
-5	istore_2
-6	goto		14 (+8)
-9	astore_1
-10	aload_1
-11	invokevirtual	#3 <Method java/lang/Exception.printStackTrace, descriptor: ()V>
-14	return
-
-Exception table:
-Index	start_pc	end_pc	handler_pc	catch_type
-1	0		6	9		2 <java/lang/Exception>
+0	bipush		20
+2	istore_1
+3	fconst_0
+4	fstore_2
+5	iload_1
+6	ifle		22 (+16)
+9	fload_2
+10	fconst_1
+11	iload_1
+12	i2f
+13	fdiv
+14	fadd
+15	fstore_2
+16	iinc		1, -1
+19	goto		5 (+-14)
+22	getstatic	#2 <Field java/lang/System.out, descriptor: Ljava/io/PrintStream;>
+25	fload_2
+26	invokevirtual	#3 <Method java/io/PrintStream.println, descriptor: (F)V>
+29	return
 
 Code Attribute #1 - LineNumberTable:
 
-line_number_table_length: 6
+line_number_table_length: 7
 
 Table:	index	line_number	start_pc
 	1	5		0
-	2	6		2
-	3	9		6
-	4	7		9
-	5	8		10
-	6	10		14
-
-Code Attribute #2 - StackMapTable:
-Attribute not implemented and ignored.
+	2	7		3
+	3	9		5
+	4	11		9
+	5	13		16
+	6	17		22
+	7	19		29
 
 
 ==== Class Attributes ====
 
 	Attribute #1 - SourceFile:
 
-sourcefile_index: #15 <Catch.java>
+sourcefile_index: #13 <Harmonica.java>

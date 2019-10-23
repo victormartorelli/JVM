@@ -25,7 +25,7 @@ char readField(JavaClass* jc, field_info* entry) {
     cp_info* cpi = jc->constantPool + entry->descriptor_index - 1;
 
     if (entry->descriptor_index == 0 || entry->descriptor_index >= jc->constantPoolCount ||
-        cpi->tag != CONSTANT_Utf8 ||
+        cpi->tag != CONST_Utf8 ||
         cpi->Utf8.length != readFieldDescriptor(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;
@@ -52,7 +52,7 @@ char readField(JavaClass* jc, field_info* entry) {
     return 1;
 }
 
-void freeFieldAttributes(field_info* entry) {
+void freeFieldAttr(field_info* entry) {
     uint32_t i;
     if (entry->attributes != NULL) {
         for (i = 0; i < entry->attributes_count; i++)
@@ -110,7 +110,7 @@ void printAllFields(JavaClass* jc) {
     printf("\n");
 }
 
-field_info* getFieldMatching(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
+field_info* getFieldMatch(JavaClass* jc, const uint8_t* name, int32_t name_len, const uint8_t* descriptor,
                              int32_t descriptor_len, uint16_t flag_mask) {
     field_info* field = jc->fields;
     cp_info* cpi;

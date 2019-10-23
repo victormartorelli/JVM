@@ -4,7 +4,7 @@
 #include "constantPool.h"
 #include "utf8.h"
 
-char readConstantPool_Class(JavaClass* jc, cp_info* entry) {
+char readCPClass(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Class.name_index)) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
@@ -18,7 +18,7 @@ char readConstantPool_Class(JavaClass* jc, cp_info* entry) {
     return 1;
 }
 
-char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
+char readCPFieldref(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Fieldref.class_index)) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
@@ -35,8 +35,7 @@ char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
         return 0;
     }
 
-    if (entry->Fieldref.name_and_type_index == 0 ||
-        entry->Fieldref.name_and_type_index >= jc->constantPoolCount) {
+    if (entry->Fieldref.name_and_type_index == 0 || entry->Fieldref.name_and_type_index >= jc->constantPoolCount) {
         jc->status = INV_CP_INDEX;
         return 0;
     }
@@ -44,7 +43,7 @@ char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
     return 1;
 }
 
-char readConstantPool_Integer(JavaClass* jc, cp_info* entry) {
+char readCPInteger(JavaClass* jc, cp_info* entry) {
     if (!readu4(jc, &entry->Integer.value)) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
@@ -53,7 +52,7 @@ char readConstantPool_Integer(JavaClass* jc, cp_info* entry) {
     return 1;
 }
 
-char readConstantPool_Long(JavaClass* jc, cp_info* entry) {
+char readCPLong(JavaClass* jc, cp_info* entry) {
     if (!readu4(jc, &entry->Long.high)) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
@@ -67,7 +66,7 @@ char readConstantPool_Long(JavaClass* jc, cp_info* entry) {
     return 1;
 }
 
-char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
+char readCPUtf8(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Utf8.length)) {
         jc->status = UNXPTD_EOF_READING_CP;
         return 0;
@@ -109,7 +108,7 @@ char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
     return 1;
 }
 
-char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
+char readCPEntry(JavaClass* jc, cp_info* entry) {
     // Gets the entry tag
     int byte = fgetc(jc->file);
 
@@ -125,30 +124,30 @@ char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
     jc->lastTagRead = entry->tag;
 
     switch(entry->tag) {
-        case CONSTANT_MethodType: // Compatibility with Java 8
-        case CONSTANT_Class:
-        case CONSTANT_String:
-            return readConstantPool_Class(jc, entry);
+        case CONST_MethodType: // Compatibility with Java 8
+        case CONST_Class:
+        case CONST_String:
+            return readCPClass(jc, entry);
 
-        case CONSTANT_Utf8:
-            return readConstantPool_Utf8(jc, entry);
+        case CONST_Utf8:
+            return readCPUtf8(jc, entry);
 
-        case CONSTANT_InvokeDynamic: // Compatibility with Java 8
-        case CONSTANT_Fieldref:
-        case CONSTANT_Methodref:
-        case CONSTANT_InterfaceMethodref:
-        case CONSTANT_NameAndType:
-            return readConstantPool_Fieldref(jc, entry);
+        case CONST_InvokeDynamic: // Compatibility with Java 8
+        case CONST_Fieldref:
+        case CONST_Methodref:
+        case CONST_InterfaceMethodref:
+        case CONST_NameAndType:
+            return readCPFieldref(jc, entry);
 
-        case CONSTANT_Integer:
-        case CONSTANT_Float:
-            return readConstantPool_Integer(jc, entry);
+        case CONST_Integer:
+        case CONST_Float:
+            return readCPInteger(jc, entry);
 
-        case CONSTANT_Long:
-        case CONSTANT_Double:
-            return readConstantPool_Long(jc, entry);
+        case CONST_Long:
+        case CONST_Double:
+            return readCPLong(jc, entry);
 
-        case CONSTANT_MethodHandle:
+        case CONST_MethodHandle:
 
             if (!readu2(jc, NULL) || fgetc(jc->file) == EOF) {
                 jc->status = UNXPTD_EOF_READING_CP;
@@ -168,30 +167,30 @@ char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
 
 const char* decodeTag(uint8_t tag) {
     switch(tag) {
-        case CONSTANT_Class: return "Class";
-        case CONSTANT_Double: return "Double";
-        case CONSTANT_Fieldref: return "Fieldref";
-        case CONSTANT_Float: return "Float";
-        case CONSTANT_Integer: return "Integer";
-        case CONSTANT_InterfaceMethodref: return "InterfaceMethodref";
-        case CONSTANT_Long: return "Long";
-        case CONSTANT_Methodref: return "Methodref";
-        case CONSTANT_NameAndType: return "NameAndType";
-        case CONSTANT_String: return "String";
-        case CONSTANT_Utf8: return "Utf8";
+        case CONST_Class: return "Class";
+        case CONST_Double: return "Double";
+        case CONST_Fieldref: return "Fieldref";
+        case CONST_Float: return "Float";
+        case CONST_Integer: return "Integer";
+        case CONST_InterfaceMethodref: return "InterfaceMethodref";
+        case CONST_Long: return "Long";
+        case CONST_Methodref: return "Methodref";
+        case CONST_NameAndType: return "NameAndType";
+        case CONST_String: return "String";
+        case CONST_Utf8: return "Utf8";
         default:
             break;
     }
     return "Unknown Tag";
 }
 
-void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
+void printCPEntry(JavaClass* jc, cp_info* entry) {
     char buffer[48];
     uint32_t u32;
     cp_info* cpi;
 
     switch(entry->tag) {
-        case CONSTANT_Utf8:
+        case CONST_Utf8:
             u32 = UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), entry->Utf8.bytes, entry->Utf8.length);
             printf("\tLength of byte array: %u\n", entry->Utf8.length);
             printf("\tLength of string: %u\n", u32);
@@ -200,7 +199,7 @@ void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
                 printf("\n\tUTF-8 Characters: %.*s", (int)entry->Utf8.length, entry->Utf8.bytes);
             break;
 
-        case CONSTANT_String:
+        case CONST_String:
             cpi = jc->constantPool + entry->String.string_index - 1;
             u32 = UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tString: #%u %s",entry->String.string_index, buffer);
@@ -208,9 +207,9 @@ void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
                 printf("\n\tUTF-8: %.*s", (int)cpi->Utf8.length, cpi->Utf8.bytes);
             break;
 
-        case CONSTANT_Fieldref:
-        case CONSTANT_Methodref:
-        case CONSTANT_InterfaceMethodref:
+        case CONST_Fieldref:
+        case CONST_Methodref:
+        case CONST_InterfaceMethodref:
             cpi = jc->constantPool + entry->Fieldref.class_index - 1;
             cpi = jc->constantPool + cpi->Class.name_index - 1;
             UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
@@ -226,13 +225,13 @@ void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
             printf(" %s>", buffer);
             break;
 
-        case CONSTANT_Class:
+        case CONST_Class:
             cpi = jc->constantPool + entry->Class.name_index - 1;
             UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tClass name: #%u <%s>", entry->Class.name_index, buffer);
             break;
 
-        case CONSTANT_NameAndType:
+        case CONST_NameAndType:
             cpi = jc->constantPool + entry->NameAndType.name_index - 1;
             UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
             printf("\tName: #%u <%s>\n", entry->NameAndType.name_index, buffer);
@@ -241,23 +240,23 @@ void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
             printf("\tDescriptor: #%u <%s>", entry->NameAndType.descriptor_index, buffer);
             break;
 
-        case CONSTANT_Integer:
+        case CONST_Integer:
             printf("\tBytes: 0x%08X\n", entry->Integer.value);
             printf("\tInteger: %d", (int32_t)entry->Integer.value);
             break;
 
-        case CONSTANT_Long:
+        case CONST_Long:
             printf("\tHigh bytes: 0x%08X\n", entry->Long.high);
             printf("\tLow  bytes: 0x%08X\n", entry->Long.low);
             printf("\tLong: %" PRId64"", ((int64_t)entry->Long.high << 32) | entry->Long.low);
             break;
 
-        case CONSTANT_Float:
+        case CONST_Float:
             printf("\tBytes: 0x%08X\n", entry->Float.bytes);
             printf("\tFloat: %e", readFloatFromUint32(entry->Float.bytes));
             break;
 
-        case CONSTANT_Double:
+        case CONST_Double:
             printf("\tHigh bytes:   0x%08X\n", entry->Double.high);
             printf("\tLow  bytes:   0x%08X\n", entry->Double.low);
             printf("\tDouble: %e", readDoubleFromUint64((uint64_t)entry->Double.high << 32 | entry->Double.low));
@@ -269,7 +268,7 @@ void printConstantPoolEntry(JavaClass* jc, cp_info* entry) {
     printf("\n");
 }
 
-void printConstantPool(JavaClass* jc) {
+void printCP(JavaClass* jc) {
     uint16_t u16;
     cp_info* cp;
 
@@ -278,10 +277,10 @@ void printConstantPool(JavaClass* jc) {
 
         for (u16 = 0; u16 < jc->constantPoolCount - 1; u16++) {
             cp = jc->constantPool + u16;
-            printf("\n[%u]: CONSTANT_%s (tag = %u)\n", u16 + 1, decodeTag(cp->tag), cp->tag);
-            printConstantPoolEntry(jc, cp);
+            printf("\n[%u]: CONST_%s (tag = %u)\n", u16 + 1, decodeTag(cp->tag), cp->tag);
+            printCPEntry(jc, cp);
 
-            if (cp->tag == CONSTANT_Double || cp->tag == CONSTANT_Long)
+            if (cp->tag == CONST_Double || cp->tag == CONST_Long)
                 u16++;
         }
     }

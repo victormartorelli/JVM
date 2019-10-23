@@ -13,7 +13,7 @@ struct attribute_info {
 };
 
 enum AttributeType {
-    ATTR_Unknown = 0,
+    unknown_ATTRIBUTE = 0,
     ATTR_ConstantValue,
     ATTR_SourceFile,
     ATTR_InnerClasses,

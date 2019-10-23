@@ -26,7 +26,7 @@ char readMethod(JavaClass* jc, method_info* entry) {
     cp_info* cpi = jc->constantPool + entry->descriptor_index - 1;
 
     if (entry->descriptor_index == 0 || entry->descriptor_index >= jc->constantPoolCount ||
-        cpi->tag != CONSTANT_Utf8 ||
+        cpi->tag != CONST_Utf8 ||
         cpi->Utf8.length != readMethodDescriptor(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;

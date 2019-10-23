@@ -89,13 +89,13 @@ char checkClassIndexAndAccessFlags(JavaClass* jc) {
     }
 
     if (!jc->thisClass || jc->thisClass >= jc->constantPoolCount ||
-        jc->constantPool[jc->thisClass - 1].tag != CONSTANT_Class) {
+        jc->constantPool[jc->thisClass - 1].tag != CONST_Class) {
         jc->status = INV_THIS_CLASS_IDX;
         return 0;
     }
 
     if (jc->superClass >= jc->constantPoolCount ||
-        (jc->superClass && jc->constantPool[jc->superClass - 1].tag != CONSTANT_Class)) {
+        (jc->superClass && jc->constantPool[jc->superClass - 1].tag != CONST_Class)) {
         jc->status = INV_SUPER_CLASS_IDX;
         return 0;
     }
@@ -163,19 +163,19 @@ char isValidJavaIdentifier(uint8_t* utf8_bytes, int32_t utf8_len, uint8_t isClas
 }
 
 char isValidUTF8Index(JavaClass* jc, uint16_t index) {
-    return (jc->constantPool + index - 1)->tag == CONSTANT_Utf8;
+    return (jc->constantPool + index - 1)->tag == CONST_Utf8;
 }
 
 
 char isValidNameIndex(JavaClass* jc, uint16_t name_index, uint8_t isClassIdentifier) {
     cp_info* entry = jc->constantPool + name_index - 1;
-    return entry->tag == CONSTANT_Utf8 && isValidJavaIdentifier(entry->Utf8.bytes, entry->Utf8.length, isClassIdentifier);
+    return entry->tag == CONST_Utf8 && isValidJavaIdentifier(entry->Utf8.bytes, entry->Utf8.length, isClassIdentifier);
 }
 
 char isValidMethodNameIndex(JavaClass* jc, uint16_t name_index) {
     cp_info* entry = jc->constantPool + name_index - 1;
 
-    if (entry->tag != CONSTANT_Utf8)
+    if (entry->tag != CONST_Utf8)
         return 0;
 
     if (cmp_UTF8_Ascii(entry->Utf8.bytes, entry->Utf8.length, (uint8_t*)"<init>", 6) ||
@@ -188,7 +188,7 @@ char isValidMethodNameIndex(JavaClass* jc, uint16_t name_index) {
 char checkClassIndex(JavaClass* jc, uint16_t class_index) {
     cp_info* entry = jc->constantPool + class_index - 1;
 
-    if (entry->tag != CONSTANT_Class) {
+    if (entry->tag != CONST_Class) {
         jc->status = INV_CLASS_IDX;
         return 0;
     }
@@ -198,14 +198,14 @@ char checkClassIndex(JavaClass* jc, uint16_t class_index) {
 char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
-    if (entry->tag != CONSTANT_NameAndType || !isValidNameIndex(jc, entry->NameAndType.name_index, 0)) {
+    if (entry->tag != CONST_NameAndType || !isValidNameIndex(jc, entry->NameAndType.name_index, 0)) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
 
     entry = jc->constantPool + entry->NameAndType.descriptor_index - 1;
 
-    if (entry->tag != CONSTANT_Utf8 || entry->Utf8.length == 0) {
+    if (entry->tag != CONST_Utf8 || entry->Utf8.length == 0) {
         jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
@@ -221,14 +221,14 @@ char checkFieldNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
 char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
     cp_info* entry = jc->constantPool + name_and_type_index - 1;
 
-    if (entry->tag != CONSTANT_NameAndType || !isValidMethodNameIndex(jc, entry->NameAndType.name_index)) {
+    if (entry->tag != CONST_NameAndType || !isValidMethodNameIndex(jc, entry->NameAndType.name_index)) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
 
     entry = jc->constantPool + entry->NameAndType.descriptor_index - 1;
 
-    if (entry->tag != CONSTANT_Utf8 || entry->Utf8.length == 0) {
+    if (entry->tag != CONST_Utf8 || entry->Utf8.length == 0) {
         jc->status = INV_METHOD_DESC_IDX;
         return 0;
     }
@@ -241,7 +241,7 @@ char checkMethodNameAndTypeIndex(JavaClass* jc, uint16_t name_and_type_index) {
 }
 
 
-char checkConstantPoolValidity(JavaClass* jc) {
+char checkCPValidity(JavaClass* jc) {
     uint16_t i;
     char success = 1;
     char* previousLocale = setlocale(LC_CTYPE, "pt_BR.UTF-8");
@@ -250,7 +250,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
         cp_info* entry = jc->constantPool + i;
 
         switch(entry->tag) {
-            case CONSTANT_Class:
+            case CONST_Class:
 
                 if (!isValidNameIndex(jc, entry->Class.name_index, 1)) {
                     jc->status = INV_NAME_IDX;
@@ -259,7 +259,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 break;
 
-            case CONSTANT_String:
+            case CONST_String:
 
                 if (!isValidUTF8Index(jc, entry->String.string_index)) {
                     jc->status = INV_STRING_IDX;
@@ -268,8 +268,8 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 break;
 
-            case CONSTANT_Methodref:
-            case CONSTANT_InterfaceMethodref:
+            case CONST_Methodref:
+            case CONST_InterfaceMethodref:
 
                 if (!checkClassIndex(jc, entry->Methodref.class_index) ||
                     !checkMethodNameAndTypeIndex(jc, entry->Methodref.name_and_type_index))
@@ -277,7 +277,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 break;
 
-            case CONSTANT_Fieldref:
+            case CONST_Fieldref:
 
                 if (!checkClassIndex(jc, entry->Fieldref.class_index) ||
                     !checkFieldNameAndTypeIndex(jc, entry->Fieldref.name_and_type_index))
@@ -285,7 +285,7 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 break;
 
-            case CONSTANT_NameAndType:
+            case CONST_NameAndType:
 
                 if (!isValidUTF8Index(jc, entry->NameAndType.name_index) ||
                     !isValidUTF8Index(jc, entry->NameAndType.descriptor_index)) {
@@ -295,14 +295,14 @@ char checkConstantPoolValidity(JavaClass* jc) {
 
                 break;
 
-            case CONSTANT_Double:
-            case CONSTANT_Long:
+            case CONST_Double:
+            case CONST_Long:
                 i++;
                 break;
 
-            case CONSTANT_Float:
-            case CONSTANT_Integer:
-            case CONSTANT_Utf8:
+            case CONST_Float:
+            case CONST_Integer:
+            case CONST_Utf8:
                 break;
 
             default:

@@ -1,38 +1,31 @@
 #include "javaClass.h"
-#include "fileParser.h"
-#include "validity.h"
 #include "constantPool.h"
+#include "fileParser.h"
 #include "utf8.h"
+#include "validity.h"
 
 int openClassFile(JavaClass* jc, const char* path) {
     uint32_t u32;
     uint16_t u16;
 
     jc->file = fopen(path, "rb");
+    jc->status = CLASS_STA_OK;
     jc->minorVersion = jc->majorVersion = jc->constantPoolCount = 0;
     jc->constantPool = NULL;
     jc->interfaces = NULL;
     jc->fields = NULL;
     jc->methods = NULL;
     jc->attributes = NULL;
-    jc->status = CLASS_STA_OK;
     jc->classNameMismatch = 0;
 
     jc->thisClass = jc->superClass = jc->accessFlags = 0;
     jc->attributeCount = jc->fieldCount = jc->methodCount = jc->constantPoolCount = jc->interfaceCount = 0;
 
-    jc->staticFieldCount = 0;
-    jc->instanceFieldCount = 0;
+    jc->staticFieldCount = jc->instanceFieldCount = 0;
 
-    jc->lastTagRead = 0;
-    jc->totalBytesRead = 0;
-    jc->constantPoolEntriesRead = 0;
-    jc->attributeEntriesRead = 0;
-    jc->constantPoolEntriesRead = 0;
-    jc->interfaceEntriesRead = 0;
-    jc->fieldEntriesRead = 0;
-    jc->methodEntriesRead = 0;
-    jc->validityEntriesChecked = 0;
+    jc->lastTagRead = jc->totalBytesRead = jc->constantPoolEntriesRead = jc->attributeEntriesRead = 0;
+    jc->constantPoolEntriesRead = jc->interfaceEntriesRead = jc->fieldEntriesRead = 0;
+    jc->methodEntriesRead = jc->validityEntriesChecked = 0;
 
     if (!jc->file) {
         jc->status = CLASS_STA_FILE_CN_BE_OPENED;
@@ -44,8 +37,7 @@ int openClassFile(JavaClass* jc, const char* path) {
         return 1;
     }
 
-    if (!readu2(jc, &jc->minorVersion) || !readu2(jc, &jc->majorVersion) ||
-        !readu2(jc, &jc->constantPoolCount)) {
+    if (!readu2(jc, &jc->minorVersion) || !readu2(jc, &jc->majorVersion) || !readu2(jc, &jc->constantPoolCount)) {
         jc->status = UNXPTD_EOF;
         return 1;
     }
@@ -69,24 +61,22 @@ int openClassFile(JavaClass* jc, const char* path) {
         }
 
         for (u16 = 0; u16 < jc->constantPoolCount - 1; u16++) {
-            if (!readConstantPoolEntry(jc, jc->constantPool + u16)) {
+            if (!readCPEntry(jc, jc->constantPool + u16)) {
                 jc->constantPoolCount = u16 + 1;
                 return 1;
             }
 
-            if (jc->constantPool[u16].tag == CONSTANT_Double ||
-                jc->constantPool[u16].tag == CONSTANT_Long) {
+            if (jc->constantPool[u16].tag == CONST_Double || jc->constantPool[u16].tag == CONST_Long) {
                 u16++;
             }
             jc->constantPoolEntriesRead++;
         }
 
-        if (!checkConstantPoolValidity(jc))
+        if (!checkCPValidity(jc))
             return 1;
     }
 
-    if (!readu2(jc, &jc->accessFlags) || !readu2(jc, &jc->thisClass) ||
-        !readu2(jc, &jc->superClass)) {
+    if (!readu2(jc, &jc->accessFlags) || !readu2(jc, &jc->thisClass) || !readu2(jc, &jc->superClass)) {
         jc->status = UNXPTD_EOF;
         return 1;
     }
@@ -105,7 +95,7 @@ int openClassFile(JavaClass* jc, const char* path) {
                 return 1;
             }
 
-            if (u16 == 0 || jc->constantPool[u16 - 1].tag != CONSTANT_Class) {
+            if (u16 == 0 || jc->constantPool[u16 - 1].tag != CONST_Class) {
                 jc->status = INV_INTERFACE_IDX;
                 return 1;
             }
@@ -284,7 +274,7 @@ void printClassFileInfo(JavaClass* jc) {
     printf("Methods count:\t\t%u\n", jc->methodCount);
     printf("Attributes count:\t%u\n", jc->attributeCount);
 
-    printConstantPool(jc);
+    printCP(jc);
 
     if (jc->interfaceCount > 0) {
         printf("\n==== Interfaces implemented by the class ====\n\n");
@@ -321,7 +311,7 @@ void closeClassFile(JavaClass* jc) {
 
     if (jc->constantPool) {
         for (i = 0; i < jc->constantPoolCount - 1; i++) {
-            if (jc->constantPool[i].tag == CONSTANT_Utf8 && jc->constantPool[i].Utf8.bytes)
+            if (jc->constantPool[i].tag == CONST_Utf8 && jc->constantPool[i].Utf8.bytes)
                 free(jc->constantPool[i].Utf8.bytes);
         }
 
@@ -339,7 +329,7 @@ void closeClassFile(JavaClass* jc) {
 
     if (jc->fields) {
         for (i = 0; i < jc->fieldCount; i++)
-            freeFieldAttributes(jc->fields + i);
+            freeFieldAttr(jc->fields + i);
         free(jc->fields);
         jc->fieldCount = 0;
     }

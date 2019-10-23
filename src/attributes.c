@@ -1,20 +1,20 @@
+#include <inttypes.h>
 #include "attributes.h"
 #include "fileParser.h"
 #include "utf8.h"
 #include "opcodes.h"
-#include <inttypes.h>
 
-#define DECLARE_ATTR_FUNCS(attr) \
+#define DCLR_ATTRIBUTES_FUNCTIONS(attr) \
     uint8_t readAttribute##attr(JavaClass* jc, attribute_info* entry); \
     void printAttribute##attr(JavaClass* jc, attribute_info* entry, int numberOfTabs); \
     void freeAttribute##attr(attribute_info* entry);
 
-DECLARE_ATTR_FUNCS(SourceFile)
-DECLARE_ATTR_FUNCS(InnerClasses)
-DECLARE_ATTR_FUNCS(LineNumberTable)
-DECLARE_ATTR_FUNCS(ConstantValue)
-DECLARE_ATTR_FUNCS(Code)
-DECLARE_ATTR_FUNCS(Exceptions)
+DCLR_ATTRIBUTES_FUNCTIONS(SourceFile)
+DCLR_ATTRIBUTES_FUNCTIONS(InnerClasses)
+DCLR_ATTRIBUTES_FUNCTIONS(LineNumberTable)
+DCLR_ATTRIBUTES_FUNCTIONS(ConstantValue)
+DCLR_ATTRIBUTES_FUNCTIONS(Code)
+DCLR_ATTRIBUTES_FUNCTIONS(Exceptions)
 
 char readAttribute(JavaClass* jc, attribute_info* entry) {
     entry->info = NULL;
@@ -29,12 +29,12 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
 
     if (entry->name_index == 0 ||
         entry->name_index >= jc->constantPoolCount ||
-        cp->tag != CONSTANT_Utf8) {
+        cp->tag != CONST_Utf8) {
         jc->status = INV_NAME_IDX;
         return 0;
     }
 
-    #define IF_ATTR_CHECK(name) \
+    #define IF_ATTRIBUTES_CHECK(name) \
         if (cmp_UTF8_Ascii(cp->Utf8.bytes, cp->Utf8.length, (uint8_t*)#name, sizeof(#name) - 1)) { \
             entry->attributeType = ATTR_##name; \
             result = readAttribute##name(jc, entry); \
@@ -43,12 +43,12 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
     uint32_t totalBytesRead = jc->totalBytesRead;
     char result;
 
-    IF_ATTR_CHECK(ConstantValue)
-    else IF_ATTR_CHECK(SourceFile)
-    else IF_ATTR_CHECK(InnerClasses)
-    else IF_ATTR_CHECK(Code)
-    else IF_ATTR_CHECK(LineNumberTable)
-    else IF_ATTR_CHECK(Exceptions)
+    IF_ATTRIBUTES_CHECK(ConstantValue)
+    else IF_ATTRIBUTES_CHECK(SourceFile)
+    else IF_ATTRIBUTES_CHECK(InnerClasses)
+    else IF_ATTRIBUTES_CHECK(Code)
+    else IF_ATTRIBUTES_CHECK(LineNumberTable)
+    else IF_ATTRIBUTES_CHECK(Exceptions)
     else {
         uint32_t u32;
 
@@ -61,7 +61,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
         }
 
         result = 1;
-        entry->attributeType = ATTR_Unknown;
+        entry->attributeType = unknown_ATTRIBUTE;
     }
 
     if (jc->totalBytesRead - totalBytesRead != entry->length) {
@@ -74,7 +74,9 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
 }
 
 static inline void tabs(int number) {
-    while (number-- < 0)  printf("\t");
+    while (number-- < 0){
+        printf("\t");
+    }
 }
 
 uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
@@ -99,9 +101,9 @@ uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
 
     cp_info* cp = jc->constantPool + info->constantvalue_index - 1;
 
-    if (cp->tag != CONSTANT_String && cp->tag != CONSTANT_Float &&
-        cp->tag != CONSTANT_Double && cp->tag != CONSTANT_Long &&
-        cp->tag != CONSTANT_Integer) {
+    if (cp->tag != CONST_String && cp->tag != CONST_Float &&
+        cp->tag != CONST_Double && cp->tag != CONST_Long &&
+        cp->tag != CONST_Integer) {
         jc->status = ATTR_INV_CONST_VALUE_IDX;
         return 0;
     }
@@ -119,23 +121,23 @@ void printAttributeConstantValue(JavaClass* jc, attribute_info* entry, int numbe
     printf("constantvalue_index: #%u <", info->constantvalue_index);
 
     switch (cp->tag) {
-        case CONSTANT_Integer:
+        case CONST_Integer:
             printf("%d", (int32_t)cp->Integer.value);
             break;
 
-        case CONSTANT_Long:
+        case CONST_Long:
             printf("%" PRId64"", ((int64_t)cp->Long.high << 32) | cp->Long.low);
             break;
 
-        case CONSTANT_Float:
+        case CONST_Float:
             printf("%e", readFloatFromUint32(cp->Float.bytes));
             break;
 
-        case CONSTANT_Double:
+        case CONST_Double:
             printf("%e", readDoubleFromUint64((uint64_t)cp->Double.high << 32 | cp->Double.low));
             break;
 
-        case CONSTANT_String:
+        case CONST_String:
             cp = jc->constantPool + cp->String.string_index - 1;
             UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
             printf("%s", buffer);
@@ -169,7 +171,7 @@ uint8_t readAttributeSourceFile(JavaClass* jc, attribute_info* entry) {
 
     if (info->sourcefile_index == 0 ||
         info->sourcefile_index >= jc->constantPoolCount ||
-        jc->constantPool[info->sourcefile_index - 1].tag != CONSTANT_Utf8) {
+        jc->constantPool[info->sourcefile_index - 1].tag != CONST_Utf8) {
         jc->status = ATTR_INV_SRC_FILE_IDX;
         return 0;
     }
@@ -226,10 +228,10 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
         }
 
         if (icf->inner_class_index == 0 || icf->inner_class_index >= jc->constantPoolCount ||
-            jc->constantPool[icf->inner_class_index - 1].tag != CONSTANT_Class || icf->outer_class_index >= jc->constantPoolCount ||
-            (icf->outer_class_index > 0 && jc->constantPool[icf->outer_class_index - 1].tag != CONSTANT_Class) ||
+            jc->constantPool[icf->inner_class_index - 1].tag != CONST_Class || icf->outer_class_index >= jc->constantPoolCount ||
+            (icf->outer_class_index > 0 && jc->constantPool[icf->outer_class_index - 1].tag != CONST_Class) ||
             icf->inner_class_name_index >= jc->constantPoolCount ||
-            (icf->inner_class_name_index > 0 && jc->constantPool[icf->inner_class_name_index - 1].tag != CONSTANT_Utf8)) {
+            (icf->inner_class_name_index > 0 && jc->constantPool[icf->inner_class_name_index - 1].tag != CONST_Utf8)) {
             jc->status = ATTR_INV_INNERCLASS_IDXS;
             return 0;
         }
@@ -524,8 +526,8 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                 u32 = (u32 << 8) | NEXTBYTE;
                 printf("\t#%u ", u32);
                 cpi = jc->constantPool + u32 - 1;
-                if ((opcode <  opcode_invokevirtual && cpi->tag == CONSTANT_Fieldref) ||
-                    (opcode >= opcode_invokevirtual && cpi->tag == CONSTANT_Methodref)) {
+                if ((opcode <  opcode_invokevirtual && cpi->tag == CONST_Fieldref) ||
+                    (opcode >= opcode_invokevirtual && cpi->tag == CONST_Methodref)) {
                     cpi = jc->constantPool + cpi->Fieldref.class_index - 1;
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
@@ -549,7 +551,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
             case opcode_invokedynamic:
                 u32 = NEXTBYTE;
                 u32 = (u32 << 8) | NEXTBYTE;
-                printf("\t#%u - CONSTANT_InvokeDynamic not implemented -", u32);
+                printf("\t#%u - CONST_InvokeDynamic not implemented -", u32);
                 u32 = NEXTBYTE;
                 if (u32 != 0) {
                     printf("\n");
@@ -570,7 +572,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                 u32 = (u32 << 8) | NEXTBYTE;
                 printf("\t#%u, count: %u ", u32, NEXTBYTE);
                 cpi = jc->constantPool + u32 - 1;
-                if (cpi->tag == CONSTANT_InterfaceMethodref) {
+                if (cpi->tag == CONST_InterfaceMethodref) {
                     cpi = jc->constantPool + cpi->InterfaceMethodref.class_index - 1;
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
@@ -652,7 +654,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                 if (opcode == opcode_multianewarray)
                     printf(", dimension %u", NEXTBYTE);
                 cpi = jc->constantPool + u32 - 1;
-                if (cpi->tag == CONSTANT_Class) {
+                if (cpi->tag == CONST_Class) {
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
                     UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                     printf(" (class: %s)", buffer);
@@ -672,28 +674,28 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                 printf("\t\t#%u", u32);
                 cpi = jc->constantPool + u32 - 1;
                 if (opcode == opcode_ldc2_w) {
-                    if (cpi->tag == CONSTANT_Long)
+                    if (cpi->tag == CONST_Long)
                         printf(" (long: %" PRId64")", ((int64_t)cpi->Long.high << 32) | cpi->Long.low);
-                    else if (cpi->tag == CONSTANT_Double)
+                    else if (cpi->tag == CONST_Double)
                         printf(" (double: %e)", readDoubleFromUint64((uint64_t)cpi->Double.high << 32 | cpi->Double.low));
                     else
                         printf(" (%s, invalid)", decodeOpcodeNewarrayType(cpi->tag));
                 }
                 else {
-                    if (cpi->tag == CONSTANT_Class) {
+                    if (cpi->tag == CONST_Class) {
                         cpi = jc->constantPool + cpi->Class.name_index - 1;
                         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                         printf(" (class: %s)", buffer);
                     }
-                    else if (cpi->tag == CONSTANT_String) {
+                    else if (cpi->tag == CONST_String) {
                         cpi = jc->constantPool + cpi->String.string_index - 1;
                         UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                         printf(" (string: \"%s\")", buffer);
                     }
-                    else if (cpi->tag == CONSTANT_Integer) {
+                    else if (cpi->tag == CONST_Integer) {
                         printf(" (integer: %d)", (int32_t)cpi->Integer.value);
                     }
-                    else if (cpi->tag == CONSTANT_Float) {
+                    else if (cpi->tag == CONST_Float) {
                         printf(" (float: %e)", readFloatFromUint32(cpi->Float.bytes));
                     }
                     else {
@@ -950,7 +952,7 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
 
         if (*exception_index == 0 ||
             *exception_index >= jc->constantPoolCount ||
-            jc->constantPool[*exception_index - 1].tag != CONSTANT_Class) {
+            jc->constantPool[*exception_index - 1].tag != CONST_Class) {
             jc->status = ATTR_INV_EXC_CLASS_IDX;
             return 0;
         }

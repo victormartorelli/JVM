@@ -1,4 +1,4 @@
-==== General Information ====
+==== Main Info ====
 
 Version:		52.0 (Major.Minor) [jdk version 1.8]
 Constant pool count:	121
@@ -12,491 +12,491 @@ Attributes count:	2
 
 ==== Constant Pool ====
 
-[1]: CONSTANT_Methodref (tag = 10)
+[1]: CONST_Methodref (tag = 10)
 	Class name: #44 <java/lang/Object>
 	Name and type: #84 <java/lang/Object : ()V>
 
-[2]: CONSTANT_Class (tag = 7)
+[2]: CONST_Class (tag = 7)
 	Class name: #85 <[[I>
 
-[3]: CONSTANT_Class (tag = 7)
+[3]: CONST_Class (tag = 7)
 	Class name: #52 <[I>
 
-[4]: CONSTANT_Fieldref (tag = 9)
+[4]: CONST_Fieldref (tag = 9)
 	Class name: #43 <examples/LongCode>
 	Name and type: #86 <examples/LongCode : [[[I>
 
-[5]: CONSTANT_Class (tag = 7)
+[5]: CONST_Class (tag = 7)
 	Class name: #87 <[D>
 
-[6]: CONSTANT_Double (tag = 6)
+[6]: CONST_Double (tag = 6)
 	High bytes:   0x405EDD2F
 	Low  bytes:   0x1A9FBE77
 	Double: 1.234560e+02
 
-[8]: CONSTANT_Double (tag = 6)
+[8]: CONST_Double (tag = 6)
 	High bytes:   0xC0847291
 	Low  bytes:   0x6872B021
 	Double: -6.543210e+02
 
-[10]: CONSTANT_Double (tag = 6)
+[10]: CONST_Double (tag = 6)
 	High bytes:   0x41CD6F34
 	Low  bytes:   0x588FCD6F
 	Double: 9.876543e+08
 
-[12]: CONSTANT_Class (tag = 7)
+[12]: CONST_Class (tag = 7)
 	Class name: #88 <java/lang/Double>
 
-[13]: CONSTANT_Double (tag = 6)
+[13]: CONST_Double (tag = 6)
 	High bytes:   0x7FEFFFFF
 	Low  bytes:   0xFFFFFFFF
 	Double: 1.797693e+308
 
-[15]: CONSTANT_Double (tag = 6)
+[15]: CONST_Double (tag = 6)
 	High bytes:   0x00000000
 	Low  bytes:   0x00000001
 	Double: 4.940656e-324
 
-[17]: CONSTANT_Double (tag = 6)
+[17]: CONST_Double (tag = 6)
 	High bytes:   0x00100000
 	Low  bytes:   0x00000000
 	Double: 2.225074e-308
 
-[19]: CONSTANT_Double (tag = 6)
+[19]: CONST_Double (tag = 6)
 	High bytes:   0x7FF80000
 	Low  bytes:   0x00000000
 	Double: nan
 
-[21]: CONSTANT_Double (tag = 6)
+[21]: CONST_Double (tag = 6)
 	High bytes:   0x7FF00000
 	Low  bytes:   0x00000000
 	Double: inf
 
-[23]: CONSTANT_Double (tag = 6)
+[23]: CONST_Double (tag = 6)
 	High bytes:   0xFFF00000
 	Low  bytes:   0x00000000
 	Double: -inf
 
-[25]: CONSTANT_Fieldref (tag = 9)
+[25]: CONST_Fieldref (tag = 9)
 	Class name: #43 <examples/LongCode>
 	Name and type: #89 <examples/LongCode : [[D>
 
-[26]: CONSTANT_Class (tag = 7)
+[26]: CONST_Class (tag = 7)
 	Class name: #90 <examples/LongCode$NestedClass>
 
-[27]: CONSTANT_Methodref (tag = 10)
+[27]: CONST_Methodref (tag = 10)
 	Class name: #26 <examples/LongCode$NestedClass>
 	Name and type: #91 <examples/LongCode$NestedClass : (Lexamples/LongCode;)V>
 
-[28]: CONSTANT_InterfaceMethodref (tag = 11)
+[28]: CONST_InterfaceMethodref (tag = 11)
 	Class name: #49 <examples/LongCode$Test>
 	Name and type: #92 <examples/LongCode$Test : ([I)I>
 
-[29]: CONSTANT_Fieldref (tag = 9)
+[29]: CONST_Fieldref (tag = 9)
 	Class name: #43 <examples/LongCode>
 	Name and type: #93 <examples/LongCode : J>
 
-[30]: CONSTANT_Float (tag = 4)
+[30]: CONST_Float (tag = 4)
 	Bytes: 0x41A00000
 	Float: 2.000000e+01
 
-[31]: CONSTANT_Class (tag = 7)
+[31]: CONST_Class (tag = 7)
 	Class name: #94 <java/lang/Error>
 
-[32]: CONSTANT_Methodref (tag = 10)
+[32]: CONST_Methodref (tag = 10)
 	Class name: #31 <java/lang/Error>
 	Name and type: #84 <java/lang/Error : ()V>
 
-[33]: CONSTANT_String (tag = 8)
+[33]: CONST_String (tag = 8)
 	String: #95 ola
 
-[34]: CONSTANT_Class (tag = 7)
+[34]: CONST_Class (tag = 7)
 	Class name: #96 <java/lang/String>
 
-[35]: CONSTANT_Fieldref (tag = 9)
+[35]: CONST_Fieldref (tag = 9)
 	Class name: #97 <java/lang/System>
 	Name and type: #98 <java/lang/System : Ljava/io/PrintStream;>
 
-[36]: CONSTANT_Methodref (tag = 10)
+[36]: CONST_Methodref (tag = 10)
 	Class name: #99 <java/io/PrintStream>
 	Name and type: #100 <java/io/PrintStream : (Ljava/lang/String;)V>
 
-[37]: CONSTANT_Class (tag = 7)
+[37]: CONST_Class (tag = 7)
 	Class name: #101 <[[Ljava/lang/String;>
 
-[38]: CONSTANT_Class (tag = 7)
+[38]: CONST_Class (tag = 7)
 	Class name: #102 <java/lang/ArithmeticException>
 
-[39]: CONSTANT_Methodref (tag = 10)
+[39]: CONST_Methodref (tag = 10)
 	Class name: #99 <java/io/PrintStream>
 	Name and type: #103 <java/io/PrintStream : (Ljava/lang/Object;)V>
 
-[40]: CONSTANT_Fieldref (tag = 9)
+[40]: CONST_Fieldref (tag = 9)
 	Class name: #43 <examples/LongCode>
 	Name and type: #104 <examples/LongCode : [I>
 
-[41]: CONSTANT_Long (tag = 5)
+[41]: CONST_Long (tag = 5)
 	High bytes: 0x015EE2A3
 	Low  bytes: 0x21CE7D15
 	Long: 98765432123456789
 
-[43]: CONSTANT_Class (tag = 7)
+[43]: CONST_Class (tag = 7)
 	Class name: #105 <examples/LongCode>
 
-[44]: CONSTANT_Class (tag = 7)
+[44]: CONST_Class (tag = 7)
 	Class name: #106 <java/lang/Object>
 
-[45]: CONSTANT_Class (tag = 7)
+[45]: CONST_Class (tag = 7)
 	Class name: #107 <java/util/EventListener>
 
-[46]: CONSTANT_Class (tag = 7)
+[46]: CONST_Class (tag = 7)
 	Class name: #108 <java/util/RandomAccess>
 
-[47]: CONSTANT_Utf8 (tag = 1)
+[47]: CONST_Utf8 (tag = 1)
 	Length of byte array: 11
 	Length of string: 11
 	String: NestedClass
 
-[48]: CONSTANT_Utf8 (tag = 1)
+[48]: CONST_Utf8 (tag = 1)
 	Length of byte array: 12
 	Length of string: 12
 	String: InnerClasses
 
-[49]: CONSTANT_Class (tag = 7)
+[49]: CONST_Class (tag = 7)
 	Class name: #109 <examples/LongCode$Test>
 
-[50]: CONSTANT_Utf8 (tag = 1)
+[50]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: Test
 
-[51]: CONSTANT_Utf8 (tag = 1)
+[51]: CONST_Utf8 (tag = 1)
 	Length of byte array: 12
 	Length of string: 12
 	String: array_member
 
-[52]: CONSTANT_Utf8 (tag = 1)
+[52]: CONST_Utf8 (tag = 1)
 	Length of byte array: 2
 	Length of string: 2
 	String: [I
 
-[53]: CONSTANT_Utf8 (tag = 1)
+[53]: CONST_Utf8 (tag = 1)
 	Length of byte array: 17
 	Length of string: 17
 	String: deprecated_member
 
-[54]: CONSTANT_Utf8 (tag = 1)
+[54]: CONST_Utf8 (tag = 1)
 	Length of byte array: 1
 	Length of string: 1
 	String: F
 
-[55]: CONSTANT_Utf8 (tag = 1)
+[55]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: Deprecated
 
-[56]: CONSTANT_Utf8 (tag = 1)
+[56]: CONST_Utf8 (tag = 1)
 	Length of byte array: 25
 	Length of string: 25
 	String: RuntimeVisibleAnnotations
 
-[57]: CONSTANT_Utf8 (tag = 1)
+[57]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: Ljava/lang/Deprecated;
 
-[58]: CONSTANT_Utf8 (tag = 1)
+[58]: CONST_Utf8 (tag = 1)
 	Length of byte array: 18
 	Length of string: 18
 	String: static_long_member
 
-[59]: CONSTANT_Utf8 (tag = 1)
+[59]: CONST_Utf8 (tag = 1)
 	Length of byte array: 1
 	Length of string: 1
 	String: J
 
-[60]: CONSTANT_Utf8 (tag = 1)
+[60]: CONST_Utf8 (tag = 1)
 	Length of byte array: 12
 	Length of string: 6
 	String: ??????
 	UTF-8 Characters: πφμβƒé
 
-[61]: CONSTANT_Utf8 (tag = 1)
+[61]: CONST_Utf8 (tag = 1)
 	Length of byte array: 18
 	Length of string: 18
 	String: Ljava/lang/String;
 
-[62]: CONSTANT_Utf8 (tag = 1)
+[62]: CONST_Utf8 (tag = 1)
 	Length of byte array: 8
 	Length of string: 8
 	String: matrix3d
 
-[63]: CONSTANT_Utf8 (tag = 1)
+[63]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: [[[I
 
-[64]: CONSTANT_Utf8 (tag = 1)
+[64]: CONST_Utf8 (tag = 1)
 	Length of byte array: 8
 	Length of string: 8
 	String: matrix2d
 
-[65]: CONSTANT_Utf8 (tag = 1)
+[65]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: [[D
 
-[66]: CONSTANT_Utf8 (tag = 1)
+[66]: CONST_Utf8 (tag = 1)
 	Length of byte array: 6
 	Length of string: 6
 	String: <init>
 
-[67]: CONSTANT_Utf8 (tag = 1)
+[67]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: ()V
 
-[68]: CONSTANT_Utf8 (tag = 1)
+[68]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: Code
 
-[69]: CONSTANT_Utf8 (tag = 1)
+[69]: CONST_Utf8 (tag = 1)
 	Length of byte array: 15
 	Length of string: 15
 	String: LineNumberTable
 
-[70]: CONSTANT_Utf8 (tag = 1)
+[70]: CONST_Utf8 (tag = 1)
 	Length of byte array: 8
 	Length of string: 8
 	String: mymethod
 
-[71]: CONSTANT_Utf8 (tag = 1)
+[71]: CONST_Utf8 (tag = 1)
 	Length of byte array: 5
 	Length of string: 5
 	String: (IJ)V
 
-[72]: CONSTANT_Utf8 (tag = 1)
+[72]: CONST_Utf8 (tag = 1)
 	Length of byte array: 5
 	Length of string: 5
 	String: arith
 
-[73]: CONSTANT_Utf8 (tag = 1)
+[73]: CONST_Utf8 (tag = 1)
 	Length of byte array: 6
 	Length of string: 6
 	String: (IFB)J
 
-[74]: CONSTANT_Utf8 (tag = 1)
+[74]: CONST_Utf8 (tag = 1)
 	Length of byte array: 13
 	Length of string: 13
 	String: StackMapTable
 
-[75]: CONSTANT_Utf8 (tag = 1)
+[75]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: Exceptions
 
-[76]: CONSTANT_Utf8 (tag = 1)
+[76]: CONST_Utf8 (tag = 1)
 	Length of byte array: 4
 	Length of string: 4
 	String: main
 
-[77]: CONSTANT_Utf8 (tag = 1)
+[77]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: ([Ljava/lang/String;)V
 
-[78]: CONSTANT_Class (tag = 7)
+[78]: CONST_Class (tag = 7)
 	Class name: #106 <java/lang/Object>
 
-[79]: CONSTANT_Class (tag = 7)
+[79]: CONST_Class (tag = 7)
 	Class name: #110 <[Ljava/lang/String;>
 
-[80]: CONSTANT_Class (tag = 7)
+[80]: CONST_Class (tag = 7)
 	Class name: #102 <java/lang/ArithmeticException>
 
-[81]: CONSTANT_Utf8 (tag = 1)
+[81]: CONST_Utf8 (tag = 1)
 	Length of byte array: 8
 	Length of string: 8
 	String: <clinit>
 
-[82]: CONSTANT_Utf8 (tag = 1)
+[82]: CONST_Utf8 (tag = 1)
 	Length of byte array: 10
 	Length of string: 10
 	String: SourceFile
 
-[83]: CONSTANT_Utf8 (tag = 1)
+[83]: CONST_Utf8 (tag = 1)
 	Length of byte array: 13
 	Length of string: 13
 	String: LongCode.java
 
-[84]: CONSTANT_NameAndType (tag = 12)
+[84]: CONST_NameAndType (tag = 12)
 	Name: #66 <<init>>
 	Descriptor: #67 <()V>
 
-[85]: CONSTANT_Utf8 (tag = 1)
+[85]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: [[I
 
-[86]: CONSTANT_NameAndType (tag = 12)
+[86]: CONST_NameAndType (tag = 12)
 	Name: #62 <matrix3d>
 	Descriptor: #63 <[[[I>
 
-[87]: CONSTANT_Utf8 (tag = 1)
+[87]: CONST_Utf8 (tag = 1)
 	Length of byte array: 2
 	Length of string: 2
 	String: [D
 
-[88]: CONSTANT_Utf8 (tag = 1)
+[88]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/Double
 
-[89]: CONSTANT_NameAndType (tag = 12)
+[89]: CONST_NameAndType (tag = 12)
 	Name: #64 <matrix2d>
 	Descriptor: #65 <[[D>
 
-[90]: CONSTANT_Utf8 (tag = 1)
+[90]: CONST_Utf8 (tag = 1)
 	Length of byte array: 29
 	Length of string: 29
 	String: examples/LongCode$NestedClass
 
-[91]: CONSTANT_NameAndType (tag = 12)
+[91]: CONST_NameAndType (tag = 12)
 	Name: #66 <<init>>
 	Descriptor: #111 <(Lexamples/LongCode;)V>
 
-[92]: CONSTANT_NameAndType (tag = 12)
+[92]: CONST_NameAndType (tag = 12)
 	Name: #112 <method1>
 	Descriptor: #113 <([I)I>
 
-[93]: CONSTANT_NameAndType (tag = 12)
+[93]: CONST_NameAndType (tag = 12)
 	Name: #58 <static_long_member>
 	Descriptor: #59 <J>
 
-[94]: CONSTANT_Utf8 (tag = 1)
+[94]: CONST_Utf8 (tag = 1)
 	Length of byte array: 15
 	Length of string: 15
 	String: java/lang/Error
 
-[95]: CONSTANT_Utf8 (tag = 1)
+[95]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: ola
 
-[96]: CONSTANT_Utf8 (tag = 1)
+[96]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/String
 
-[97]: CONSTANT_Class (tag = 7)
+[97]: CONST_Class (tag = 7)
 	Class name: #114 <java/lang/System>
 
-[98]: CONSTANT_NameAndType (tag = 12)
+[98]: CONST_NameAndType (tag = 12)
 	Name: #115 <out>
 	Descriptor: #116 <Ljava/io/PrintStream;>
 
-[99]: CONSTANT_Class (tag = 7)
+[99]: CONST_Class (tag = 7)
 	Class name: #117 <java/io/PrintStream>
 
-[100]: CONSTANT_NameAndType (tag = 12)
+[100]: CONST_NameAndType (tag = 12)
 	Name: #118 <println>
 	Descriptor: #119 <(Ljava/lang/String;)V>
 
-[101]: CONSTANT_Utf8 (tag = 1)
+[101]: CONST_Utf8 (tag = 1)
 	Length of byte array: 20
 	Length of string: 20
 	String: [[Ljava/lang/String;
 
-[102]: CONSTANT_Utf8 (tag = 1)
+[102]: CONST_Utf8 (tag = 1)
 	Length of byte array: 29
 	Length of string: 29
 	String: java/lang/ArithmeticException
 
-[103]: CONSTANT_NameAndType (tag = 12)
+[103]: CONST_NameAndType (tag = 12)
 	Name: #118 <println>
 	Descriptor: #120 <(Ljava/lang/Object;)V>
 
-[104]: CONSTANT_NameAndType (tag = 12)
+[104]: CONST_NameAndType (tag = 12)
 	Name: #51 <array_member>
 	Descriptor: #52 <[I>
 
-[105]: CONSTANT_Utf8 (tag = 1)
+[105]: CONST_Utf8 (tag = 1)
 	Length of byte array: 17
 	Length of string: 17
 	String: examples/LongCode
 
-[106]: CONSTANT_Utf8 (tag = 1)
+[106]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/Object
 
-[107]: CONSTANT_Utf8 (tag = 1)
+[107]: CONST_Utf8 (tag = 1)
 	Length of byte array: 23
 	Length of string: 23
 	String: java/util/EventListener
 
-[108]: CONSTANT_Utf8 (tag = 1)
+[108]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: java/util/RandomAccess
 
-[109]: CONSTANT_Utf8 (tag = 1)
+[109]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: examples/LongCode$Test
 
-[110]: CONSTANT_Utf8 (tag = 1)
+[110]: CONST_Utf8 (tag = 1)
 	Length of byte array: 19
 	Length of string: 19
 	String: [Ljava/lang/String;
 
-[111]: CONSTANT_Utf8 (tag = 1)
+[111]: CONST_Utf8 (tag = 1)
 	Length of byte array: 22
 	Length of string: 22
 	String: (Lexamples/LongCode;)V
 
-[112]: CONSTANT_Utf8 (tag = 1)
+[112]: CONST_Utf8 (tag = 1)
 	Length of byte array: 7
 	Length of string: 7
 	String: method1
 
-[113]: CONSTANT_Utf8 (tag = 1)
+[113]: CONST_Utf8 (tag = 1)
 	Length of byte array: 5
 	Length of string: 5
 	String: ([I)I
 
-[114]: CONSTANT_Utf8 (tag = 1)
+[114]: CONST_Utf8 (tag = 1)
 	Length of byte array: 16
 	Length of string: 16
 	String: java/lang/System
 
-[115]: CONSTANT_Utf8 (tag = 1)
+[115]: CONST_Utf8 (tag = 1)
 	Length of byte array: 3
 	Length of string: 3
 	String: out
 
-[116]: CONSTANT_Utf8 (tag = 1)
+[116]: CONST_Utf8 (tag = 1)
 	Length of byte array: 21
 	Length of string: 21
 	String: Ljava/io/PrintStream;
 
-[117]: CONSTANT_Utf8 (tag = 1)
+[117]: CONST_Utf8 (tag = 1)
 	Length of byte array: 19
 	Length of string: 19
 	String: java/io/PrintStream
 
-[118]: CONSTANT_Utf8 (tag = 1)
+[118]: CONST_Utf8 (tag = 1)
 	Length of byte array: 7
 	Length of string: 7
 	String: println
 
-[119]: CONSTANT_Utf8 (tag = 1)
+[119]: CONST_Utf8 (tag = 1)
 	Length of byte array: 21
 	Length of string: 21
 	String: (Ljava/lang/String;)V
 
-[120]: CONSTANT_Utf8 (tag = 1)
+[120]: CONST_Utf8 (tag = 1)
 	Length of byte array: 21
 	Length of string: 21
 	String: (Ljava/lang/Object;)V
