@@ -6,13 +6,13 @@
 
 char readConstantPool_Class(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Class.name_index)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
     if (entry->Class.name_index == 0 ||
         entry->Class.name_index >= jc->constantPoolCount) {
-        jc->status = INVALID_CONSTANT_POOL_INDEX;
+        jc->status = INV_CP_INDEX;
         return 0;
     }
     return 1;
@@ -20,24 +20,24 @@ char readConstantPool_Class(JavaClass* jc, cp_info* entry) {
 
 char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Fieldref.class_index)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
     if (entry->Fieldref.class_index == 0 ||
         entry->Fieldref.class_index >= jc->constantPoolCount) {
-        jc->status = INVALID_CONSTANT_POOL_INDEX;
+        jc->status = INV_CP_INDEX;
         return 0;
     }
 
     if (!readu2(jc, &entry->Fieldref.name_and_type_index)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
     if (entry->Fieldref.name_and_type_index == 0 ||
         entry->Fieldref.name_and_type_index >= jc->constantPoolCount) {
-        jc->status = INVALID_CONSTANT_POOL_INDEX;
+        jc->status = INV_CP_INDEX;
         return 0;
     }
 
@@ -46,7 +46,7 @@ char readConstantPool_Fieldref(JavaClass* jc, cp_info* entry) {
 
 char readConstantPool_Integer(JavaClass* jc, cp_info* entry) {
     if (!readu4(jc, &entry->Integer.value)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
@@ -55,12 +55,12 @@ char readConstantPool_Integer(JavaClass* jc, cp_info* entry) {
 
 char readConstantPool_Long(JavaClass* jc, cp_info* entry) {
     if (!readu4(jc, &entry->Long.high)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
     if (!readu4(jc, &entry->Long.low)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
@@ -69,7 +69,7 @@ char readConstantPool_Long(JavaClass* jc, cp_info* entry) {
 
 char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
     if (!readu2(jc, &entry->Utf8.length)) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         return 0;
     }
 
@@ -77,7 +77,7 @@ char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
         entry->Utf8.bytes = (uint8_t*)malloc(entry->Utf8.length);
 
         if (!entry->Utf8.bytes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 0;
         }
 
@@ -88,14 +88,14 @@ char readConstantPool_Utf8(JavaClass* jc, cp_info* entry) {
             int byte = fgetc(jc->file);
 
             if (byte == EOF) {
-                jc->status = UNEXPECTED_EOF_READING_UTF8;
+                jc->status = UNXPTD_EOF_READING_UTF8;
                 return 0;
             }
 
             jc->totalBytesRead++;
 
             if (byte == 0 || (byte >= 0xF0)) {
-                jc->status = INVALID_UTF8_BYTES;
+                jc->status = INV_UTF8_BYTES;
                 return 0;
             }
 
@@ -114,7 +114,7 @@ char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
     int byte = fgetc(jc->file);
 
     if (byte == EOF) {
-        jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+        jc->status = UNXPTD_EOF_READING_CP;
         entry->tag = 0xFF;
         return 0;
     }
@@ -151,7 +151,7 @@ char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
         case CONSTANT_MethodHandle:
 
             if (!readu2(jc, NULL) || fgetc(jc->file) == EOF) {
-                jc->status = UNEXPECTED_EOF_READING_CONSTANT_POOL;
+                jc->status = UNXPTD_EOF_READING_CP;
                 return 0;
             }
 
@@ -160,7 +160,7 @@ char readConstantPoolEntry(JavaClass* jc, cp_info* entry) {
             break;
 
         default:
-            jc->status = UNKNOWN_CONSTANT_POOL_TAG;
+            jc->status = UNKNOWN_CP_TAG;
             break;
     }
     return 0;

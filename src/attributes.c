@@ -21,7 +21,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
 
     if (!readu2(jc, &entry->name_index) ||
         !readu4(jc, &entry->length)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 0;
     }
 
@@ -30,7 +30,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
     if (entry->name_index == 0 ||
         entry->name_index >= jc->constantPoolCount ||
         cp->tag != CONSTANT_Utf8) {
-        jc->status = INVALID_NAME_INDEX;
+        jc->status = INV_NAME_IDX;
         return 0;
     }
 
@@ -54,7 +54,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
 
         for (u32 = 0; u32 < entry->length; u32++) {
             if (fgetc(jc->file) == EOF) {
-                jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+                jc->status = UNXPTD_EOF_READING_ATTR_INFO;
                 return 0;
             }
             jc->totalBytesRead++;
@@ -65,7 +65,7 @@ char readAttribute(JavaClass* jc, attribute_info* entry) {
     }
 
     if (jc->totalBytesRead - totalBytesRead != entry->length) {
-        jc->status = ATTRIBUTE_LENGTH_MISMATCH;
+        jc->status = ATTR_LEN_MISMATCH;
         return 0;
     }
 
@@ -82,18 +82,18 @@ uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     if (!readu2(jc, &info->constantvalue_index)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     if (info->constantvalue_index == 0 ||
         info->constantvalue_index >= jc->constantPoolCount) {
-        jc->status = ATTRIBUTE_INVALID_CONSTANTVALUE_INDEX;
+        jc->status = ATTR_INV_CONST_VALUE_IDX;
         return 0;
     }
 
@@ -102,7 +102,7 @@ uint8_t readAttributeConstantValue(JavaClass* jc, attribute_info* entry) {
     if (cp->tag != CONSTANT_String && cp->tag != CONSTANT_Float &&
         cp->tag != CONSTANT_Double && cp->tag != CONSTANT_Long &&
         cp->tag != CONSTANT_Integer) {
-        jc->status = ATTRIBUTE_INVALID_CONSTANTVALUE_INDEX;
+        jc->status = ATTR_INV_CONST_VALUE_IDX;
         return 0;
     }
 
@@ -158,19 +158,19 @@ uint8_t readAttributeSourceFile(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     if (!readu2(jc, &info->sourcefile_index)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     if (info->sourcefile_index == 0 ||
         info->sourcefile_index >= jc->constantPoolCount ||
         jc->constantPool[info->sourcefile_index - 1].tag != CONSTANT_Utf8) {
-        jc->status = ATTRIBUTE_INVALID_SOURCEFILE_INDEX;
+        jc->status = ATTR_INV_SRC_FILE_IDX;
         return 0;
     }
     return 1;
@@ -197,21 +197,21 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     info->inner_classes = NULL;
 
     if (!readu2(jc, &info->number_of_classes)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     info->inner_classes = (InnerClassInfo*)malloc(info->number_of_classes * sizeof(InnerClassInfo));
 
     if (!info->inner_classes) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -221,7 +221,7 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
     for (u16 = 0; u16 < info->number_of_classes; u16++, icf++) {
         if (!readu2(jc, &icf->inner_class_index) || !readu2(jc, &icf->outer_class_index) ||
             !readu2(jc, &icf->inner_class_name_index) || !readu2(jc, &icf->inner_class_access_flags)) {
-            jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+            jc->status = UNXPTD_EOF_READING_ATTR_INFO;
             return 0;
         }
 
@@ -230,7 +230,7 @@ uint8_t readAttributeInnerClasses(JavaClass* jc, attribute_info* entry) {
             (icf->outer_class_index > 0 && jc->constantPool[icf->outer_class_index - 1].tag != CONSTANT_Class) ||
             icf->inner_class_name_index >= jc->constantPoolCount ||
             (icf->inner_class_name_index > 0 && jc->constantPool[icf->inner_class_name_index - 1].tag != CONSTANT_Utf8)) {
-            jc->status = ATTRIBUTE_INVALID_INNERCLASS_INDEXES;
+            jc->status = ATTR_INV_INNERCLASS_IDXS;
             return 0;
         }
     }
@@ -305,21 +305,21 @@ uint8_t readAttributeLineNumberTable(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     info->line_number_table = NULL;
 
     if (!readu2(jc, &info->line_number_table_length)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     info->line_number_table = (LineNumberTableEntry*)malloc(info->line_number_table_length * sizeof(LineNumberTableEntry));
 
     if (!info->line_number_table) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -329,7 +329,7 @@ uint8_t readAttributeLineNumberTable(JavaClass* jc, attribute_info* entry) {
     for (u16 = 0; u16 < info->line_number_table_length; u16++, lnte++) {
         if (!readu2(jc, &lnte->start_pc) ||
             !readu2(jc, &lnte->line_number)) {
-            jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+            jc->status = UNXPTD_EOF_READING_ATTR_INFO;
             return 0;
         }
     }
@@ -371,7 +371,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     uint32_t u32;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -381,38 +381,38 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     if (!readu2(jc, &info->max_stack) ||
         !readu2(jc, &info->max_locals) ||
         !readu4(jc, &info->code_length)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     if (info->code_length == 0 || info->code_length >= 65536) {
-        jc->status = ATTRIBUTE_INVALID_CODE_LENGTH;
+        jc->status = ATTR_INV_CODE_LEN;
         return 0;
     }
 
     info->code = (uint8_t*)malloc(info->code_length);
 
     if (!info->code) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     if (fread(info->code, sizeof(uint8_t), info->code_length, jc->file) != info->code_length) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     jc->totalBytesRead += info->code_length;
 
     if (!readu2(jc, &info->exception_table_length)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     info->exception_table = (ExceptionTableEntry*)malloc(info->exception_table_length * sizeof(ExceptionTableEntry));
 
     if (!info->exception_table) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -423,7 +423,7 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
             !readu2(jc, &except->end_pc) ||
             !readu2(jc, &except->handler_pc) ||
             !readu2(jc, &except->catch_type)) {
-            jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+            jc->status = UNXPTD_EOF_READING_ATTR_INFO;
             return 0;
         }
 
@@ -431,14 +431,14 @@ uint8_t readAttributeCode(JavaClass* jc, attribute_info* entry) {
     }
 
     if (!readu2(jc, &info->attributes_count)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     info->attributes = (attribute_info*)malloc(info->attributes_count * sizeof(attribute_info));
 
     if (!info->attributes) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -921,21 +921,21 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
     entry->info = (void*)info;
 
     if (!info) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
     info->exception_index_table = NULL;
 
     if (!readu2(jc, &info->number_of_exceptions)) {
-        jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+        jc->status = UNXPTD_EOF_READING_ATTR_INFO;
         return 0;
     }
 
     info->exception_index_table = (uint16_t*)malloc(info->number_of_exceptions * sizeof(uint16_t));
 
     if (!info->exception_index_table) {
-        jc->status = MEMORY_ALLOCATION_FAILED;
+        jc->status = MEM_ALLOC_FAILED;
         return 0;
     }
 
@@ -944,14 +944,14 @@ uint8_t readAttributeExceptions(JavaClass* jc, attribute_info* entry) {
 
     for (u16 = 0; u16 < info->number_of_exceptions; u16++, exception_index++) {
         if (!readu2(jc, exception_index)) {
-            jc->status = UNEXPECTED_EOF_READING_ATTRIBUTE_INFO;
+            jc->status = UNXPTD_EOF_READING_ATTR_INFO;
             return 0;
         }
 
         if (*exception_index == 0 ||
             *exception_index >= jc->constantPoolCount ||
             jc->constantPool[*exception_index - 1].tag != CONSTANT_Class) {
-            jc->status = ATTRIBUTE_INVALID_EXCEPTIONS_CLASS_INDEX;
+            jc->status = ATTR_INV_EXC_CLASS_IDX;
             return 0;
         }
     }

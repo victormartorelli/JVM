@@ -9,7 +9,7 @@ char readField(JavaClass* jc, field_info* entry) {
 
     if (!readu2(jc, &entry->access_flags) || !readu2(jc, &entry->name_index) ||
         !readu2(jc, &entry->descriptor_index) || !readu2(jc, &entry->attributes_count)) {
-        jc->status = UNEXPECTED_EOF;
+        jc->status = UNXPTD_EOF;
         return 0;
     }
 
@@ -18,7 +18,7 @@ char readField(JavaClass* jc, field_info* entry) {
 
     if (entry->name_index == 0 || entry->name_index >= jc->constantPoolCount ||
         !isValidNameIndex(jc, entry->name_index, 0)) {
-        jc->status = INVALID_NAME_INDEX;
+        jc->status = INV_NAME_IDX;
         return 0;
     }
 
@@ -27,14 +27,14 @@ char readField(JavaClass* jc, field_info* entry) {
     if (entry->descriptor_index == 0 || entry->descriptor_index >= jc->constantPoolCount ||
         cpi->tag != CONSTANT_Utf8 ||
         cpi->Utf8.length != readFieldDescriptor(cpi->Utf8.bytes, cpi->Utf8.length, 1)) {
-        jc->status = INVALID_FIELD_DESCRIPTOR_INDEX;
+        jc->status = INV_FIELD_DESC_IDX;
         return 0;
     }
 
     if (entry->attributes_count > 0) {
         entry->attributes = (attribute_info*)malloc(sizeof(attribute_info) * entry->attributes_count);
         if (!entry->attributes) {
-            jc->status = MEMORY_ALLOCATION_FAILED;
+            jc->status = MEM_ALLOC_FAILED;
             return 0;
         }
 
