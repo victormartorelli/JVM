@@ -12,12 +12,11 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    status_file = openClassFile(&jc, argv[1]);
+    status_file = openClassFile(&jc, argv[2]);
     if (argv[1][1] == 'e')
         printClassFileInfo(&jc);
     if (argv[1][1] == 'r')
     {
-
     }
     else
         printf("Invalid option.\n");
