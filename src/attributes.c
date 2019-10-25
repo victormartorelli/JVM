@@ -531,16 +531,16 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     (opcode >= opcode_invokevirtual && cpi->tag == CONST_Methodref)) {
                     cpi = jc->constantPool + cpi->Fieldref.class_index - 1;
                     cpi = jc->constantPool + cpi->Class.name_index - 1;
-                    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+                    UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                     printf("<%s.", buffer);
                     cpi = jc->constantPool + u32 - 1;
                     cpi = jc->constantPool + cpi->Fieldref.name_and_type_index - 1;
                     u32 = cpi->NameAndType.descriptor_index;
                     cpi = jc->constantPool + cpi->NameAndType.name_index - 1;
-                    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+                    UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                     printf("%s", buffer);
                     cpi = jc->constantPool + u32 - 1;
-                    UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+                    UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                     printf(">");
                 }
                 else {
@@ -689,7 +689,7 @@ void printAttributeCode(JavaClass* jc, attribute_info* entry, int numberOfTabs) 
                     }
                     else if (cpi->tag == CONST_String) {
                         cpi = jc->constantPool + cpi->String.string_index - 1;
-                        UTF8_to_Ascii((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
+                        UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
                         printf(" <%s>", buffer);
                     }
                     else if (cpi->tag == CONST_Integer) {

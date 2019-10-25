@@ -80,14 +80,14 @@ void printMethods(JavaClass* jc) {
             cpi = jc->constantPool + mi->name_index - 1;
             UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
 
-            printf("\nMethod #%u:\n\n", u16 + 1);
-            printf("\tname_index:        #%u <%s>\n", mi->name_index, buffer);
+            printf("  Method #%u:\n\n", u16);
+            printf("    Name:        #%u <%s>\n", mi->name_index, buffer);
             cpi = jc->constantPool + mi->descriptor_index - 1;
             UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-            printf("\tdescriptor_index:  #%u <%s>\n", mi->descriptor_index, buffer);
+            printf("    Descriptor:  #%u <%s>\n", mi->descriptor_index, buffer);
             decodeAccessFlags(mi->access_flags, buffer, sizeof(buffer), ACCT_METHOD);
-            printf("\taccess_flags:      0x%.4X [%s]\n", mi->access_flags, buffer);
-            printf("\tattribute_count:   %u\n", mi->attr_count);
+            printf("    Access flags:      0x%.4X [%s]\n", mi->access_flags, buffer);
+            printf("    Attribute Count:   %u\n", mi->attr_count);
 
             if (mi->attr_count > 0) {
                 for (att_index = 0; att_index < mi->attr_count; att_index++) {
@@ -95,7 +95,7 @@ void printMethods(JavaClass* jc) {
                     cpi = jc->constantPool + atti->name_index - 1;
                     UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
 
-                    printf("\n\tMethod Attribute #%u - %s:\n", att_index + 1, buffer);
+                    printf("    Method Attribute #%u - %s:\n", att_index + 1, buffer);
                     printAttribute(jc, atti, 2);
                 }
             }

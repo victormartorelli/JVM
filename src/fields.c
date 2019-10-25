@@ -75,33 +75,32 @@ void printAllFields(JavaClass* jc) {
     cp_info* cpi;
     attribute_info* atti;
 
-    printf("\n==== Fields ====");
+    printf("\n==== Fields ====\n");
 
     for (u16 = 0; u16 < jc->fieldCount; u16++) {
         fi = jc->fields + u16;
 
-        printf("\n\n\tField #%u:\n\n", u16 + 1);
+        printf("\nField #%u:", u16);
 
         cpi = jc->constantPool + fi->name_index - 1;
         UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-        printf("\t\tname_index:       #%u <%s>\n", fi->name_index, buffer);
+        printf("  Name:       #%u <%s>\n", fi->name_index, buffer);
 
         cpi = jc->constantPool + fi->descriptor_index - 1;
         UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-        printf("\t\tdescriptor_index: #%u <%s>\n", fi->descriptor_index, buffer);
+        printf("  Descriptor: #%u <%s>\n", fi->descriptor_index, buffer);
 
         decodeAccessFlags(fi->access_flags, buffer, sizeof(buffer), ACCT_FIELD);
-        printf("\t\taccess_flags:     0x%.4X [%s]\n", fi->access_flags, buffer);
+        printf("  Access flags:     0x%.4X [%s]\n", fi->access_flags, buffer);
 
-        printf("\t\tattr_count: %u\n", fi->attr_count);
+        printf("  Attr Count: %u\n", fi->attr_count);
 
         if (fi->attr_count > 0) {
             for (att_index = 0; att_index < fi->attr_count; att_index++) {
                 atti = fi->attributes + att_index;
                 cpi = jc->constantPool + atti->name_index - 1;
                 UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cpi->Utf8.bytes, cpi->Utf8.length);
-
-                printf("\n\t\tField Attribute #%u - %s:\n", att_index + 1, buffer);
+                printf("    Field Attribute #%u-%s: ", att_index, buffer);
                 printAttribute(jc, atti, 3);
             }
         }

@@ -277,13 +277,14 @@ void printClassFileInfo(JavaClass* jc) {
     printCP(jc);
 
     if (jc->interfaceCount > 0) {
-        printf("\n==== Interfaces implemented by the class ====\n\n");
+        printf("\n==== Interfaces ====\n\n");
 
         for (u16 = 0; u16 < jc->interfaceCount; u16++) {
+            printf(" Interface %u\n", u16);
             cp = jc->constantPool + *(jc->interfaces + u16) - 1;
             cp = jc->constantPool + cp->Class.name_index - 1;
             UTF8ToASCII((uint8_t*)buffer, sizeof(buffer), cp->Utf8.bytes, cp->Utf8.length);
-            printf("\tInterface #%u: #%u <%s>\n", u16 + 1, *(jc->interfaces + u16), buffer);
+            printf("    Interface: #%u <%s>\n\n", *(jc->interfaces + u16), buffer);
         }
     }
 
