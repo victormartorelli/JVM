@@ -4,15 +4,24 @@
 int main(int argc, char *argv[]) {
     JavaClass jc;
     int status_file;
-    
-    if (argc <= 1) {
-        printf("Use it this way: ./class-exhibitor <class file>\n");
+
+    if (argc <= 2) {
+        printf("Use it this way: class-exhibitor (-e|-r) <class file>\n");
+        printf("\t-e\tshow java class information.\n");
+        printf("\t-r\trun java class.\n");
         return 1;
     }
 
     status_file = openClassFile(&jc, argv[1]);
-    printClassFileInfo(&jc);
+    if (argv[1][1] == 'e')
+        printClassFileInfo(&jc);
+    if (argv[1][1] == 'r')
+    {
+
+    }
+    else
+        printf("Invalid option.\n");
     closeClassFile(&jc);
-    
+
     return status_file;
 }

@@ -1,5 +1,5 @@
 *.out
 *.swp
 build/
-class-exhibitor
+jvm
 *.class

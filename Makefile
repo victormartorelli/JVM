@@ -1,5 +1,5 @@
 all:
-	gcc -std=c99 -Wall src/*.c -o class-exhibitor
+	gcc -std=c99 -Wall src/*.c -o jvm
 
 .PHONY: examples
 examples:
