@@ -82,7 +82,7 @@ struct JavaClass {
     method_info* methods;
     uint16_t attributeCount;
     attribute_info* attributes;
-    
+
     uint16_t staticFieldCount;
     uint16_t instanceFieldCount;
 
