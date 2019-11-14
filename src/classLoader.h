@@ -1,6 +1,8 @@
 #ifndef CLASSLOADER_H
 #define CLASSLOADER_H
 
+#include <stdint.h>
+
 typedef struct Stack {
     int32_t value;
     int type;
@@ -23,6 +25,6 @@ struct {
     Frame *frame_list;
 
     char classPath[256];
-}
+};
 
 #endif
