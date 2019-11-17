@@ -14,3 +14,12 @@ uint8_t pushToStack(Stack** stack, int32_t operand, int type){
 
     return new_operand != NULL;
 }
+
+void initClassLoader(ClassLoader* cl)
+{
+    return;
+}
+void freeClassLoader(ClassLoader* cl)
+{
+    return;
+}

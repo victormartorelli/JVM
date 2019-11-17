@@ -12,20 +12,22 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    JavaClass jc;
-    status_file = openClassFile(&jc, argv[2]);
-
     if (argv[1][1] == 'e')
+    {
+        JavaClass jc;
+        status_file = openClassFile(&jc, argv[2]);
         printClassFileInfo(&jc);
+        closeClassFile(&jc);
+    }
     if (argv[1][1] == 'r')
     {
         ClassLoader cl;
         initClassLoader(&cl);
+        freeClassLoader(&cl);
 
     }
     else
         printf("Invalid option.\n");
-    closeClassFile(&jc);
 
     return status_file;
 }

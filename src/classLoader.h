@@ -15,12 +15,12 @@ typedef struct Stack {
     Stack *next;
 } Stack;
 
-typedef struct LoadedClass {
+struct LoadedClass {
     JavaClass *jc;
     LoadedClass *next;
 };
 
-typedef struct Frame {
+struct Frame {
     uint8_t returnc;
     uint32_t PC;
     uint32_t code_length;
@@ -30,14 +30,14 @@ typedef struct Frame {
     JavaClass *jc;
     Stack *stack_list;
     Frame *next;
-} Frame;
+};
 
-typedef struct ClassLoader {
+struct ClassLoader {
     LoadedClass *class_list;
     Frame *frame_list;
 
     char classPath[256];
-} ClassLoader;
+};
 
 //operand stack manipulation
 uint8_t pushToStack(Stack**,int32_t,int);
@@ -52,6 +52,7 @@ void freeStack(Stack**);
 
 //JVM manipulation
 void initClassLoader(ClassLoader*);
+void freeClassLoader(ClassLoader*);
 
 
 #endif
