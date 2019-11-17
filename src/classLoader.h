@@ -46,6 +46,11 @@ void freeStack(Stack**);
 
 //frame manipulation
 
+Frame* newFrame(JavaClass* jc, method_info* method);
+uint8_t pushFrame(Frame** f, Frame* frame);
+uint8_t popFrame(Frame** f, Frame* output_frame);
+void freeFrame(Frame* frame);
+
 //JVM manipulation
 void initClassLoader(ClassLoader*);
 void freeClassLoader(ClassLoader*);
