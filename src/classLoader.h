@@ -41,14 +41,10 @@ struct ClassLoader {
 
 //operand stack manipulation
 uint8_t pushToStack(Stack**,int32_t,int);
-uint8_t popFromStack(Stack**,int32_t,int);
+uint8_t popFromStack(Stack**,int32_t*,int*);
 void freeStack(Stack**);
 
 //frame manipulation
-
-
-
-
 
 //JVM manipulation
 void initClassLoader(ClassLoader*);

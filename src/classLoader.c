@@ -15,6 +15,37 @@ uint8_t pushToStack(Stack** stack, int32_t operand, int type){
     return new_operand != NULL;
 }
 
+// Nao testado -> rofl
+uint8_t popFromStack(Stack** stack, int32_t* out_operand, int* out_type){
+    Stack* pop_operand = (Stack*)malloc(sizeof(Stack));
+
+    if(pop_operand){
+        if(out_operand){
+            *out_operand = pop_operand->operand;
+        }
+        if(out_type){
+            *out_type = pop_operand->type;
+        }
+        *stack = pop_operand->next;
+        free(pop_operand);
+    }
+    return pop_operand != NULL;
+}
+// Nao testado -> rofl
+void freeStack(Stack** stack){
+    Stack* operand = *stack;
+    Stack* aux;
+
+    while(stack){
+        aux = stack;
+        stack = stack->next;
+        free(aux);
+    }
+    *stack = NULL;
+}
+
+
+
 void initClassLoader(ClassLoader* cl)
 {
     return;
