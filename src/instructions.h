@@ -9,4 +9,4 @@ typedef uint8_t (*InstructionFunction)(JavaVirtualMachine* jvm, Frame* currentFr
 
 InstructionFunction fetchOpcodeFunction(uint8_t opcode);
 
-#endif // INSTRUCTIONS_H
+#endif
