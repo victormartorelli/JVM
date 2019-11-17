@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include "javaClass.h"
+#include "classLoader.h"
 
 int main(int argc, char *argv[]) {
-    JavaClass jc;
     int status_file;
 
     if (argc <= 2) {
@@ -12,11 +12,16 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    JavaClass jc;
     status_file = openClassFile(&jc, argv[2]);
+
     if (argv[1][1] == 'e')
         printClassFileInfo(&jc);
     if (argv[1][1] == 'r')
     {
+        ClassLoader cl;
+        initClassLoader(&cl);
+
     }
     else
         printf("Invalid option.\n");

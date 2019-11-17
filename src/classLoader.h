@@ -3,6 +3,11 @@
 
 #include <stdint.h>
 
+typedef struct Stack Stack;
+typedef struct LoadedClass LoadedClass;
+typedef struct Frame Frame;
+typedef struct ClassLoader ClassLoader;
+
 typedef struct Stack {
     int32_t value;
     int type;
@@ -12,7 +17,7 @@ typedef struct Stack {
 typedef struct LoadedClass {
     JavaClass *jc;
     LoadedClass *next;
-} LoadedClass;
+};
 
 typedef struct Frame {
     uint8_t returnc;
