@@ -46,7 +46,7 @@ void freeStack(Stack**);
 
 
 //JVM manipulation
-void initJVM(ClassLoader*);
+void initClassLoader(ClassLoader*);
 
 
 #endif
