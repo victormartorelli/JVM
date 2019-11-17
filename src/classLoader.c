@@ -44,6 +44,47 @@ void freeStack(Stack** stack){
     *stack = NULL;
 }
 
+uint8_t pushFrame(JavaClass* jc, method_info* method, Frame* frame){
+    Frame* frame = (Frame*)malloc(sizeof(Frame));
+
+    if(frame){
+        attribute_info* code_attribute = getAttributeByType(method->attributes, method->attr_count, ATTR_Code);
+        att_Code_info* code;
+        if(code_attribute){
+            code = (att_Code_info*)code_attribute->info;
+            frame->code = code->code;
+            frame->code_length = code->code_length;
+            if(code->max_locals > 0){
+                frame->local_vars = (int32_t*)malloc(code->max_locals*sizeof(int32_t));
+            }else{
+                frame->local_vars = NULL;
+            }
+        }else{
+            frame->code = NULL;
+            frame->code_length = 0;
+            frame->local_vars = NULL;
+        }
+        frame->operands = NULL;
+        frame->jc = jc;
+        frame->pc = 0;
+    }
+    return frame
+}
+
+uint8_t pop_frame(JavaClass* jc, method_info* method, Frame* frame){
+
+}
+
+void freeFrame(Frame* frame){
+    if(frame->local_vars){
+        free(frame->local_vars);
+    }
+    if(frame->stack_list){
+        freeStack(&frame->stack_list);
+    }
+    free(frame);
+}
+
 Frame* newFrame(JavaClass* jc, method_info* method){
     Frame* frame = (Frame*)malloc(sizeof(Frame));
 
@@ -70,43 +111,6 @@ Frame* newFrame(JavaClass* jc, method_info* method){
     }
     return frame;
 }
-
-void freeFrame(Frame* frame){
-    if(frame->local_vars){
-        free(frame->local_vars);
-    }
-    if(frame->stack_list){
-        freeStack(&frame->stack_list);
-    }
-    free(frame);
-}
-// Nao sei se ta 100% correto essa do pushFrame
-// O que eu n sei se ta certo é o fato do in_obj acessar o frame. 
-
-uint8_t pushFrame(Frame** f, Frame* frame){
-    Frame* in_obj = (Frame*)malloc(sizeof(Frame));
-
-    if(in_obj){
-        in_obj->frame = frame;
-        in_obj->next = *f;
-        *f = in_obj;
-    }
-    return in_obj != NULL;
-}
-// Nao sei se ta 100% correto essa do popFrame
-// O que eu n sei se ta certo é o fato do out_obj acessar o frame. 
-uint8_t pop_frame(Frame** f, Frame* output_frame){
-    Frame* out_obj = *f;
-    if(out_obj){
-        if(output_frame){
-            *output_frame = *out_obj->frame;
-        }
-        *f = out_obj->next;
-        free(out_obj);
-    }
-    return out_obj != NULL;
-}
-
 
 
 
