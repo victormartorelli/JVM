@@ -15,12 +15,18 @@ typedef struct LoadedClass {
 } LoadedClass;
 
 typedef struct Frame {
+    uint8_t returnc;
+    uint32_t PC;
+    uint32_t code_length;
+    uint8_t* code;
+    int32_t* local_vars;
+
     JavaClass *jc;
     Stack *stack_list;
     Frame *next;
 };
 
-struct {
+struct ClassLoader {
     LoadedClass *class_list;
     Frame *frame_list;
 
